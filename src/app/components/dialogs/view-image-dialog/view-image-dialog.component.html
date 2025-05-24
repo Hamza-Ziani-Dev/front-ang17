@@ -1,0 +1,60 @@
+<div class="bg-white w-full h-full flex flex-col" *transloco="let translate">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-2 bg-gray-700 text-white">
+        <h5 class="font-normal text-base">{{ translate('scanner.visualiser') }}</h5>
+        <div class="flex items-center gap-2">
+            <button
+                class="hover:text-gray-300 transition-colors duration-200 p-1"
+                aria-label="Print"
+            >
+                <i class="fas fa-print" aria-hidden="true"></i>
+            </button>
+            <button
+                class="hover:text-gray-300 transition-colors duration-200 p-1"
+                aria-label="Fullscreen"
+            >
+                <i class="fas fa-expand" aria-hidden="true"></i>
+            </button>
+
+            <!-- <a class="ml-auto cursor-pointer" (click)="this.dialogRef.close()">
+                <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+              </a> -->
+              <button (click)="this.dialogRef.close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- Main Content -->
+    <div class="flex-1 bg-gray-600 overflow-auto">
+        <div class="h-full flex justify-center items-center">
+            <!-- <iframe
+                *ngIf="isLoaded"
+                [src]="uri"
+                class="w-full h-full bg-white"
+                title="Visualizer Content"
+            ></iframe> -->
+            <ng-container *ngIf="!isLoaded">
+                <iframe *ngIf="uri" [src]="uri" frameborder="0" width="100%" height="640px"
+                    id="viewerframe" #frame></iframe>
+                <div *ngIf="!uri" class="black-background"
+                    style="width: 100%; height: 640px;"></div>
+            </ng-container>
+
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex justify-end p-2 bg-gray-100">
+        <button
+            (click)="onDelete()"
+            class="bg-red-600 text-white py-1.5 px-3 rounded text-sm hover:bg-red-700 transition-colors duration-200 flex items-center gap-2"
+        >
+            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+            <span>{{ translate('scanner.supprimer') }}</span>
+        </button>
+    </div>
+</div>

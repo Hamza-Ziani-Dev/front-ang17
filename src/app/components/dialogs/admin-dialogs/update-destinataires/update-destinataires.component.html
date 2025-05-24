@@ -1,0 +1,82 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-1 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    Update destinataire
+                </h3>
+                <a class="ml-auto cursor-pointer" >
+                    <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+                </a>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-600 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <form class="flex flex-col mt-1 pr-3 pl-3 pb-1 bg-card rounded-2xl  overflow-hidden">
+                    <!-- Nom de destinataire :-->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="nom" class="block text-sm font-medium ">Nom de destinataire :</label>
+                            <input type="text" id="nom"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="nom">
+                        </div>
+                    </div>
+
+                    <!-- Entrez votre adresse email:-->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="email" class="block text-sm font-medium ">Entrez votre adresse email :</label>
+                            <input type="text" id="email"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="email">
+                        </div>
+                    </div>
+
+                    <!-- Checkbox -->
+                    <div class="flex mb-2">
+                        <div class="flex flex-row">
+                            <input type="checkbox" id="eligible" name="eligible" value="">
+                            <label for="eligible" class="block text-sm font-medium ml-2">Eligible</label>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <!-- Line separator -->
+            <div class="w-full h-0.5" style="background: linear-gradient(to right, #ffc107, #007bff);">
+            </div>
+            <!-- Dialog footer -->
+            <div class="bg-card px-2 py-1 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg justify-center">
+
+
+                <button type="button"
+                    class="w-full inline-flex justify-center items-center rounded-md border border-transparent shadow-sm px-2 py-1 bg-blue-600 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>
+                    Update
+                </button>
+
+
+
+
+                <button type="button"
+                    class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fas fa-undo mr-2"></i>
+                    Annuler
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

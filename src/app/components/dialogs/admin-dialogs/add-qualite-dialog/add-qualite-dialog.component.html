@@ -1,0 +1,132 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-1 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    Ajouter une Qualité
+                </h3>
+                <!-- <a class="ml-auto cursor-pointer" >
+                    <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+                </a> -->
+                <button class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-green-600 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <form class="flex flex-col mt-1 pr-3 pl-3 pb-1 bg-card rounded-2xl  overflow-hidden">
+
+                    <!-- Nom de Qualité -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="nom" class="block text-sm font-medium">Nom de Qualité :</label>
+                            <input type="text"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+                    </div>
+
+                     <!-- Code de Qualité -->
+                     <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="code" class="block text-sm font-medium">Code de Qualité :</label>
+                            <input type="text"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+                    </div>
+
+                    <!-- A accès à son subordonnée  -->
+                    <div class="flex mat-subtitle-2 mb-2 items-center">
+                        <div class="flex-auto">
+                            <label for="subordonnee" class="block text-sm font-medium">A accès à son subordonnée :</label>
+                            <div class="relative">
+                                <select id="subordonnee"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value=""></option>
+                                    <option value="oui">Oui</option>
+                                    <option value="non">Non</option>
+                                </select>
+                                <!-- X mark for delete -->
+                                <button type="button" id="clear-selection"
+                                    class="mr-4 absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passer directement à Bureaux d'ordre -->
+                    <div class="flex mat-subtitle-2 mb-2 items-center">
+                        <div class="flex-auto">
+                            <label for="bo" class="block text-sm font-medium">Passer directement à Bureaux d'ordre :</label>
+                            <div class="relative">
+                                <select id="bo"
+                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <option value=""></option>
+                                    <option value="oui">Oui</option>
+                                    <option value="non">Non</option>
+                                </select>
+                                <!-- X mark for delete -->
+                                <button type="button" id="clear-selection"
+                                    class="mr-4 absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   <!-- Notification-->
+                   <div class="flex mat-subtitle-2 mb-2 items-center">
+                    <div class="flex-auto">
+                        <label for="notification" class="block text-sm font-medium">Notification :</label>
+                        <div class="relative">
+                            <select id="notification"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value=""></option>
+                                <option value="oui">Oui</option>
+                                <option value="non">Non</option>
+                            </select>
+                            <!-- X mark for delete -->
+                            <button type="button" id="clear-selection"
+                                class="mr-4 absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                </form>
+            </div>
+            <!-- Line separator -->
+            <div class="w-full h-0.5" style="background: linear-gradient(to right, #ffc107, #007bff);">
+            </div>
+            <!-- Dialog footer -->
+            <div class="bg-card px-2 py-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-center">
+                <button type="button"
+                    class="w-full inline-flex justify-center items-center rounded-md border border-transparent shadow-sm px-2 py-1 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fa-solid fa-plus mr-2"></i>
+                    Ajouter
+                </button>
+
+                <button type="button"
+                    class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fas fa-undo mr-2"></i>
+                    Annuler
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

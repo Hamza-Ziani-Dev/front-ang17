@@ -1,0 +1,33 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+    *transloco="let translate">
+    <div class="bg-card rounded-lg shadow-xl w-96">
+        <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center p-2">
+            <h3 class="text-xl font-semibold">{{ data.operation }}</h3>
+            <button (click)="this.dialogRef.close()"
+                class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+        <!-- Line separator -->
+        <div class="h-1 bg-yellow-400 -500">
+            <div class="h-full bg-sky-600 w-1/5"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex flex-col items-center justify-center py-8 space-y-4">
+            <i class="fas fa-check-circle text-green-500 text-8xl animate-bounce"></i>
+        </div>
+
+
+        <!-- Footer -->
+        <div
+            class="bg-white dark:bg-gray-900 px-1 py-1 sm:px-2 sm:flex sm:flex-row-reverse border-t border-gray-200 dark:border-gray-700 rounded-b-lg">
+            <button (click)="dialogRef.close()"
+                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fas fa-undo mr-2"></i> {{ translate('common.close') }}
+            </button>
+        </div>
+
+    </div>
+</div>

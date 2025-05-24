@@ -1,0 +1,18 @@
+.tooltip-inner {
+    max-width: 400px !important;
+  }
+  
+  @media screen and (max-width: 800px) {
+    .icon-size {
+      font-size: 30px;
+    }
+    .text-size {
+      font-size: 8px;
+    }
+  }
+  @media screen and (min-width: 801px) {
+    .icon-size {
+      font-size: 50px;
+    }
+  }
+  

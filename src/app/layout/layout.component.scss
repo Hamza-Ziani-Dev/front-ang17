@@ -1,0 +1,164 @@
+::ng-deep .mat-menu-item {
+    margin: 0; /* Reset margins */
+}
+
+/* For LTR */
+html[dir="ltr"] .mat-menu-item {
+    margin-left: 20px; /* Adjust for LTR */
+}
+
+/* For RTL */
+html[dir="rtl"] .mat-menu-item {
+    margin-right: 20px; /* Adjust for RTL */
+}
+
+
+
+
+layout {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    /* Base styles for individual layouts */
+    > * {
+        position: relative;
+        display: flex;
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    /* Base styles for components that load as a route */
+    router-outlet {
+
+        + * {
+            position: relative;
+            display: flex;
+            flex: 1 1 auto;
+            width: 100%;
+        }
+    }
+}
+
+.logo-documania{
+    width: 100px;
+    height: 62px;
+}
+
+.acaps-img{
+    padding: 10px;
+    border-radius: 31px;
+    overflow: hidden;
+}
+.logo1-img{
+    width: 30%;
+    padding: 15px 0;
+}
+
+
+
+
+/* Global toast container style */
+.toast-container {
+    opacity: 1 !important;
+  }
+
+  /* Custom toast style */
+  .custom-toast {
+    background: #0B75FF !important;
+    color: white !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    grid-template-areas: "logo header" "logo content" !important;
+    padding: 12px 15px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+    min-height: 60px !important;
+  }
+
+  /* Logo styling */
+  .custom-toast::before {
+    content: '';
+    grid-area: logo !important;
+    background-image: url('/assets/logo/d-loading.gif');
+    background-size: 32px;
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 35px;
+    margin-right: 8px;
+    /* Removed filter to keep original logo color */
+    align-self: center !important;
+  }
+
+  /* Toast message container */
+  .toast-message-container {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-area: content !important;
+  }
+
+  /* Toast message styling */
+  .toast-message {
+    font-size: 14px !important;
+    font-weight: normal !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding-right: 20px !important;
+    grid-area: content !important;
+  }
+
+  /* Toast title styling */
+  .toast-title {
+    font-size: 15px !important;
+    font-weight: bold !important;
+    margin-bottom: 4px !important;
+    grid-area: header !important;
+    padding-right: 25px !important;
+  }
+
+  /* Close button styling */
+  .toast-close-button {
+    position: absolute !important;
+    right: 10px !important;
+    top: 2px !important;
+    color: white !important;
+    opacity: 1 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    z-index: 3 !important;
+  }
+
+  .toast-close-button:hover {
+    opacity: 0.8 !important;
+  }
+
+
+
+@media (max-width: 768px) {
+    .logo-documania{
+        height: 40px !important;
+    }
+    .logo{
+        height: 90px !important;
+
+    }
+
+}
+
+@media (max-width: 640px) {
+    .logo-documania{
+        height: 40px !important;
+    }
+    .logo{
+        height: 90px !important;
+
+    }
+
+}

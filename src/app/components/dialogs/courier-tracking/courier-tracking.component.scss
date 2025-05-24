@@ -1,0 +1,91 @@
+
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .dialog-content {
+    padding-top: 25px;
+  }
+
+  .tracking-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .step-line {
+    flex-grow: 1;
+    height: 2px;
+    background-color: #e0e0e0;
+    position: relative;
+  }
+
+  .step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+
+  .step.completed .step-icon {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .step.pending .step-icon {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .step.start .step-icon,
+  .step.end .step-icon {
+    background-color: #010a12;
+    color: white;
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+  }
+
+  .status-icon {
+    color: #4caf50;
+    margin-right: 8px;
+    font-size: 24px;
+  }
+
+  button[mat-button] {
+    background-color: #1976d2;
+    color: white;
+    padding: 8px 16px;
+  }
+
+  .mat-mdc-dialog-container{
+    padding-left: 10px!important;
+    padding-right: 10px !important;
+  }

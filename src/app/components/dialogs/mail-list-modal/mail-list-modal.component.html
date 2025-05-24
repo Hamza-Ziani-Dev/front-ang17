@@ -1,0 +1,90 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    {{mode}}
+                </h3>
+                <button (click)="closeDialog()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto mb-4">
+                <form [formGroup]="myform" class="space-y-4">
+                    <div>
+                      <label class="font-bold text-blue-900">{{ txt }}</label>
+
+                      <div class="flex mt-2">
+                        <input
+                          type="text"
+                          formControlName="mailto"
+                          class="flex-1 border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                          type="button"
+                          (click)="send()"
+                          [disabled]="!myform.valid"
+                          class="bg-gray-100 border border-gray-300 px-3 py-1 rounded hover:bg-gray-200 disabled:opacity-50"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <div *ngIf="!none" class="bg-red-100 text-red-800 p-2 rounded mt-2 text-sm">
+                        Erreur
+                      </div>
+
+                      <hr *ngIf="mailList.length > 0" class="my-4 border-gray-300" />
+
+                      <div *ngIf="mailList.length > 0" class="mt-2 rounded">
+                        <ul class="flex flex-wrap gap-2">
+                          <li *ngFor="let da of mailList; let i = index">
+                            <span class="inline-flex items-center px-2 py-1 border border-blue-500 rounded-full text-gray-700 text-sm shadow-sm">
+                              <span class="text-orange-500 font-bold mr-1">#</span>{{ da }}
+                              <button
+                                (click)="suppMail(da)"
+                                class="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
+                                style="font-weight: bold;"
+                              >
+                                x
+                              </button>
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </form>
+
+
+
+            </div>
+
+            <!-- Dialog footer -->
+            <div class="bg-card  px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse rounded-md justify-start border-t">
+                <!-- Button -->
+                <button type="button"  (click)="close()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Validate
+                </button>
+
+                <button type="button" (click)="clear()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    Annuler
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

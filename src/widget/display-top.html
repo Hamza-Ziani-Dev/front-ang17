@@ -1,0 +1,23 @@
+<td class="p-2">
+    <div class="relative group w-fit">
+      <span class="block truncate max-w-[150px]">
+        {{ f.natureName | truncate }}
+      </span>
+  
+      <!-- Tooltip -->
+      <div
+        class="absolute bottom-full left-1/2 mb-3 hidden group-hover:block 
+               max-w-xs w-max bg-blue-500 text-white text-sm rounded px-2 py-1 
+               transform -translate-x-1/2 whitespace-normal z-50 shadow-lg
+               transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+        {{ f.natureName }}
+  
+        <!-- Arrow -->
+        <div class="absolute top-full left-1/2 transform -translate-x-1/2">
+          <div class="w-0 h-0 border-l-8 border-l-transparent 
+                      border-r-8 border-r-transparent 
+                      border-t-8 border-t-blue-500"></div>
+        </div>
+      </div>
+    </div>
+  </td>

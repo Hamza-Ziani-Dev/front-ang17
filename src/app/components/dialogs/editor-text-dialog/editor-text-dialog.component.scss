@@ -1,0 +1,73 @@
+.container.editor-body{
+    
+    margin: 0px!Important;
+    padding: 0px!Important;
+}
+
+.editor-pagination-btn
+{
+
+
+    cursor: pointer;
+
+    font-size: medium;
+    margin: auto;
+    margin-left: 9px!important;
+    margin-right: 9px!important;
+    
+
+}
+.editor-pagination-input
+{
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    width: 2.3rem;
+    min-height: 2.3rem;;
+    line-height: 1;
+    font-size: inherit;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #c4c4c4;
+    -moz-appearance: textfield;
+    transition: box-shadow .2s ease-in-out,border .2s ease-in-out;
+    border-radius: 2px;
+}
+.editor-pagination-input:focus
+{
+
+    outline: none;
+    border: 1px solid hsl(208,79%,51%);
+    box-shadow: 0 0 0 3px #bcdefb,2px 2px 3px rgba(0,0,0,0.1) inset;
+}
+.editor-pagination-count{
+
+    margin: auto;
+   
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  
+}
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  ::ng-deep .custom-editor .ql-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 11.99in;
+  }
+  .ql-editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100%;
+  }
+    

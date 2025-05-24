@@ -1,0 +1,41 @@
+//   Style Table
+.documents-table td{
+    text-align: center;
+    padding-top: 3.5px;
+    padding-bottom: 2px;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+::ng-deep .custom-menu-item {
+    min-height: 10px !important;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 14px;
+  }
+
+  .small-icon-button {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+  }
+
+//   ::ng-deep .no-indicator .mat-ink-bar {
+//     display: none !important;
+//   }
+
+  ::ng-deep .mat-mdc-tab-group .mdc-tab-indicator {
+    display: none !important;
+  }
+
+
+  ::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+

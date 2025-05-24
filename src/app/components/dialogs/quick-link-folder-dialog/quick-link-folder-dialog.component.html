@@ -1,0 +1,340 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <!-- Dialog -->
+    <div class="relative w-full max-w-2xl min-h-90 max-h-[90%] overflow-y-auto bg-white border rounded-lg shadow-lg">
+     <!-- Header -->
+    <div class="flex items-center p-2 border-b">
+      <div *ngIf="!isResult; then searchHeaderBlock else resultHeaderBlock"></div>
+
+      <ng-template #searchHeaderBlock>
+        <h5 class="text-blue-900 my-0 py-auto font-bold">Rechercher un courrier</h5>
+        <!-- <a class="ml-auto cursor-pointer" (click)="quickLink.close()">
+          <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+        </a> -->
+        <button (click)="quickLink.close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+            &times;
+        </button>
+      </ng-template>
+
+      <ng-template #resultHeaderBlock>
+        <button class="px-3 py-2 border border-gray-300 rounded mr-2 hover:bg-gray-100" (click)="goBack()">
+          <i class="fas fa-chevron-left"></i> Retour
+        </button>
+        <div class="border-r h-6 mx-3 my-auto"></div>
+        <h5 class="font-bold text-blue-900 mr-auto my-auto ml-2">Résultat de recherche :</h5>
+        <a class="ml-auto cursor-pointer" (click)="quickLink.close()">
+            <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+        </a>
+      </ng-template>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="h-1 bg-blue-500">
+      <div class="h-full bg-yellow-400 w-1/5"></div>
+    </div>
+
+    <!-- Main Form Body -->
+    <div class="p-4" *ngIf="!isResult;">
+      <form [formGroup]="folderFormGroup">
+        <!-- Reference Input -->
+        <div class="mb-2">
+            <label for="ref" class="block text-blue-900 text-sm font-medium mb-1">Référence :</label>
+            <input
+              (keyup)="searchButton($event)"
+              formControlName="reference"
+              type="text"
+              class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+              id="ref"
+              placeholder="Référence">
+          </div>
+
+
+        <!-- Date Input -->
+        <div class="mb-2">
+          <label for="fdate" class="block text-blue-900 text-sm font-medium mb-1">Date :</label>
+          <input
+            formControlName="deDate"
+            (change)="changeDate()"
+            (keyup)="searchButton($event)"
+            type="date"
+            name="date"
+            max="3000-12-31"
+            min="1000-01-01"
+            id="fdate"
+            class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+
+        <!-- Status Select -->
+        <div class="mb-2">
+            <label for="folder-type" class="block text-blue-900 text-sm font-medium mb-1">Statut :</label>
+            <select formControlName="fini" id="folder-type" class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option value="encours" class="block text-blue-900 text-sm font-medium">Encours</option>
+              <option value="abondonne" class="block text-blue-900 text-sm font-medium">Abandonne</option>
+              <option value="fini" class="block text-blue-900 text-sm font-medium">Fini</option>
+            </select>
+          </div>
+
+
+        <!-- Type Courrier Select -->
+        <div class="mb-4">
+            <label for="folder-type" class="block text-blue-900 text-sm font-medium mb-1">Type courrier :</label>
+            <select
+              (change)="changeSuit($event.target.value)"
+              formControlName="type"
+              id="folder-type"
+              type="number"
+              class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <option class="block text-blue-900 text-sm font-medium" *ngFor="let ft of folders" [value]="ft.id">
+                {{ ft.name }}
+              </option>
+            </select>
+          </div>
+
+
+        <!-- Accusé Section -->
+        <ng-container *ngIf="this.acc">
+            <div *ngIf="this.acc.cat == dep" class="mb-2">
+              <div class="flex items-center mb-2">
+                <label class="block text-blue-900 text-sm font-medium mb-1 flex-2">
+                  Accusé de réception :
+                </label>
+                <input (change)="accus($event)" formControlName="accuse" type="checkbox" class="ml-2">
+              </div>
+              <div class="flex items-center">
+                <label class="block text-blue-900 text-sm font-medium mb-1 flex-2 ">
+                  Accusé reçu :
+                </label>
+                <input id="finalise" formControlName="finalise" type="checkbox" class="ml-2">
+              </div>
+            </div>
+          </ng-container>
+
+
+        <!-- Sender/Receiver Section -->
+        <div class="mb-2" [hidden]="acc == null">
+            <ng-container *ngIf="acc != null">
+              <ng-container *ngIf="acc.cat == dep || acc.cat == inter">
+                <label *ngIf="acc.cat == dep" class="block text-blue-900 text-sm font-medium mb-1">
+                  Destinataire(s) * :
+                </label>
+                <select
+                  [disabled]="acc == null"
+                  formControlName="sender"
+                  (change)="changeSender($event.target.value)"
+                  class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                  <option class="block text-blue-900 text-sm font-medium" *ngFor="let dt of dests" [value]="dt.id">
+                    {{ dt.name }}
+                  </option>
+                </select>
+              </ng-container>
+
+              <ng-container *ngIf="acc.cat == arr">
+                <label *ngIf="acc.cat == arr" class="block text-blue-900 text-sm font-medium mb-1">
+                  Emetteur * :
+                </label>
+                <input
+                  class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  formControlName="sender"
+                  list="users"
+                  id="us"
+                  type="text">
+                <datalist id="users">
+                  <optgroup [label]="'Choisissez un destinataire ou Emetteur'">
+                    <option class="block text-sm font-medium mb-1" *ngFor="let dt of dests" [value]="dt.name">
+                      {{ dt.name }}
+                    </option>
+                  </optgroup>
+                </datalist>
+              </ng-container>
+            </ng-container>
+          </div>
+
+
+        <!-- Selected Receivers -->
+        <div class="px-2 mb-1" *ngIf="selectedReceivers.length>0">
+          <div class="mt-2">
+            <ul class="flex flex-wrap">
+                <li class="mr-1" *ngFor="let da of selectedReceivers;">
+                  <span class="inline-flex items-center px-1 rounded-full border border-blue-500 text-blue-600 shadow-md">
+                      <span class="text-orange-500 text-sm font-medium mr-1">#</span>
+                      <span class="block text-sm font-medium">{{da}}</span>
+                    <button
+                      class="ml-1 bg-red-500 text-white rounded-full w-3 h-3 flex items-center justify-center text-xs"
+                      (click)="supp(da)">
+                      x
+                    </button>
+                  </span>
+                </li>
+              </ul>
+          </div>
+        </div>
+
+        <!-- Category Select -->
+        <div class="mb-2">
+            <label class="block text-blue-900 text-sm font-medium mb-1">Catégorie :</label>
+            <select
+              (change)="changeNat($event.target.value)"
+              formControlName="nature"
+              class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              <!-- When `acc` is null, display `natures` options -->
+              <ng-container *ngIf="!acc">
+                <option  class="block text-sm font-medium " *ngFor="let n of natures" [value]="n.id">
+                  {{ n["name"] }}
+                </option>
+              </ng-container>
+
+              <!-- When `acc` is defined, display `dataArray` options -->
+              <ng-container *ngIf="acc">
+                <option class="block text-sm font-medium" *ngFor="let n of dataArray" [value]="n.id">
+                  {{ n["name"] }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
+
+
+        <!-- Object Textarea -->
+        <div class="mb-2">
+          <label class="block text-blue-900 text-sm font-medium mb-1">Objet :</label>
+          <textarea
+            formControlName="objet"
+            class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+          </textarea>
+        </div>
+
+        <!-- Additional Search Options -->
+        <ng-container *ngIf="all">
+          <div class="mb-2">
+            <label class="block text-blue-900 text-sm font-medium mb-1">Annotation :</label>
+            <textarea
+              formControlName="instru"
+              (keyup)="searchButton($event)"
+              class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </textarea>
+          </div>
+
+          <div id="divMotif" class="mb-2">
+            <label class="block text-blue-900 text-sm font-medium mb-1">Motif de retour :</label>
+            <textarea
+              formControlName="motif"
+              (keyup)="searchButton($event)"
+              id="teeets"
+              class="w-full h-8 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </textarea>
+          </div>
+        </ng-container>
+
+        <!-- Show/Hide Search Options -->
+        <div class="flex justify-center mb-2">
+          <a
+          *ngIf="!all"
+            class="text-blue-900 text-sm font-medium mb-1 block"
+            (click)="func()">
+            <i class="fas fa-arrow-alt-circle-down"></i> Plus de recherche
+          </a>
+          <a
+          *ngIf="all"
+            class="text-blue-900 text-sm font-medium mb-1 block"
+            (click)="func()">
+            <i class="fas fa-arrow-alt-circle-up"></i> Moins de recherche
+          </a>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="p-2 border-t" *ngIf="!isResult;">
+      <div class="flex justify-end">
+        <button
+          (click)="onSubmit()"
+          class="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center">
+          <i class="fa fa-search mr-2"></i>Rechercher
+        </button>
+        <button
+          (click)="undo()"
+          class="px-2 py-2 border border-gray-300 rounded ml-3 hover:bg-gray-100 flex items-center">
+          <i class="fas fa-undo mr-2"></i>Annuler
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="p-6" *ngIf="isResult;">
+      <div class="container mx-auto">
+        <ng-container *ngIf="totalCheck == 1">
+          <div *ngIf="isLoading" class="flex flex-wrap justify-center gap-4 mt-2">
+            <div *ngFor="let f of foldersResut | paginate: {
+              itemsPerPage: 18,
+              currentPage: page+1,
+              totalItems: totalEl,
+              id:'id1'
+            }">
+              <app-folder
+                [mode]="operation"
+                [folder]="f"
+                (click)='removeTo(f)'
+                [isCheked]="checkIfChecked(f)">
+              </app-folder>
+            </div>
+
+            <!-- Aucun groupe documents -->
+            <div *ngIf="resultTotal==0" class="col-span-6">
+              <div class="text-center my-12">
+                <i class="fa fa-search text-gray-400 text-5xl mb-4"></i>
+                <h3 class="text-gray-400 text-xl">Aucun groupe documents</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex justify-center mt-6" *ngIf="totalEl>12 && totalCheck==1">
+            <pagination-controls
+              directionLinks="true"
+              id="id1"
+              autoHide="true"
+              responsive="true"
+              [nextLabel]="next"
+              [previousLabel]="prev"
+              screenReaderPaginationLabel="Pagination"
+              screenReaderPageLabel="page"
+              screenReaderCurrentLabel="You're on page"
+              (pageChange)="goPage($event-1)"
+              maxSize="14"
+              class="pagination-controls">
+            </pagination-controls>
+          </div>
+        </ng-container>
+
+        <!-- Loading State -->
+        <div class="text-center my-12" *ngIf="totalCheck == -1">
+          <!-- <div class="lds-dual-ring mx-auto mb-4"></div> -->
+          <div class="flex justify-center items-center">
+            <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+          </div>
+           <h3 class="text-gray-400 text-xl">Chargement en cours.</h3>
+        </div>
+
+        <div class="hidden">
+          <h3 class="text-blue-400 font-bold flex items-center">
+            <i class="fas fa-info-circle mr-2"></i>{{titre}}
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Footer -->
+    <div class="p-2 border-t" *ngIf="isResult;">
+      <div class="flex justify-end">
+        <button
+          [disabled]="this.selectedFolders.length < 0"
+          (click)="validate()"
+          class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center disabled:opacity-50">
+          <i class="fa fa-check mr-2"></i>{{ 'Valider'}}
+        </button>
+      </div>
+    </div>
+    </div>
+
+</div>
+

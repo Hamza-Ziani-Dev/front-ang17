@@ -1,0 +1,61 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div class="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 bg-gray-0  ">
+                <h3 class="text-2xl font-semibold text-gray-800">
+                    {{translate('scanner.visualiser')}}
+                </h3>
+                <button (click)="onClose()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-red-600 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+
+            </div>
+
+
+
+             <!-- Line separator -->
+             <div class="w-full h-0.5" style="background: linear-gradient(to right, #ffc107, #007bff);">
+            </div>
+            <!-- Dialog footer -->
+            <div class="flex items-center justify-center p-2  border-solid border-gray-300 rounded-b">
+                <!-- Anuler Button with Icon -->
+
+                <button mat-flat-button type="button" mat-dialog-close color="warn"
+                    class="px-6 ml-3 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-mdc-button-base"
+                    mat-ripple-loader-class-name="mat-mdc-button-ripple">
+                    <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+                    <span class="mdc-button__label"> {{translate('common.annuler')}}</span>
+                    <span class="mat-mdc-focus-indicator"></span>
+                    <span class="mat-mdc-button-touch-target"></span>
+                    <span class="mat-ripple mat-mdc-button-ripple"></span>
+                    <mat-icon svgIcon="heroicons_outline:x-mark" class="mr-2 text-white"></mat-icon>
+                </button>
+
+
+                <!-- Modifier Button with Icon -->
+
+                <button mat-flat-button=""
+                    class="px-6 ml-3 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+                    mat-ripple-loader-class-name="mat-mdc-button-ripple" ng-reflect-color="primary"><span
+                        class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span><span
+                        class="mdc-button__label"> {{translate('common.modifier')}} </span><span class="mat-mdc-focus-indicator"></span><span
+                        class="mat-mdc-button-touch-target"></span><span
+                        class="mat-ripple mat-mdc-button-ripple"></span>
+                    <mat-icon svgIcon="heroicons_solid:check-badge" class="mr-2"></mat-icon>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="mx-auto bg-white shadow-lg rounded-sm overflow-hidden max-w-full md:max-w-[90%]"  *transloco="let translate">
+    <!-- Form content -->
+    <div class="px-0 py-4 md:p-8">
+        <!-- Table -->
+         <div *ngIf="totalEl >= 1 && totalCheck == 1" class="overflow-x-auto">
+  <table class="documents-table w-full border-2 border-blue-400 rounded-md shadow-lg text-left text-md whitespace-nowrap min-w-[600px]">
+    <thead style="background-color: var(--header-color); color: var(--white-color)">
+      <tr>
+        <th class="p-0 text-center hidden md:table-cell">{{ translate('preferences.utilisateur') }}</th>
+        <th class="p-0 text-center">{{ translate('consoleadmin.suppléant') }}</th>
+        <th class="p-0 text-center">{{ translate('consoleadmin.datedébut') }}</th>
+        <th class="p-0 text-center">{{ translate('consoleadmin.datefin') }}</th>
+        <th class="p-0 text-center">{{ translate('common.actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of profilsAbs | paginate : { itemsPerPage: 12, currentPage: page+1, totalItems: totalEl }; let i = index"
+          [ngClass]="{'bg-zinc-100': i % 2 === 0,'bg-white': i % 2 !== 0,'border-t': true,'hover:bg-yellow-100': true}" class="border-b border-gray-300">
+        <td class="p-0 text-center hidden md:table-cell">{{ p['userName'] }}</td>
+        <td class="p-0 text-center">{{ p['supName'] }}</td>
+        <td class="p-0 text-center ">{{ p['dateDebut'] | date: 'dd-MM-yyyy' }}</td>
+        <td class="p-0 text-center">{{ p['dateFin'] | date: 'dd-MM-yyyy' }}</td>
+        <td class="p-0 text-center">
+          <div class="relative inline-block text-left">
+            <button (click)="toggleDropdown(p.id)"
+                    class="flex items-center justify-center text-blue-600 focus:outline-none"
+                    [attr.aria-expanded]="dropdownOpen[p.id]">
+              <i class="fas fa-caret-down"></i>
+            </button>
+            <div *ngIf="dropdownOpen[p.id]"
+                 class="absolute right-0 w-20 bg-white border border-gray-200 rounded shadow-md z-50">
+              <a class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                 (click)="editProfilAbs(p)">
+                <i class="fas fa-edit"></i> {{ translate('common.modifier') }}
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+        <!-- Pagination -->
+        <div class="fixed-table-pagination d-flex" *ngIf="totalEl>12  && totalCheck==1">
+            <div class="mx-auto pagination">
+
+                <pagination-controls
+                [previousLabel]="config.c['documentList']['prev']"
+                [nextLabel]="config.c['documentList']['next']"
+                directionLinks="true"
+                autoHide="true"
+                responsive="true"
+                previousLabel="Précédant"
+                nextLabel="Suivant"
+                screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page"
+
+                           (pageChange)="goPage($event-1)"
+
+                           maxSize="14"
+
+
+                           ></pagination-controls>
+
+            </div>
+
+        </div>
+
+        <!-- Loading  -->
+       <div *ngIf="totalCheck==-1"  class="text-center my-8">
+            <div class="flex justify-center items-center">
+                <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                </div>
+            <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+        </div>
+
+        <!-- No Data -->
+        <ng-container *ngIf="totalEl==0  && totalCheck==1">
+                                        <div
+                                            class="flex flex-auto flex-col items-center justify-center">
+                                            <i class="fa fa-folder-open icon-size-16 text-gray-400" aria-hidden="true"></i>
+                                            <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                                                {{ translate("courrierList.aucun") }}
+                                            </div>
+                                        </div>
+        </ng-container>
+    </div>
+</div>

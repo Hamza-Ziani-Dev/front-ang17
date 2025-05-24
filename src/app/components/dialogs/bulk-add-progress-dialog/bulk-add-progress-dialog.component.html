@@ -1,0 +1,70 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
+        <!-- Header -->
+        <div class="flex items-center px-2 py-1 bg-gray-100 border-b border-gray-300 rounded-t-lg">
+            <h5 class="text-lg font-bold text-blue-900">
+                {{translate('bulkprog.title')}}
+                <span class="text-sm text-gray-500">({{data.lotName}})</span>
+            </h5>
+            <button (click)="this.dialogRef.close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+
+        <!-- Progress bar separator -->
+
+        <div class="h-1 bg-blue-500">
+            <div class="bg-yellow-400 h-1" [style.width]="(data.uploaded.length / data.count) * 100 + '%'"></div>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4">
+            <div class="space-y-4">
+                <!-- Progress Messages -->
+                <p class="text-center text-blue-600" *ngIf="data.uploaded.length != data.count">
+                    {{translate('bulkprog.waitingText')}}
+                </p>
+                <p class="text-center text-blue-600" *ngIf="data.uploaded.length == data.count">
+                    {{translate('bulkprog.doneText')}}
+                </p>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-full flex items-center justify-center text-white text-sm font-semibold progress-bar"
+                         [style.width]="(data.uploaded.length / data.count) * 100 + '%'">
+                      <span class="px-2 animate-pulse">{{ data.uploaded.length }} sur {{ data.count }}</span>
+                    </div>
+                  </div>
+
+
+
+
+
+                <!-- Success Alert -->
+                <div class="bg-green-50 border border-green-200 rounded-md p-2">
+                    <p class="text-green-700">{{data.uploaded.length  + "/" + data.count + " " + "successAdded"}}</p>
+                </div>
+
+                <!-- Error Alert -->
+                <div *ngIf="data.notAdded > 0" class="bg-red-50 border border-red-200 rounded-md p-2">
+                    <p class="text-red-700">{{data.notAdded + "/" + data.count + " " + config.c.bulkprog.errAdded}}</p>
+                    <ul class="list-disc ml-4 mt-2 text-red-600">
+                        <li *ngFor="let err of notAddedElems">
+                            {{err['fileName'] + " : " + "existRef"}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end p-4 border-t border-gray-300 rounded-b-lg">
+            <button class="btn btn-outline mr-2 rounded-md  px-2 py-1 text-gray-600 border-gray-400 hover:bg-gray-200"
+                (click)="onClose()" [disabled]="data.count < data.uploaded.length">
+                <i class="fas fa-check-circle"></i> {{translate('common.annuler')}}
+            </button>
+        </div>
+
+    </div>
+</div>

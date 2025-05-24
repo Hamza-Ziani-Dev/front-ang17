@@ -1,0 +1,90 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" *transloco="let translate">
+    <div class="bg-card shadow-lg rounded-lg w-full sm:w-[90%]">
+        <div class="p-1 relative flex flex-col w-full bg-card border-0 rounded-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 bg-gray-0">
+                <h3 class="text-xl font-bold">
+                    {{translate('ajoutercourrier.detailsprocessus')}} : {{process['name']}}
+                </h3>
+                <button (click)="closeDialog()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+        </div>
+
+        <div class="relative flex-auto">
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+
+            <!-- Stepper -->
+            <div class="flex justify-center w-full">
+                <ul
+                    class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-between items-center w-full sm:w-[90%] gap-y-4 sm:space-x-4 p-4">
+                    <!-- Départ -->
+                    <li class="flex-1 group flex gap-x-2 md:block">
+                        <div
+                            class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
+                            <div
+                                class="w-8 h-8 flex items-center justify-center bg-white rounded-full border-2 border-yellow-500">
+                                <i class="fa-solid fa-location-dot gold-color"></i>
+                            </div>
+                            <div
+                                class="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-gray-200 group-last:hidden">
+                            </div>
+                        </div>
+                        <div class="grow md:grow-0 md:mt-3 pb-5">
+                            <span
+                                class="block text-sm font-bold text-gray-800">{{translate('ajoutercourrier.depart')}}</span>
+                        </div>
+                    </li>
+
+                    <!-- Etapes -->
+                    <ng-container *ngFor="let etp of process; let i = index">
+                        <li class="flex-1 group flex gap-x-2 md:block">
+                            <div
+                                class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
+                                <button (click)="openDetailsStepsDialog(etp)">
+                                    <div
+                                        class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                        {{etp['numero']}}</div>
+                                </button>
+                                <div
+                                    class="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-gray-200 group-last:hidden">
+                                </div>
+                            </div>
+                            <div class="grow md:grow-0 md:mt-3 pb-5">
+                                <span class="block text-sm font-bold text-gray-800">{{etp.name}}</span>
+                            </div>
+                        </li>
+                    </ng-container>
+
+                    <!-- Fin -->
+                    <li class="flex-1 group flex gap-x-2 md:block">
+                        <div
+                            class="min-w-7 min-h-7 flex flex-col items-center md:w-full md:inline-flex md:flex-wrap md:flex-row text-xs align-middle">
+                            <div
+                                class="w-8 h-8 flex items-center justify-center bg-card rounded-full border-2 border-black">
+                                <i class="fa-solid fa-flag-checkered"></i>
+                            </div>
+                        </div>
+                        <div class="grow md:grow-0 md:mt-3 pb-5">
+                            <span
+                                class="block text-sm font-bold text-gray-800">{{translate('ajoutercourrier.fin')}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex justify-end border-t border-gray-200 p-2">
+            <button (click)="closeDialog()"
+                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fa-solid fa-rotate-left mr-2"></i>
+                {{translate('common.close')}}
+            </button>
+        </div>
+    </div>
+</div>

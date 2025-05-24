@@ -1,0 +1,106 @@
+<body class="bg-gray-100 flex flex-col items-center justify-center px-4 sm:px-6" *transloco="let translate">
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="flex justify-center mb-2">
+            <img src="assets/logo/documania-no-bg1.png"
+                 style="height: 12rem"
+                 class="w-auto"
+                 alt="VEVIOSYS">
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="login()"
+              class="bg-white rounded-3xl shadow-xl border-t-2 border-blue-500 p-8">
+
+            <!-- Alert Messages -->
+            <div class="mb-4">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded" *ngIf="auth==-1">
+                    {{ translate('login.incorrectpassword') }}
+                </div>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded" *ngIf="auth==-2">
+                    {{ translate('login.error') }}
+                </div>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded" *ngIf="auth==-3">
+                    {{ translate('login.invalidcredentials') }}
+                </div>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded" *ngIf="auth==-4">
+                    {{ translate('login.secondaryaccountrequired') }}
+                </div>
+            </div>
+
+            <!-- Username Field -->
+            <div class="mb-3">
+                <label class="block text-gray-700 font-semibold mb-2" for="username">
+                    {{ translate('login.username') }}
+                </label>
+                <input
+                    class="w-full px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text"
+                    id="username"
+                    formControlName="username">
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+                <label class="block text-gray-700 font-semibold mb-2" for="password">
+                    {{ translate('login.password') }}
+                </label>
+                <div class="relative">
+                    <input
+                        class="w-full px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        [type]="toggle ? 'text' : 'password'"
+                        id="password"
+                        formControlName="password">
+                    <button
+                        type="button"
+                        (click)="toggleInput()"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                        <i [class]="toggle ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forgot Password Link -->
+            <div class="mb-4 text-right" *ngIf="hidePassOublie">
+                <a class="text-blue-500 hover:text-blue-600 font-bold" routerLink="/auth/fpassword">
+                    {{ translate('login.forgotpassword') }}
+                </a>
+            </div>
+
+            <!-- Secondary Checkbox -->
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input
+                        type="checkbox"
+                        formControlName="secondary"
+                        class="rounded border-gray-300 text-blue-500 focus:ring-blue-500">
+                    <span class="ml-2 font-semibold text-gray-700">
+                        {{ translate('login.connecsecondaryaccount') }}
+                    </span>
+                </label>
+            </div>
+
+            <!-- Login Button -->
+            <button
+                type="submit"
+                class="w-full bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center transition-all">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                {{ translate('login.login') }}
+                <div class="ml-3" *ngIf="isLoading">
+                    <div class="w-5 h-5 border-t-2 border-white border-solid rounded-full animate-spin"></div>
+                </div>
+            </button>
+
+            <!-- Espace Button -->
+            <div *ngIf="espaceEmetteurShow" class="mt-2">
+                <button
+                    type="button"
+                    (click)="goClient()"
+                    class="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-all">
+                    <i class="fas fa-users mr-2"></i>
+                    {{ translate('login.espace') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</body>

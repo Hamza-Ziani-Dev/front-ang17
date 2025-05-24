@@ -1,0 +1,66 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+   <div class="relative mx-auto my-6 w-full sm:w-[40%]">
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+
+                <div class="flex items-center rounded-md justify-between px-2 py-1 bg-gray-50">
+                    <h5 class="text-lg font-bold text-blue-900">{{title}}</h5>
+                    <button (click)="close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div  class="relative p-2 max-h-[90vh] overflow-y-auto" >
+                <div class="w-full" *ngIf="mode != 'replace'">
+                    <!-- Multiple children -->
+                    <div class="flex flex-wrap gap-4" *ngIf="folderChilds.length > 1">
+                      <div class="w-full sm:w-auto" *ngFor="let f of folderChilds; let i = index">
+                        <app-folder (folderClick)="removeFromList($event)" [folder]="f" [mode]="'clink'"></app-folder>
+                      </div>
+                    </div>
+
+                    <!-- Single child -->
+                    <div class="flex justify-center" *ngIf="folderChilds.length == 1">
+                      <div *ngFor="let f of folderChilds; let i = index">
+                        <app-folder [folder]="f" [mode]="'clink'"></app-folder>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Replace Mode -->
+                  <ng-container *ngIf="mode == 'replace'">
+                    <div class="flex items-center justify-center gap-4 my-4">
+                      <app-folder [folder]="folderChilds" [mode]="'clink'"></app-folder>
+                      <i class="fas fa-arrow-right text-3xl text-gray-400"></i>
+                      <app-folder [folder]="folderReceive" [mode]="'clink'"></app-folder>
+                    </div>
+
+                    <div class="mb-0 flex items-center">
+                      <h3 class="text-xl font-bold text-blue-400 ml-6 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i> {{ titreDoc }}
+                      </h3>
+                    </div>
+                  </ng-container>
+
+
+            <!-- Dialog footer -->
+            <div class="bg-card mt-2 p-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-start border-t">
+                <button type="button" (click)="positiveResp()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 mr-2">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    {{translate('common.validate')}}
+                </button>
+
+                <button type="button" (click)="negativeResp()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{translate('common.annuler')}}
+                </button>
+            </div>
+           </div>
+    </div>
+</div>

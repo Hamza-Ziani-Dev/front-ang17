@@ -1,0 +1,236 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative mx-auto my-6" [ngClass]="isResult ? 'w-[65%]' : 'w-[30%]'">
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <div *ngIf="!isResult; then searchHeaderBlock else resultHeaderBlock"></div>
+
+                <ng-template #searchHeaderBlock>
+                <div class="flex items-center rounded-md justify-between px-2 py-1 bg-gray-50">
+                    <h5 class="text-lg font-bold text-blue-900">{{translate('common.rechacherflux')}}</h5>
+                    <button (click)="closeDialog()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                </ng-template>
+
+                <ng-template #resultHeaderBlock>
+                <div class="flex items-center rounded-md justify-between px-2 py-1 bg-gray-50">
+                    <h5 class="text-lg font-bold text-blue-900">{{translate('common.resultrechrche')}}</h5>
+                    <button (click)="closeDialog()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                </ng-template>
+
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div  class="relative p-2 max-h-[90vh] overflow-y-auto" *ngIf="!isResult && totalCheck ==1 ">
+                <form [formGroup]="folderFormGroup" class="space-y-4">
+                    <div>
+                      <label for="ref" class="block font-semibold text-blue-900">{{translate('common.reference')}}</label>
+                      <input (keyup)="searchButton($event)" formControlName="reference" type="text" id="ref"
+                        placeholder="Référence"
+                        class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300" />
+                    </div>
+
+                    <div>
+                      <label for="fdate" class="block font-semibold text-blue-900">{{translate('common.date')}}</label>
+                      <input formControlName="deDate" (change)="changeDate()" type="date" id="fdate"
+                        class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm" />
+
+                      <label for="fdate" class="block mt-4 font-semibold text-blue-900">{{translate('common.au')}}</label>
+                      <input formControlName="toDate" type="date" id="fdate"
+                        class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm" />
+                    </div>
+
+                    <div>
+                      <label for="folder-type" class="block font-semibold text-blue-900">{{translate('common.status')}}</label>
+                      <select [clearable]="false" formControlName="fini" id="folder-type" class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm">
+                        <option value="fini">{{translate('common.finalise')}}</option>
+                        <option value="abondonne">{{translate('common.encours')}}</option>
+                        <option value="cloturer">{{translate('common.clot')}}</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label for="folder-type" class="block font-semibold text-blue-900">{{translate('editSearch.type')}}</label>
+                      <select (change)="changeSuit($event)" formControlName="type" class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm">
+                        <option disabled>{{translate('editSearch.typeSelect')}}</option>
+                        <option *ngFor="let ft of folders" [value]="ft.id">{{ ft.name }}</option>
+                      </select>
+                    </div>
+
+                    <ng-container *ngIf="acc">
+                      <div *ngIf="acc.cat == dep" class="space-y-2">
+                        <label class="block font-semibold text-blue-900">
+                            {{translate('editSearch.acc')}}
+                          <input type="checkbox" formControlName="accuse" class="ml-2" />
+                        </label>
+                        <label class="block font-semibold text-blue-900">
+                            {{translate('common.aucunreception')}}
+                          <input type="checkbox" formControlName="finalise" id="finalise" class="ml-2" />
+                        </label>
+                      </div>
+                    </ng-container>
+
+                    <div *ngIf="acc != null">
+                      <ng-container *ngIf="acc.cat == dep || acc.cat == inter">
+                        <label class="block font-semibold text-blue-900" *ngIf="acc.cat == dep">
+                            {{translate('common.clients')}}
+                        </label>
+                        <select (change)="changeSender($event)" formControlName="sender" class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm">
+                          <option disabled>{{translate('common.choisirtype')}}</option>
+                          <option *ngFor="let dt of dests" [value]="dt.id">{{ dt.name }}</option>
+                        </select>
+                      </ng-container>
+
+                      <ng-container *ngIf="acc.cat == arr">
+                        <label class="block font-semibold text-blue-900">
+                            {{translate('common.client')}}
+                        </label>
+                        <input formControlName="sender" list="users" id="us" type="text"
+                          class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm" />
+                        <datalist id="users">
+                          <optgroup [label]="config.c['index']['choisedest']" class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm">
+                            <option *ngFor="let dt of dests" [value]="dt.name">{{ dt.name }}</option>
+                          </optgroup>
+                        </datalist>
+                      </ng-container>
+                    </div>
+
+                    <div *ngIf="selectedReceivers.length > 0" class="mt-4">
+                      <ul class="flex flex-wrap gap-2">
+                        <li *ngFor="let da of selectedReceivers;">
+                          <span class="inline-flex items-center bg-white border border-blue-400 text-sm rounded-full px-2 py-1 shadow">
+                            <span class="text-orange-500 font-bold">#</span> {{ da }}
+                            <button (click)="supp(da)" class="ml-2 text-red-600 focus:outline-none">x</button>
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <label for="fnum" class="block font-semibold text-blue-900">{{translate('fluxcourriers.flux')}}</label>
+                      <select (change)="changeNat($event)" formControlName="nature" class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm">
+                        <ng-container *ngIf="!acc">
+                          <option *ngFor="let n of natures" [value]="n.id">{{ n["name"] }}</option>
+                        </ng-container>
+                        <ng-container *ngIf="acc">
+                          <option *ngFor="let n of dataArray" [value]="n.id">{{ n["name"] }}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="block font-semibold text-blue-900">{{translate('common.objet')}}</label>
+                      <textarea formControlName="objet"
+                        class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm"></textarea>
+                    </div>
+
+                    <ng-container *ngIf="all === true">
+                      <div>
+                        <label class="block font-semibold text-blue-900">{{translate('validateStep.anno')}}</label>
+                        <textarea formControlName="instru" (keyup)="searchButton($event)"
+                          class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm"></textarea>
+                      </div>
+
+                      <div>
+                        <label class="block font-semibold text-blue-900">{{translate('validateStep.motif')}}</label>
+                        <textarea formControlName="motif" id="teeets" (keyup)="searchButton($event)"
+                          class="w-full mt-1 px-3 py-2 border rounded-md shadow-sm"></textarea>
+                      </div>
+                    </ng-container>
+
+                    <div class="text-start mt-4">
+                      <a *ngIf="!all" class="text-blue-600 underline cursor-pointer" (click)="func()">
+                        <i class="fas fa-arrow-alt-circle-down mr-1"></i>{{translate('common.plusrecherche')}}
+                      </a>
+                      <a *ngIf="all" class="text-blue-600 underline cursor-pointer" (click)="func()">
+                        <i class="fas fa-arrow-alt-circle-up mr-1"></i>{{translate('common.moinsrecherche')}}
+                      </a>
+                    </div>
+                  </form>
+
+            <!-- Dialog footer -->
+            <div class="bg-card gap-2 px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-start border-t p-1">
+                <!-- Button -->
+                <button type="button" (click)="onSubmit()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="fa fa-search mr-2"aria-hidden="true"></i>
+                    {{translate('common.modifier')}}
+                </button>
+
+                <button type="button" (click)="undo()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{translate('common.annuler')}}
+                </button>
+
+
+            </div>
+
+
+
+           </div>
+           <div class="p-3" *ngIf="isResult && totalCheck == 1">
+            <div class="w-full">
+              <div *ngIf="isLoading" class="mb-4 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                <div *ngFor="let f of foldersResut | paginate : { itemsPerPage: 12, currentPage: page+1, totalItems: totalEl }">
+                  <app-folder [isFav]="isFavorite(f)" [mode]="operation" [folder]="f" (click)="removeTo(f)" [isCheked]="checkIfChecked(f)">
+                  </app-folder>
+                </div>
+
+                <!-- No Data -->
+                <div *ngIf="resultTotal == 0" class="w-full">
+                  <div class="my-10">
+                    <div class="flex my-3 justify-center">
+                      <h1>
+                        <i class="fa fa-search text-gray-400" aria-hidden="true"></i>
+                      </h1>
+                    </div>
+                    <div class="flex my-3 justify-center">
+                      <h3 class="text-gray-400">
+                      {{translate('common.aucun')}}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div class="flex justify-center mt-1" *ngIf="totalEl > 12 && totalCheck == 1">
+                <pagination-controls
+                  directionLinks="true"
+                  autoHide="true"
+                  responsive="true"
+                  [nextLabel]="translate('common.precedent')"
+                  [previousLabel]="translate('common.suivant')"
+                  screenReaderPaginationLabel="Pagination"
+                  screenReaderPageLabel="page"
+                  screenReaderCurrentLabel="You're on page"
+                  (pageChange)="goPage($event - 1)"
+                  maxSize="14"
+                ></pagination-controls>
+              </div>
+
+              <div class="flex mb-0 mt-4">
+                <h3 class="font-bold text-blue-400 ml-6 flex items-center">
+                  <i class="fas fa-info-circle mr-2 mb-1"></i> {{ titre }}
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading -->
+          <div *ngIf="totalCheck == -1" class="text-center my-8">
+            <div class="flex justify-center items-center">
+                <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+              </div>
+          <h3 class="text-muted mt-4">{{translate('courrierList.load')}}</h3>
+        </div>
+
+    </div>
+</div>

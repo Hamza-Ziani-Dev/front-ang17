@@ -1,0 +1,124 @@
+<div *ngIf="!result" class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" *transloco="let translate">
+        <!-- Drawer -->
+        <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()"
+                        class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+
+        <mat-drawer-content class="flex flex-col bg-gray-50 dark:bg-transparent">
+            <div class="flex flex-col flex-auto">
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                        <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+
+                        </button>
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            <h5 class="font-bold text-blue-900">{{translate('courriersfrequentes.courriersfrequentes')}}
+                            </h5>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- End Header -->
+
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Recherches frequentes -->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab>
+                        <ng-template matTabContent>
+                            <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                                <div class="flex justify-center items-center">
+
+                                    <ng-container *ngIf="totalCheck == 1">
+                                        <div class="w-full px-2" *ngIf="countOfSearches > 0">
+                                            <div class="flex flex-wrap -mx-2">
+                                                <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 px-1 mb-2"
+                                                    *ngFor="let s of this.searchesList | paginate: {itemsPerPage: 6,currentPage: page + 1,totalItems: totalEl}">
+                                                    <app-search-comp (refresh)="refresh($event)" [search]="s"
+                                                        (goResult)="getResult($event)"></app-search-comp>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-center" *ngIf="totalEl > 6">
+                                            <pagination-controls class="my-4" directionLinks="true" autoHide="true"
+                                                responsive="true" [previousLabel]="translate('common.precedent')"
+                                                [nextLabel]="translate('common.suivant')"
+                                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                                screenReaderCurrentLabel="You're on page"
+                                                (pageChange)="goPage($event - 1)" maxSize="14"></pagination-controls>
+                                        </div>
+                                       <div *ngIf="countOfSearches == 0" class="w-full">
+                                        <div class="flex justify-center my-4">
+                                            <h1><i class="fas fa-fire icon-size-16 text-gray-400" aria-hidden="true"></i></h1>
+                                        </div>
+                                        <div class="flex justify-center my-4">
+                                            <h3 class="text-gray-400">{{ translate('common.aucuncourrier') }}</h3>
+                                        </div>
+                                        </div>
+
+
+                                    </ng-container>
+
+
+
+                                    <!-- Loading -->
+                                    <div *ngIf="totalCheck == -1" class="text-center my-8">
+                                        <div class="flex justify-center items-center">
+                                            <div
+                                                class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600">
+                                            </div>
+                                        </div>
+                                        <h3 class="text-muted mt-4">{{translate('courrierList.load')}}</h3>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+
+<app-search-result *ngIf="result" [searchId]="currentSearchId" [searchName]="currentSearchName" [search]="search"
+    (back)="goBack()">
+
+</app-search-result>

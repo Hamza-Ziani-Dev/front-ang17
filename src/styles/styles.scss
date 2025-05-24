@@ -1,0 +1,218 @@
+:root {
+    --primary-color: #007bff;
+    --header-color:#66b0fd;
+    --white-color: #ffffff;
+    --red-color : #fe3434;
+    --yellow-color : #f8c146;
+  }
+
+
+  @import '~@fortawesome/fontawesome-free/css/all.css';
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+body{
+    font-family: 'Nunito', sans-serif;
+    font-size: 90%;
+}
+
+/* default: no padding (mobile) */
+.mat-mdc-tab-group .mat-mdc-tab-body-content {
+    padding: 0px !important;
+  }
+  
+  /* apply padding for screens ≥768px */
+  @media (min-width: 768px) {
+    .mat-mdc-tab-group .mat-mdc-tab-body-content {
+      padding: 24px !important;
+    }
+  }
+
+// @media (max-width: 767px) {
+//     .mat-mdc-tab-group .mat-mdc-tab-body-content {
+//         padding: 10px !important;
+//     }
+//   }
+
+button {
+    font-family: sans-serif !important;
+  }
+
+  .ql-toolbar.ql-snow .ql-formats {
+    margin-right: 3px;
+  }
+
+  /* quill (text editor) */
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.snow.css";
+  
+
+/* quill style */
+.editor-container .ql-editor {
+    width: 8.26in;
+    min-height: 11.96in;
+    height: 11.96in;
+    padding-top: 0.51in;
+    padding-bottom: 0.51in;
+    padding-left: 0.51in;
+    padding-right: 0.51in;
+    margin: 1rem;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 50%);
+    background-color: white;
+    /* font-size: 0.14947in; */
+    overflow-y: hidden;
+    font-weight: 500;
+  }
+  
+  .editor-container .ql-container.ql-snow {
+    border: none;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(248, 249, 250);
+  }
+  
+  .editor-container .ql-toolbar.ql-snow {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #F3F3F3;
+    border: none;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  }
+  
+  .ql-editor.ql-blank::before {
+    color: rgba(0,0,0,0.6);
+    content: attr(data-placeholder);
+    font-style: italic;
+    left: 15px;
+    pointer-events: none;
+    position: initial;
+    right: 15px;
+  }
+  .editor-container .ql-container.ql-snow .header-container{
+  
+    position: absolute;
+    top: 0;
+    background: transparent;
+    margin: 1rem;
+    width: 8.26in;
+    min-height: 0.51in;
+  
+  
+  }
+  .editor-container .ql-container.ql-snow .header-container #headerActions {
+  
+    position: absolute;
+    bottom: 0;
+    height: .05in;
+    width: 100%;
+    background: rgb(248, 249, 250);
+    border: rgb(218, 220, 224) 1px solid;
+  
+  
+  }
+  .editor-container .ql-container.ql-snow .header-container #headerActions #headerActionBtn {
+  
+    position: absolute;
+    right: 20px;
+    height: .3in;
+    width: .3in;
+    bottom: -13px;
+  }
+  .editor-container .ql-container.ql-snow .footer-container #footerActions {
+  
+    position: absolute;
+    top: 0;
+    height: .05in;
+    width: 100%;
+    background: rgb(248, 249, 250);
+    border: rgb(218, 220, 224) 1px solid;
+  
+  
+  }
+  .editor-container .ql-container.ql-snow .footer-container #footerActions #footerActionBtn {
+  
+    position: absolute;
+    right: 20px;
+    height: .3in;
+    width: .3in;
+    top: -13px;
+  }
+  .editor-container .ql-container.ql-snow .footer-container{
+  
+    position: absolute;
+    bottom: 0;
+    background: transparent;
+    margin: 1rem;
+    width: 8.26in;
+    min-height: 0.51in;
+  
+  }
+  .editor-container .header-label {
+    bottom: -10px;
+    position: absolute;
+    left: 10px;
+  }
+  
+  .editor-container .footer-label {
+  top: 4px;
+  position: absolute;
+  left: 10px;
+  }
+  
+  @keyframes listen_pulse {
+  0% {
+      fill: #2980B9
+  }
+  50% {
+      fill: red
+  }
+  100% {
+      fill: #2980B9
+  }
+  }
+  
+  .listenig{
+  -webkit-transition: fill 400ms ease;
+  -webkit-animation: listen_pulse 2s ease-out infinite;
+  }
+  
+  @page {
+    margin: 1in;
+  }
+  
+  @media print {
+    body {
+        background: none;
+    }
+  
+    .editor-container .ql-editor {
+      width: 6.5in;
+      height: 9in;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+      align-self: flex-start;
+    }
+  
+    .editor-container .ql-toolbar.ql-snow {
+      display: none;
+    }}
+  
+  
+  
+  
+    .header-separator
+  {
+  
+    background-color: #dadbdd;
+  }
+  .sidebar-divider{
+  
+    background-color: #007bfc;
+  
+  }
+  
+  .console-admin-header{
+    background-color: #1475A9!important;
+  }

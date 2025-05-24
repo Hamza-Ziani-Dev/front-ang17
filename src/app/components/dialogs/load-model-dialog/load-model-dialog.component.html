@@ -1,0 +1,104 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <!-- Dialog -->
+    <div class="relative w-full max-w-2xl min-h-90 max-h-[90%] overflow-y-auto bg-white border rounded-lg shadow-lg">
+        <!-- Header -->
+        <div class="flex items-center p-2 border-b">
+
+            <h5 class="text-lg font-semibold text-blue-800">Liste des modèles</h5>
+      <button (click)="this.loadClose.close()" class="ml-auto text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+        &times;
+    </button>
+
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="h-1 bg-blue-500">
+            <div class="h-full bg-yellow-400 w-1/5"></div>
+        </div>
+
+        <!-- Main Form Body -->
+        <div class="p-4">
+            <div class="container mx-auto">
+              <div class="row">
+                <div *ngIf="initCount >= 1" class="mb-4">
+                  <div class="relative">
+                    <input type="text"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           placeholder="Rechercher..."
+                           [(ngModel)]="filterIndex"
+                           (input)="filter()"
+                           aria-label="Username">
+                    <span class="absolute left-0 top-0 p-2 text-gray-500">
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <ng-container *ngIf="totalElements && totalElements > 0">
+                  <ng-container *ngFor="let item of templates | paginate : { itemsPerPage: size, currentPage: page + 1, totalItems: totalElements }">
+                    <div class="card my-2 w-full">
+                      <div class="card-body">
+                        <h5 class="card-title text-blue-800 font-semibold">{{ item.name }}</h5>
+                        <p class="text-gray-700">{{ item.desc }}</p>
+                        <div class="flex justify-end mt-2">
+                          <button (click)="openModel(item)" class="btn btn-sm bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded-md">
+                            <i class="fas fa-file mr-2"></i>Ouvrir
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+
+                <div *ngIf="totalElements && totalElements > 0" class="flex justify-center w-full mt-4">
+                  <pagination-controls directionLinks="true" autoHide="true" responsive="true" previousLabel="Précédant" nextLabel="Suivant"
+                                       screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"
+                                       (pageChange)="goPage($event - 1)" maxSize="8">
+                  </pagination-controls>
+                </div>
+
+                <div *ngIf="totalElements == 0" class="text-center my-8">
+                    <h1 class="text-gray-500">
+                      <i class="fas fa-file fa-5x" aria-hidden="true"></i>
+                    </h1>
+                    <h3 class="text-muted mt-4">Aucun modèle</h3>
+                  </div>
+                  
+
+                <div *ngIf="totalElements == -1" class="text-center my-8">
+                    <div class="flex justify-center items-center">
+                        <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                      </div>
+                  <h3 class="text-muted mt-4">Chargement en cours.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Footer Buttons -->
+        <!-- <div class="p-2 border-t">
+            <div class="flex justify-end">
+                <button class="bg-gray-300 text-gray-700 px-2 py-1 rounded-md mr-2" (click)="clearGroup()">
+                    <i class="fas fa-undo"></i>
+                    Annuler
+                </button>
+
+                <button *ngIf="mode == 'edit'" class="bg-indigo-500 text-white px-2 py-1 rounded-md mr-2"
+                    (click)="editGroup()">
+                    <i class="fas fa-edit"></i>
+                    Modifier
+                </button>
+
+                <button *ngIf="mode == 'add'" [disabled]="myform.invalid == true || this.onAdding == true"
+                    class="bg-blue-500 text-white px-2 py-1 rounded-md" (click)="addGroup()">
+                    <i class="fas fa-plus"></i>
+                    Ajouter
+                </button>
+            </div>
+        </div> -->
+
+    </div>
+
+</div>

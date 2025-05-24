@@ -1,0 +1,317 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <div class="bg-card shadow-lg rounded-lg overflow-hidden">
+        <div class="flex flex-col md:flex-row">
+            <!-- Formulaire d'ajout d'utilisateur -->
+            <div class="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r">
+                <h2 class="text-xl font-bold mb-4">{{ translate('consoleadmin.ajouterutilisateur') }} :</h2>
+                <form>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.nomcomplet') }} * :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.nomcompte') }} * :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.matricule') }} * :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.civilité') }} * :</label>
+                            <div>
+                                <label class="inline-flex items-center mr-4">
+                                    <input type="radio" name="civility" class="form-radio" required>
+                                    <span class="ml-2">{{ translate('consoleadmin.monsieur') }}</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="civility" class="form-radio" required>
+                                    <span class="ml-2">{{ translate('consoleadmin.madame') }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.numtél') }}:</label>
+                            <input type="tel"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.fax') }} :</label>
+                            <input type="tel"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.gsm') }} :</label>
+                            <input type="tel"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.email') }} * :</label>
+                            <input type="email"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.adresse') }} :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.pays') }} :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.ville') }} :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.zip') }} :</label>
+                            <input type="text"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.qualité') }} :</label>
+                            <select
+                                class="w-full border bg-card border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                <option></option>
+                                <option>Chef Service</option>
+                                <option>Cadre</option>
+                                <option>Chef Departement</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.groupeutilisateurs') }} :</label>
+                            <select
+                                class="w-full border bg-card border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                <option></option>
+                                <option>test1</option>
+                                <option>test2</option>
+                                <option>test3</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.supérieur') }}:</label>
+                            <select
+                                class="w-full border bg-card border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                <option></option>
+                                <option>Mehdi</option>
+                                <option>Ayoub</option>
+                                <option>Hamza</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="inline-flex items-center">
+                            <span class="mr-2 space-y-4 block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.accèsfluxcourriers') }}:</span>
+                            <div class="flex items-center">
+                                <div class="relative" (click)="toggleSwitch()">
+                                    <input type="checkbox" id="fluxcourrier" class="hidden" (change)="toggleSwitch()" />
+                                    <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                        [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                        <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mt-2">
+                        <label class="inline-flex items-center">
+                            <span class="mr-2 block mb-1 text-secondary-700 font-semibold text-md">{{
+                                translate('consoleadmin.accèsprofilsecondaire') }}:</span>
+                            <div class="flex items-center">
+                                <div class="relative" (click)="toggleSwitch()">
+                                    <input type="checkbox" id="profilSecondaire" class="hidden"
+                                        (change)="toggleSwitch()" />
+                                    <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                        [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                        <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button type="button" class="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-2">{{
+                            translate('common.annuler') }}</button>
+                        <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded">{{
+                            translate('common.ajouter') }}</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Liste des utilisateur -->
+            <div class="w-full md:w-1/2 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">{{ translate('consoleadmin.listeutilisateurs') }} :</h2>
+                    <div class="flex items-center">
+                        <div class="relative">
+                            <input type="text" placeholder="Rechercher"
+                                class="border-2 bg-card rounded-full p-2 pr-8 pl-8 focus:border-blue-500 focus:outline-none" />
+                            <span class="absolute left-3 top-3 text-secondary-700">
+                                <i class="fas fa-search icon-size-4"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- <div class="relative">
+                        <input type="text" placeholder="Rechercher"
+                            class="border rounded p-2 pr-8 pl-8" />
+                        <span class="absolute left-2 top-2 text-secondary-700">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div> -->
+                </div>
+                <div class="space-y-4 mt-4">
+                    <div class="border shadow-md rounded p-2 bg-card">
+                        <div
+                            class="flex justify-between items-center mb-2 border-b-2 border-cyan-900 bg-cyan-800 text-white p-2 rounded-t">
+                            <p class="font-bold">Nom d'utilisateur : acaps</p>
+                            <div>
+                                <button class="text-white mr-2 hover:text-gray-200">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>
+                                <button class="text-white mr-2 hover:text-gray-200">
+                                    <i class="fa-solid fa-user-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="font-bold">{{ translate('consoleadmin.nomcomplet') }} : <span
+                                class="font-semibold">ayoub hajouj</span></p>
+                        <div class="border-t border-gray-300 mt-2 mb-2"></div>
+                        <div class="flex items-center justify-between mt-2">
+                            <label class="inline-flex items-center">
+                                <span class="mr-2">{{ translate('consoleadmin.accèsfluxcourriers') }}:</span>
+                                <div class="flex items-center">
+                                    <div class="relative" (click)="toggleSwitch()">
+                                        <input type="checkbox" id="fluxcourrier" class="hidden"
+                                            (change)="toggleSwitch()" />
+                                        <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                            [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                            <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                                [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <span class="mr-2">{{ translate('consoleadmin.accèsprofilsecondaire') }}:</span>
+                                <div class="flex items-center">
+                                    <div class="relative" (click)="toggleSwitch()">
+                                        <input type="checkbox" id="profilSecondaire" class="hidden"
+                                            (change)="toggleSwitch()" />
+                                        <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                            [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                            <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                                [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mt-4">
+                    <div class="border shadow-md rounded p-2 bg-card">
+                        <div
+                            class="flex justify-between items-center mb-2 border-b-2 border-cyan-900 bg-cyan-800 text-white p-2 rounded-t">
+                            <p class="font-bold">Nom d'utilisateur : acaps</p>
+                            <div>
+                                <button class="text-white mr-2 hover:text-gray-200">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>
+                                <button class="text-white mr-2 hover:text-gray-200">
+                                    <i class="fa-solid fa-user-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="font-bold">{{ translate('consoleadmin.nomcomplet') }} : <span
+                                class="font-semibold">ayoub hajouj</span></p>
+                        <div class="border-t border-gray-300 mt-2 mb-2"></div>
+                        <div class="flex items-center justify-between mt-2">
+                            <label class="inline-flex items-center">
+                                <span class="mr-2">{{ translate('consoleadmin.accèsfluxcourriers') }}:</span>
+                                <div class="flex items-center">
+                                    <div class="relative" (click)="toggleSwitch()">
+                                        <input type="checkbox" id="fluxcourrier" class="hidden"
+                                            (change)="toggleSwitch()" />
+                                        <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                            [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                            <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                                [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <span class="mr-2">{{ translate('consoleadmin.accèsprofilsecondaire') }}:</span>
+                                <div class="flex items-center">
+                                    <div class="relative" (click)="toggleSwitch()">
+                                        <input type="checkbox" id="profilSecondaire" class="hidden"
+                                            (change)="toggleSwitch()" />
+                                        <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                            [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                            <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                                [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4 flex justify-center">
+                    <nav class="inline-flex rounded-md shadow">
+                        <a
+                            class="px-3 py-2 rounded-l-md border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">{{
+                            translate('common.precedent') }}</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">1</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-blue-500 text-white hover:bg-blue-600">2</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">3</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">4</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">5</a>
+                        <a class="px-3 py-2 border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">6</a>
+                        <a
+                            class="px-3 py-2 rounded-r-md border border-gray-300 bg-card text-secondary-700 hover:bg-gray-50">{{
+                            translate('common.suivant') }}</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

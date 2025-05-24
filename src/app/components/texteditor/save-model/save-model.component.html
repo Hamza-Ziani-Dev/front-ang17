@@ -1,0 +1,71 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative mx-auto my-6 w-[30%]">
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center p-2">
+            <h5 *ngIf="mode=='add'" class="text-lg font-bold text-indigo-700">
+                {{translate('preferences.ajoutermodele')}}
+            </h5>
+            <h5 *ngIf="mode=='edit'" class="text-lg font-bold text-indigo-700">
+                {{translate('preferences.modifiermodele')}}
+            </h5>
+
+              <button (click)="this.dialogRef.close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div  class="relative p-2 max-h-[90vh] overflow-y-auto">
+                 <form [formGroup]="myform">
+                <div class="mb-1">
+                    <label class="block text-sm font-medium text-gray-700 " for="modelName">
+                         {{translate('common.nom')}}
+                    </label>
+                    <div class="mt-2">
+                        <input type="text" id="modelName" formControlName="modelName"
+                            class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none " />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 " for="modelDesc">
+                         {{translate('common.description')}}
+                    </label>
+                    <div class="mt-2">
+                        <textarea id="modelDesc" formControlName="modelDesc"
+                            class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none "></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Dialog footer -->
+            <div class="bg-card gap-2 px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-start border-t p-1">
+                <!-- Button -->
+                 <button type="button" (click)="addGroup()" *ngIf="mode == 'add'" [disabled]="myform.invalid == true || this.onAdding == true"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="fa fa-search mr-2"aria-hidden="true"></i>
+                    {{translate('common.ajouter')}}
+                </button>
+                <button type="button" *ngIf="mode == 'edit'" (click)="editGroup()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="fas fa-save mr-2"aria-hidden="true"></i>
+                    {{translate('common.modifier')}}
+                </button>
+
+                <button type="button" (click)="clearGroup()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{translate('common.annuler')}}
+                </button>
+
+
+            </div>
+           </div>
+    </div>
+</div>

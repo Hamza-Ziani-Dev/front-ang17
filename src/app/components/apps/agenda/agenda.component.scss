@@ -1,0 +1,121 @@
+// :host ::ng-deep full-calendar {
+//     width: 90%;
+//     margin: 0 auto; // Optional: center it
+//   }
+
+//   :host ::ng-deep .fc {
+//     width: 90% !important;
+//     margin: 0 auto;
+//   }
+
+.agenda-wrapper {
+    display: flex;
+    width: 100%;
+    height: 900px;
+    overflow: hidden; /* Ensure the wrapper doesn't exceed its container */
+  }
+
+  .agenda-sidebar {
+    width: 300px; /* Set the sidebar width */
+    overflow-y: auto; /* Add vertical scrolling to the sidebar if necessary */
+    height: 100vh; /* Full height for the sidebar */
+  }
+
+  .agenda-calendar {
+    flex-grow: 1; /* Let the calendar take up the remaining space */
+    overflow: auto; /* Add scroll to the calendar if necessary */
+    height: 100vh; /* Full height for the calendar area */
+  }
+
+
+  .agenda-sidebar {
+    width: 200px;
+    background: #f5f5f5;
+    border-right: 1px solid #ddd;
+    padding: 1rem;
+    font-size: 14px;
+  }
+
+  .agenda-calendar {
+    flex: 1;
+    padding: 1rem;
+  }
+
+  ::ng-deep .fc {
+    font-family: 'Roboto', sans-serif;
+  }
+
+//   ::ng-deep .fc-event {
+//     font-size: 13px;
+//     padding: 4px 6px;
+//     border-radius: 4px;
+//     color: #1078f0;
+//   }
+
+  ::ng-deep .fc-toolbar-title {
+    font-weight: 500;
+    font-size: 1.25rem;
+  }
+
+  .fc-event-title {
+    @apply overflow-hidden whitespace-nowrap text-ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 12px !important;
+    white-space: normal !important;
+
+  }
+
+
+
+  ::ng-deep .fc-timeGridDay-button {
+    background-color: #06adf5 !important;
+    color: white !important;
+    // border: none !important;
+  }
+  ::ng-deep .fc-timeGridWeek-button, ::ng-deep .fc-dayGridMonth-button{
+    background-color: #06adf5 !important;
+    color: white !important;
+
+  }
+
+ /* Change background color for the Previous button */
+::ng-deep .fc-prev-button {
+    background-color: #06adf5 !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  /* Change background color for the Next button */
+  ::ng-deep .fc-next-button {
+    background-color: #06adf5 !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  /* Change background color for the Today button */
+  ::ng-deep .fc-today-button {
+    background-color: #18e637 !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  /* Optional: Change the background of buttons when hovered */
+  ::ng-deep .fc-prev-button:active,
+  ::ng-deep .fc-next-button:active,
+  ::ng-deep .fc-today-button:active ,
+  ::ng-deep .fc-timeGridWeek-button:active, ::ng-deep .fc-dayGridMonth-button:active{
+    background-color: #5acaf9 !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  /* Optional: Change border and add glow effect when focused */
+//   ::ng-deep .fc-prev-button:focus,
+//   ::ng-deep .fc-next-button:focus,
+//   ::ng-deep .fc-today-button:focus {
+//     border: 2px solid white !important; /* Add white border on focus */
+//     box-shadow: 0 0 5px white !important; /* Optional: Add glow effect */
+//   }
+

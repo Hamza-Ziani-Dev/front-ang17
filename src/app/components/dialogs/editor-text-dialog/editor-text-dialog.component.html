@@ -1,0 +1,94 @@
+<div class="fixed inset-0 z-50 bg-black/40 overflow-y-auto" *transloco="let translate">
+    <div class="min-h-screen py-6 flex items-center justify-center">
+        <div class="bg-white rounded-sm shadow-lg w-full max-w-6xl" id="editorPopup">
+            <div class="flex border-b-2 p-1">
+                <div class="text-xl text-blue-900 my-auto font-semibold">
+                    {{translate('ajoutercourrier.ajouterdocument')}} :
+                    <span class="text-sm text-gray-500" *ngIf="templateId && templateName !== ''">
+                        ({{ templateName }})
+                    </span>
+                </div>
+                <button style="background-color: var(--primary-color);" *ngIf="!templateId" (click)="loadTemplate()"
+                    class="text-white px-1 py-1 mr-2 rounded flex items-center">
+                    <i class="fa fa-folder-open mr-1" aria-hidden="true"></i>
+                    {{translate('editortext.ouvrirmodule')}}
+                </button>
+                <a *ngIf="!templateId" class="ml-auto cursor-pointer">
+                    <span>
+                        <button (click)="close()"
+                            class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                            &times;
+                        </button>
+                    </span>
+                </a>
+
+                <button style="background-color: var(--primary-color);"
+                    (click)="templateId === 'new' ? saveTemplate() : edit()" *ngIf="templateId && templateId !== 'none'"
+                    class=" text-white px-3 py-1 rounded ml-auto flex items-center">
+                    <span>
+                        <i class="fa fa-save mr-1" aria-hidden="true"></i>
+                        {{translate('editortext.enregister')}}
+                    </span>
+                </button>
+            </div>
+            <div style="background-color: var(--primary-color);" class="h-1"></div>
+
+            <div class="p-0" [style]="loading ? 'filter: blur(8px);-webkit-filter: blur(8px);' : ''">
+                <app-annotation-accordion *ngIf="annotation" [annotation]="annotation"></app-annotation-accordion>
+
+                <div class="editor-container editor-body flex flex-col items-center justify-center p-1"
+                    style="min-height: 11.99in; overflow-y: auto;">
+                    <quill-editor format="object"
+                        [(ngModel)]="editorBindingService.pageContents[currentPage-1].objectFormat"
+                        (onEditorChanged)="changedEditor($event)" (onEditorCreated)="editorCreated($event)"
+                        (onFocus)="focus($event)" [modules]="modules">
+                    </quill-editor>
+
+                </div>
+
+                <div class="flex py-2 bg-gray-100">
+                    <div class="m-auto">
+                        <div class="flex">
+                            <span class="editor-pagination-btn cursor-pointer" (click)="prevPage()">
+                                <i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
+                            </span>
+                            <div class="flex items-center">
+                                <input id="pageNumber" #input [value]="1" (change)="pageChangeFn($event)"
+                                    class="editor-pagination-input w-12 text-center p-1 border rounded" type="number">
+                                <span class="editor-pagination-count px-1">
+                                    / {{ this.editorBindingService.pageContents.length }}
+                                </span>
+                            </div>
+                            <span class="editor-pagination-btn cursor-pointer" (click)="nextPage()">
+                                <i class="far fa-arrow-alt-circle-right" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-2 flex justify-between items-center border-t">
+                <div class="flex-grow" style="display: none;">
+                    <!-- <app-speech-button [isLisetning]="isLisetning"
+                                       [onListentext]="btnTXT"
+                                       [onNotListentext]="'Reconnaissance vocale désactivée'"
+                                       (toggel)="toggelVR($event)">
+                    </app-speech-button> -->
+                </div>
+                <div class="flex justify-end w-full p-2 space-x-2 border-t">
+                    <button style="background-color: var(--primary-color);" type="button"
+                        class="flex items-center px-2 py-1  bg-white border rounded hover:bg-blue-50"
+                        (click)="saveTemplate()">
+                        <i class="fas fa-save mr-2"></i>{{translate('editortext.enregistermodule')}}
+                    </button>
+
+                    <button style="background-color: var(--primary-color);" type="button"
+                        class="flex items-center px-2 py-1 text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-600"
+                        (click)="print()">
+                        <i class="fas fa-save mr-2"></i> {{translate('editortext.enregister')}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

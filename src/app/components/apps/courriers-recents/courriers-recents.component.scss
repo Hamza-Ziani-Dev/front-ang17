@@ -1,0 +1,56 @@
+// /* Custom styles for the file slider component */
+::ng-deep .mat-drawer-container.mat-drawer-shown {
+    overflow: visible !important;
+  }
+  ::ng-deep .mat-drawer-container.mat-drawer-shown .mat-drawer-backdrop {
+    display: none !important;
+  }
+
+.mat-mdc-tab-group .mat-mdc-tab-body-content {
+    padding: 7px !important;
+}
+.mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs .mat-mdc-tab-header .mat-mdc-tab {
+    flex-grow: 0 !important;
+}
+
+.cdk-overlay-pane {
+    width: 40px !important;
+    top: 154.111px;
+    left: 807.639px;
+}
+
+
+
+// @media (max-width: 768px) {
+//     .btn-back {
+//         margin: 0 !important;
+//         padding: 5px !important;
+//         font-size: 0.49rem !important;
+//     }
+//     .title{
+//         margin: 0 !important;
+//     }
+//     .btn-groub{
+//         margin: 2px !important;
+//         padding: 3px !important;
+//         font-size: 0.49rem !important;
+//     }
+// }
+
+// @media (max-width: 640px) {
+//     .btn-back {
+//         margin: 0 !important;
+//         padding: 5px !important;
+//         font-size: 0.49rem !important;
+//     }
+//     .title{
+//         margin: 0 !important;
+//     }
+//     .btn-groub{
+//         margin: 2px !important;
+//         padding: 3px !important;
+//         font-size: 0.49rem !important;
+//     }
+// }
+
+

@@ -1,0 +1,111 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <!-- Search and Add Button Section -->
+    <div class="flex justify-between mb-2">
+        <div class="flex items-center">
+            <div class="relative">
+                <input type="text" placeholder="Rechercher"
+                    class="border-2 bg-card rounded-full p-2 pr-8 pl-8 focus:border-blue-500 focus:outline-none" />
+                <span class="absolute left-3 top-3 text-secondary-700">
+                    <i class="fas fa-search icon-size-4"></i>
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <button (click)="openAjouterTypeDocumentDialog()"
+                class="bg-blue-500 ml-1 text-white rounded-full px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                <i class="fa-solid fa-plus mr-1"></i>
+                {{ translate('consoleadmin.ajouterqualité') }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col w-full">
+        <div class="bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full">
+            <!-- Table -->
+            <table class="text-left text-xs whitespace-nowrap mx-auto border-2 border-blue-500 shadow-lg w-full">
+                <thead class="uppercase tracking-wider dark:border-neutral-600 bg-sky-600 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.nomqualité') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.codequalité') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.accèssonsubordonnée') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.passerdirectementbureauxordre') }}
+                        </th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.notification') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (qualite of qualites; track $index) {
+                    <tr [ngClass]="$index % 2 === 0 ? 'bg-card hover:bg-amber-100' : 'bg-blue-50 hover:bg-amber-100'">
+                        <td scope="row" class="px-2 py-1 text-center">{{qualite.nomQualite}}</td>
+                        <td class="px-2 text-center">{{qualite.codeQualite}}</td>
+                        <td class="px-2 text-center">{{qualite.accesSubordonnee}}</td>
+                        <td class="px-2 text-center">{{qualite.passerDirectement}}</td>
+                        <td class="px-2 text-center">{{qualite.notification}}</td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button [matMenuTriggerFor]="folderMenu" aria-label="Actions">
+                                    <i class="fa-solid fa-caret-down icon-size-4 primary-color"></i>
+                                </button>
+                                <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                    <button mat-menu-item (click)="openSupprimerDialog()">
+                                        <i class="fa-solid fa-trash red-color mr-2"></i>
+                                        {{ translate('common.supprimer') }}
+                                    </button>
+                                    <button mat-menu-item (click)="openModifierDialog()">
+                                        <i class="fa-solid fa-pen-to-square primary-color mr-2"></i>
+                                        {{ translate('common.modifier') }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <!-- qualité bureaux ordre ection -->
+            <div class="flex mb-2 mt-4 w-1/3">
+                <div class="flex-auto">
+                    <label for="type" class="block text-sm font-medium">{{ translate('consoleadmin.qualitébureauxordre')
+                        }}:</label>
+                    <select (change)="addSelectedItem($event)"
+                        class="mt-1 block w-full py-2 px-3 border bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        @for (qualite of qualites; track qualite.nomQualite) {
+                        <option [value]="qualite.nomQualite">{{ qualite.nomQualite }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Selected Items List -->
+            <div class="mt-3 mb-4 w-1/3">
+                <ul class="flex flex-wrap">
+                    @for (qualite of selectedQualites; track qualite.nomQualite) {
+                    <li class="ml-1">
+                        <span class="bg-gray-100 border border-blue-500 rounded-full shadow flex items-center text-xs">
+                            <span class="text-yellow-500 font-bold ml-1 mr-1">#</span>
+                            <span>{{ qualite.nomQualite }}</span>
+                            <i (click)="removeSelectedItem(qualite)"
+                                class="fas fa-undo ml-2 mr-1 text-center bg-red-500 rounded-md text-xs text-white cursor-pointer"></i>
+                        </span>
+                    </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Rest of the code remains the same -->
+
+            <!-- {{ translate('consoleadmin.save') }} Button -->
+            <div class="flex mt-4 mb-4 justify-center">
+                <button
+                    class="bg-blue-500 text-white rounded-lg px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                    <i class="fa-solid fa-check mr-1"></i>
+                    {{ translate('consoleadmin.save') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

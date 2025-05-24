@@ -1,0 +1,68 @@
+/* Hide the default checkbox */
+.switch input {
+    display: none;
+  }
+
+  /* The slider: rounded effect */
+  .switch .slider {
+    position: relative;
+    display: inline-block;
+    width: 30px; /* Adjust width as needed */
+    height: 14px; /* Adjust height as needed */
+    background-color: #ccc;
+    border-radius: 50px;
+    transition: background-color 0.3s;
+  }
+
+  /* The circle inside the slider */
+  .switch .slider:before {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  /* When checked, change background and move circle */
+  .switch input:checked + .slider {
+    background-color: #1d78ef;
+  }
+
+  .switch input:checked + .slider:before {
+    transform: translateX(16px);
+  }
+
+
+//   Style Table
+.documents-table td{
+    text-align: center;
+    padding-top: 3.5px;
+    padding-bottom: 2px;
+    font-family: 'Nunito', sans-serif !important;
+}
+
+
+
+.table td, .table th {
+    padding: .75rem !important;
+    vertical-align: top !important;
+    border-top: 1px solid #dee2e6 !important;
+}
+
+::ng-deep .mat-mdc-tab-group .mdc-tab-indicator {
+    display: none !important;
+  }
+
+
+  ::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+
+::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+

@@ -1,0 +1,125 @@
+<div class="w-full rounded-md border border-gray-200 shadow-sm" *transloco="let translate">
+  
+
+    <!-- Content -->
+    <div class="p-4">
+      <div class="flex flex-col md:flex-row gap-4">
+        <!-- Left column - Signature Image -->
+        <div class="w-full md:w-1/2">
+          <div class="border rounded-md shadow-sm h-full">
+            <!-- Card header -->
+            <div class="px-4 py-3 border-b bg-white">
+              <h5 class="font-bold text-gray-800">{{translate('preferences.imagesinature')}}</h5>
+            </div>
+
+            <!-- Blue header bar -->
+            <div class="h-1 bg-gradient-to-r from-blue-900 to-blue-500"></div>
+
+            <!-- Card body -->
+            <div class="p-4 bg-gray-100 flex items-center justify-center" style="min-height: 300px;">
+              <div class="w-64 h-24 rounded-md border-2 border-gray-300 bg-white flex items-center justify-center">
+                <img class="max-w-[160px] max-h-[73px]" id="myImg"
+                     [src]="this.signService.UserSignature ? this.signService.UserSignature : 'assets/img/no_sign.png'"
+                     alt="Aucune image">
+              </div>
+            </div>
+
+            <!-- Card footer -->
+            <div class="flex">
+              <button class="flex-1 bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 flex items-center justify-center">
+                <label for="sigfile" class="flex items-center cursor-pointer">
+                  <i class="fas fa-cloud-upload-alt mr-2"></i>
+                  {{translate('preferences.telecharger')}}
+                </label>
+                <input type="file" name="sigfile" id="sigfile" class="hidden" (change)="sigFileChange($event)">
+              </button>
+              <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-4 border-l border-white flex items-center justify-center" (click)="deleteSigImage()">
+                <i class="fas fa-trash mr-2"></i>
+                {{translate('common.delete')}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column - Certificate -->
+        <div class="w-full md:w-1/2">
+          <div class="border rounded-md shadow-sm h-full flex flex-col">
+            <!-- Card header -->
+            <div class="px-2 py-2 border-b bg-white flex justify-between items-center">
+              <h5 class="font-bold text-gray-800">{{translate('preferences.certificatelectronique')}}</h5>
+              <button class="bg-blue-500 hover:bg-blue-500 text-white py-1 px-3 rounded-md flex items-center">
+                <a class="text-white flex items-center" href="assets/downloads/DocumaniaCertifySetup.msi">
+                  <i class="fa fa-download mr-2"></i>
+                  {{translate('preferences.téléchargerdocumaniacertify')}}
+                </a>
+              </button>
+            </div>
+
+            <!-- Blue header bar -->
+            <div class="h-1 bg-gradient-to-r from-blue-900 to-blue-500"></div>
+
+            <!-- Card body -->
+            <div class="p-4 flex-grow">
+              <h6 class="font-bold text-gray-800 mb-2">{{translate('preferences.informationscertificat')}}</h6>
+
+              <div class="bg-gray-100 p-4 rounded-md border">
+                <div *ngIf="this.signService.certificate">
+                  <div class="flex items-center mb-2">
+                    <p class="text-gray-500 w-40">{{translate('common.valider')}}</p>
+                    <div class="flex items-center">
+                      <i *ngIf="this.signService.certificateFile && this.signService.certificate.pwd" class="fa fa-check text-green-500 mr-1 font-bold"></i>
+                      <i *ngIf="!this.signService.certificateFile || !this.signService.certificate.pwd" class="fas fa-times text-red-600 mr-1 font-bold"></i>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center mb-2" *ngIf="this.signService.certificate.validityDate">
+                    <p class="text-gray-500 w-40">{{translate('preferences.dateexpirer')}}</p>
+                    <p class="text-blue-900 font-medium">{{this.signService.certificate.validityDate}}</p>
+                  </div>
+
+                  <div class="flex items-center mb-2">
+                    <p class="text-gray-500 w-40">{{translate('common.proprietaire')}} :</p>
+                    <p class="text-blue-900 font-medium ">{{this.signService.user._fullName}}</p>
+                  </div>
+
+                  <div class="flex items-center mb-2">
+                    <p class="text-gray-500 w-40">{{translate('preferences.departement')}}</p>
+                    <p class="text-blue-900 font-medium">{{this.signService.user.title}}</p>
+                  </div>
+
+                  <div class="flex items-center mb-2">
+                    <p class="text-gray-500 w-40">{{translate('preferences.email')}}</p>
+                    <p class="text-blue-900 font-medium">{{this.signService.user._email}}</p>
+                  </div>
+
+                  <div class="flex items-center mb-2">
+                    <p class="text-gray-500 w-40">{{translate('preferences.chemincertificat')}}</p>
+                    <p class="text-blue-900 font-medium break-all">{{this.signService.certificate.clientPath}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card footer -->
+            <div *ngIf="this.signService.certificate">
+              <button class="w-full bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 flex items-center justify-center" (click)="this.signService.changePath()">
+                <i class="fa fa-refresh mr-2"></i>
+                {{translate('preferences.changechemain')}}
+              </button>
+            </div>
+
+            <div *ngIf="!this.signService.certificate" class="flex">
+              <button class="flex-1 bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 flex items-center justify-center" (click)="this.signService.UploadCertif()">
+                <i class="fa fa-upload mr-2"></i>
+                {{translate('preferences.telecharger')}}
+              </button>
+              <button class="flex-1 bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 border-l border-white flex items-center justify-center" (click)="this.signService.GenerateCertif()">
+                <i class="fa fa-industry mr-2"></i>
+                {{translate('preferences.générer')}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,4 @@
+<a (click)="changeSort('reference')" class="flex flex-col items-center leading-none cursor-pointer text-[10px]">
+    <i class="fas fa-sort-up m-0 p-0" [ngClass]="sorts['reference'] === 'asc' ? 'text-white' : 'text-blue-300'"></i>
+    <i class="fas fa-sort-down m-0 p-0 -mt-[2px]" [ngClass]="sorts['reference'] === 'desc' ? 'text-white' : 'text-blue-300'"></i>
+  </a>

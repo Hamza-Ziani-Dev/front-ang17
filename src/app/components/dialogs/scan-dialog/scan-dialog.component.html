@@ -1,0 +1,205 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    {{ translate('scanner.numeriserdocument') }}
+                </h3>
+                <!-- <a class="ml-auto cursor-pointer" (click)="dialogRef.close()">
+                    <span><i class="fa fa-times text-red-500 text-lg" aria-hidden="true"></i></span>
+                  </a> -->
+                  <button (click)="dialogRef.close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+              </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <div class="p-2">
+                    <!-- Scanner/Capture Toggle -->
+                    <div class="flex justify-center mb-4" *ngIf="!env.hideCapture">
+                        <div class="inline-flex rounded-md shadow-sm">
+                            <!-- Scanner Button (Default Selected) -->
+                            <button
+                              class="px-6 py-2 text-white bg-blue-600 rounded-l-md hover:bg-blue-600 focus:outline-none transition-all duration-200"
+                              [class.bg-blue-700]="scanOption === 1"
+                              [class.border-2]="scanOption === 1"
+                              [class.border-yellow-400]="scanOption === 1"
+                              (click)="scanOptionChange($event, 1)">
+                              <i class="fas fa-print mr-2"></i>{{ translate('scanner.scanner') }}
+                            </button>
+
+                            <!-- Capture Button -->
+                            <button
+                              class="px-6 py-2 text-white bg-blue-600 rounded-r-md hover:bg-blue-600 focus:outline-none transition-all duration-200"
+                              [class.bg-blue-700]="scanOption === 2"
+                              [class.border-2]="scanOption === 2"
+                              [class.border-yellow-400]="scanOption === 2"
+                              (click)="scanOptionChange($event, 2)">
+                              <i class="fas fa-mobile-alt mr-2"></i>{{ translate('scanner.capture') }}
+                            </button>
+                          </div>
+
+
+                    </div>
+
+                    <div *ngIf="!scanOption || scanOption===1; else capture">
+                        <!-- Loading State -->
+                        <div class="flex justify-center items-center" *ngIf="loadingScanners && ws.isOpen">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                            <p class="ml-2 font-semibold">{{ translate('scanner.chargementparamètres') }}</p>
+                        </div>
+
+                        <!-- Scanner Form -->
+                        <form class="space-y-4" *ngIf="allScannersConfigs && ws.isOpen">
+                            <div class="space-y-1">
+                                <label
+                                    class="block text-sm font-medium text-gray-700">{{ translate('scanner.listeources') }} :</label>
+                                <div class="flex">
+                                    <select
+                                        class="flex-grow px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        (change)="sourceChanged($event)">
+                                        <option disabled> {{ translate('scanner.selectsource') }}</option>
+                                        <option *ngFor="let ft of allScannersConfigs;let i=index" [value]="i">
+                                            {{ft.ScannerName}}
+                                        </option>
+                                    </select>
+                                    <button type="button"
+                                        class="px-3 py-2 border-t border-r border-b rounded-r-md hover:bg-gray-50"
+                                        [disabled]="allScannersConfigs.length==0" (click)="toggleParams()">
+                                        <i class="fa fa-cog"></i>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="!loading && allScannersConfigs?.length === 0" class="text-red-600 mt-2">
+                                    {{ translate('scanner.aucunscanner') }}
+                                </div>
+                            </div>
+
+                            <!-- Scanner Parameters -->
+                            <div *ngIf="scannerCaps && isParamsVisible" class="space-y-4">
+                                <!-- Depth -->
+                                <div class="space-y-1">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700">{{ translate('scanner.profondeur') }} :</label>
+                                    <select
+                                        class="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        [(ngModel)]="selectedDepth" [ngModelOptions]="{standalone: true}"
+                                        (change)="depthChanged($event)">
+                                        <option disabled>{{ translate('scanner.selectprofondeur') }}</option>
+                                        <option *ngFor="let dph of scannerCaps.depths" [value]="dph">{{dph}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- DPI -->
+                                <div class="space-y-1">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700">{{ translate('scanner.resolution') }} :</label>
+                                    <select
+                                        class="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        [(ngModel)]="selectedDpi" [ngModelOptions]="{standalone: true}"
+                                        (change)="dpiChanged($event)">
+                                        <option disabled>{{ translate('scanner.selectresolution') }}</option>
+                                        <option *ngFor="let dph of scannerCaps.dpis" [value]="dph">{{dph}}</option>
+                                    </select>
+                                </div>
+
+                                <!-- Paper Size -->
+                                <div class="space-y-1">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 ">{{ translate('scanner.format') }} :</label>
+                                    <select
+                                        class="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        [(ngModel)]="selectedPaperSize" [ngModelOptions]="{standalone: true}"
+                                        (change)="paperSizeChanged($event)">
+                                        <option disabled>{{ translate('scanner.selectformat') }}</option>
+                                        <option *ngFor="let dph of scannerCaps.paperSizes" [value]="dph">{{dph}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Feeder -->
+                                <div class="space-y-1">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700">{{ translate('scanner.source') }} :</label>
+                                    <select
+                                        class="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        [(ngModel)]="selectedFeeder" [ngModelOptions]="{standalone: true}"
+                                        (change)="feederChanged($event)">
+                                        <option disabled>{{ translate('scanner.selectsource') }}</option>
+                                        <!-- {{config.c.scan[dph]}} -->
+                                        <option *ngFor="let dph of scannerCaps.feeders" [value]="dph">{{dph}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Duplex Toggle -->
+                                <div class="space-y-1" *ngIf="selectedFeeder != 'flatbed'">
+                                    <div class="flex items-center space-x-2">
+                                      <!-- Label for the toggle -->
+                                      <label class="text-sm font-medium text-gray-700">{{ translate('scanner.duplex') }}:</label>
+
+                                      <!-- Toggle Switch -->
+                                      <label class="relative inline-flex items-center cursor-pointer">
+                                        <!-- Hidden checkbox input (using ngModel) -->
+                                        <input type="checkbox" class="sr-only peer" [(ngModel)]="selectedDuplex" [ngModelOptions]="{ standalone: true }">
+
+                                        <!-- Smaller Slider Design for the Toggle -->
+                                        <div class="w-8 h-4 bg-gray-300 rounded-full peer-checked:bg-blue-500 peer-checked:after:translate-x-3 after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all"></div>
+                                      </label>
+                                    </div>
+                                  </div>
+                            </div>
+                        </form>
+
+                        <!-- App Not Running State -->
+                        <div *ngIf="!ws.isOpen" class="p-2">
+                            <p class="text-gray-800 mb-4">{{ translate('scanner.appnotrunning') }}</p>
+                            <div class="flex justify-end space-x-2">
+                                <button (click)="reload()"
+                                    class="px-3 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200">
+                                    <i class="fas fa-sync mr-2"></i>{{ translate('scanner.refresher') }}
+                                </button>
+                                <a href="assets/downloads/SetupDocumaniaScan.msi"
+                                    class="px-3 py-2 text-white bg-blue-600 rounded hover:bg-blue-600">
+                                    <i class="fa fa-download mr-2"></i>{{ translate('scanner.download') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div *ngIf="ws.isOpen" class="flex justify-end space-x-2 mt-2 pt-2 border-t">
+                            <button (click)="onCancel()"
+                                class="px-2 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200">
+                                <i class="fas fa-undo mr-2"></i>{{ translate('scanner.cancel') }}
+                            </button>
+                            <button *ngIf="ws.isOpen && allScannersConfigs" [disabled]="allScannersConfigs.length==0"
+                                (click)="onScan ? false : onSubmit()"
+                                class="px-2 py-2 text-white bg-blue-600 rounded hover:bg-blue-600 disabled:opacity-50">
+                                <i [class]="!onScan ? 'fa fa-file-text' : 'fas fa-circle-notch fa-spin'"
+                                    class="mr-2"></i>
+                                {{translate('scanner.numeriser')}}
+                            </button>
+                        </div>
+                    </div>
+
+                    <ng-template #capture>
+                        <app-capture (onScan)="onScanFromCapture($event)" (onData)="onDataFromCapture($event)">
+                        </app-capture>
+                    </ng-template>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

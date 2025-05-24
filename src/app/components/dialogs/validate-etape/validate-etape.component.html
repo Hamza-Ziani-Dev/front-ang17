@@ -1,0 +1,129 @@
+<!-- Header -->
+<div class="flex items-center justify-between bg-white px-4 py-3 border-b border-gray-200">
+  <h5 class="text-lg font-bold text-blue-900">
+    {{ config.c.validateStep.titre }}
+  </h5>
+  <button  class="text-gray-500 hover:text-red-500">
+    <i class="fa fa-times text-lg"></i>
+  </button>
+</div>
+
+<!-- Header Separator -->
+<div class="w-full h-1 bg-blue-500">
+  <div class="h-full bg-yellow-400 w-1/5"></div>
+</div>
+
+<!-- Form Body -->
+<div class="p-4">
+  <form [formGroup]="formgroup" class="space-y-6">
+
+    <!-- Annotation Method -->
+    <div>
+      <label class="block font-bold text-blue-900 mb-2">anno</label>
+      <div class="flex items-center mb-4">
+        <span class="mr-2 text-sm font-semibold">title</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" (change)="changeAnnotationMethod($event)">
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-600"></div>
+          <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition peer-checked:translate-x-full"></div>
+        </label>
+      </div>
+
+      <textarea *ngIf="!isVoiceAnnotation"
+        formControlName="commentaire"
+        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+
+      <div *ngIf="isVoiceAnnotation">
+        <app-voice-recorder (onStart)="voiceRecordStarted($event)" (onStop)="voiceRecordStoped($event)"></app-voice-recorder>
+      </div>
+    </div>
+
+    <!-- Conditional Toggles -->
+    <div *ngIf="canSkip" class="mt-4">
+      <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+        access
+        <input type="checkbox" class="ml-2" (change)="getBoUsers($event)" />
+      </label>
+    </div>
+
+    <div *ngIf="canSkipArrive" class="mt-4">
+      <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+        accessSpe
+        <input type="checkbox" class="ml-2" (change)="getSepUsers($event)" />
+      </label>
+    </div>
+
+    <!-- Group/User Select -->
+    <ng-container *ngIf="!showSpec">
+      <div *ngIf="showGroup" class="mb-4">
+        <label class="block text-sm font-semibold text-blue-900 mb-1">named</label>
+        <ng-select [clearable]="true" formControlName="group" (change)="changeGroup($event)">
+          <ng-option value="all">select</ng-option>
+          <ng-option *ngFor="let group of FiltredArrayGroup" [value]="group.id">{{ group.groupName }}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-semibold text-blue-900 mb-1">
+          {{ "users" + text }}
+        </label>
+        <ng-select formControlName="user" [clearable]="true" (change)="changeUsers($event)">
+          <ng-option value="all">select</ng-option>
+          <ng-option *ngFor="let user of filtredUser" [value]="user.userId">{{ user.fullName }}</ng-option>
+        </ng-select>
+      </div>
+
+      <!-- Selected Users Display -->
+      <div *ngIf="selectedUsers.length > 0" class="flex flex-wrap gap-2">
+        <span *ngFor="let user of selectedUsers"
+              class="inline-flex items-center px-3 py-1 bg-gray-100 text-sm rounded-full border border-blue-500 shadow">
+          <span class="text-orange-500 font-bold mr-1">#</span>
+          {{ user.fullName }}
+          <button type="button" (click)="supp(user)" class="ml-2 text-red-500 font-bold">x</button>
+        </span>
+      </div>
+    </ng-container>
+
+    <!-- Multi-Step Section -->
+    <ng-container *ngIf="showSpec">
+      <div class="h-72 overflow-y-scroll space-y-6">
+        <div *ngFor="let step of ArraySteps">
+          <label class="block text-sm font-semibold text-blue-900 mb-1">named</label>
+          <ng-select [clearable]="!step.dis" formControlName="group1" (change)="changeGroupArrive($event, step)">
+            <ng-option [disabled]="step.dis" value="all">select</ng-option>
+            <ng-option [disabled]="step.dis" *ngFor="let group of FiltredArrayGroup" [value]="group.id">{{ group.groupName }}</ng-option>
+          </ng-select>
+
+          <label class="block text-sm font-semibold text-blue-900 mt-2">{{ "users" + step.nameQuality }}</label>
+          <ng-select [clearable]="!step.dis" (change)="changeUsers($event)">
+            <ng-option [disabled]="step.dis" value="all">select</ng-option>
+            <ng-option [disabled]="step.dis" *ngFor="let user of filtredUser" [value]="user.userId">{{ user.fullName }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <div *ngIf="selectedUsers.length > 0 && etapes.length >= ArraySteps.length" class="flex gap-2 mt-4">
+        <button *ngIf="ArraySteps.length > 1" class="btn btn-primary" [disabled]="clicked" (click)="prevStep()">
+          <i class="fas fa-arrow-left"></i> previos
+        </button>
+        <button *ngIf="selectedUsers.length < 2 && !checkIsLast" class="btn btn-primary" [disabled]="clicked" (click)="nextStep(ArraySteps[ArraySteps.length - 1])">
+          next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </ng-container>
+  </form>
+</div>
+
+<!-- Footer -->
+<div class="flex items-center justify-end gap-2 px-4 py-3 border-t">
+  <button class="px-4 py-2 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-100"
+          (click)="clear()">
+    <i class="fas fa-undo mr-1"></i>clear
+  </button>
+
+  <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 flex items-center"
+          [disabled]="formgroup.invalid" (click)="isloading ? false : next()">
+    <i [class]="isloading ? 'fas fa-circle-notch fa-spin mr-2' : 'fas fa-check mr-2'"></i>
+    validate
+  </button>
+</div>

@@ -1,0 +1,91 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    {{ translate('common.modifier') }}
+                </h3>
+                <button (click)="close()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div class="relative p-2">
+                <!-- [ngClass]="{'max-h-[400px] overflow-auto': attrs.length > 5}" -->
+                <form [formGroup]="docFormGroup" class="space-y-4" [ngClass]="{'max-h-[400px] overflow-auto': attrs?.length > 5}">
+                    <div formArrayName="attrs">
+                        <ng-container *ngFor="let a of attrsForms.controls; let i = index" [formGroupName]="i">
+                            <div *ngIf="attributes[i].name !== 'Fichier' && attrs[i].visib == 1" class="mb-4">
+
+                                <label class="block text-sm font-bold text-gray-700 mb-1" [attr.for]="'attr-' + i">
+                                    {{ attrs[i]['label' + config?.lang] || attrs[i].libelle }}
+                                    <span *ngIf="attrs[i].required == 1" class="text-red-500 font-bold"> *</span>:
+                                </label>
+
+
+
+                                <!-- Standard Input -->
+                                <div *ngIf="attributes[i].type.name !== 'fichier' && attributes[i].type.name !== 'longtext' &&
+                                      attributes[i].type.name !== 'List' && attributes[i].type.name !== 'ListDep' &&
+                                      attributes[i].type.name !== 'listDb'">
+                                    <input formControlName="val" [type]="attributes[i].type.name"
+                                        class="w-full border border-gray-300 p-2 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                                        [id]="'attr-' + i" [placeholder]="this.attrs[i]['label' + config.lang]" />
+                                </div>
+
+                                <!-- ng-select for List types -->
+                                <div *ngIf="attributes[i].type.name === 'listDb' || attributes[i].type.name === 'ListDep' || attributes[i].type.name === 'List'"
+                                    class="w-full">
+                                    <ng-select formControlName="val" [clearable]="false"
+                                        (change)="changeValue($event, attributes[i])" class="w-full" container="body"
+                                        [openDelay]="300" [closeDelay]="500" placement="top"
+                                        tooltipClass="tooltip-class" [ngbTooltip]="attrVals['l' + attributes[i].name]">
+                                        <ng-option
+                                            *ngFor="let dt of $any(attributes[i].type.name === 'ListDep' ? depArrays : mappedArray)['id' + attributes[i].id]"
+                                            [value]="dt.key">
+                                            {{ dt.value }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+
+                                <!-- Textarea for longtext -->
+                                <div
+                                    *ngIf="attributes[i].name !== 'HTML_CONTENT' && attributes[i].type.name === 'longtext'">
+                                    <textarea formControlName="val"
+                                        class="w-full border border-gray-300 p-2 rounded shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                                        [id]="'attr-' + i" [placeholder]="attributes[i].libelle">
+                            </textarea>
+                                </div>
+
+                            </div>
+                        </ng-container>
+                    </div>
+                </form>
+            </div>
+            <!-- Dialog footer -->
+            <div class="bg-card p-2 mr-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-start border-t">
+                <!-- Button -->
+                <button type="button" [disabled]="docFormGroup.invalid" (click)="isloading? false :edit()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class='mr-2' [class]="isloading? 'fas fa-circle-notch fa-spin' : 'fas fa-edit'"></i>
+                    {{ translate('common.modifier') }}
+                </button>
+
+                <button (click)="clear()" type="button" [disabled]="!form?.dirty"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{ translate('common.annuler') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="fixed inset-0 bg-gray-600/50 flex items-center justify-center" *transloco="let translate">
+    <div class="bg-white rounded-lg shadow-xl w-100">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-2 border-b border-gray-200">
+            <h3 class="text-xl font-semibold">{{ title }}</h3>
+            <button (click)="onClose()"
+                class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+
+        <!-- Line separator -->
+        <div class="h-1  bg-blue-700">
+            <div class="h-full bg-yellow-500 w-1/5"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex flex-col items-center justify-center py-8">
+            <ng-container *ngIf="etat === -1">
+                <i class="fas fa-times-circle text-red-500 icon-size-20"></i>
+            </ng-container>
+            <ng-container *ngIf="etat === 2">
+                <i class="fas fa-exclamation-triangle text-yellow-500 icon-size-20"></i>
+            </ng-container>
+            <ng-container *ngIf="etat === 3">
+                <i class="fas fa-exclamation-triangle text-red-500 icon-size-20"></i>
+            </ng-container>
+            <ng-container *ngIf="etat === 1">
+                <i class="fas fa-check-circle text-green-600 icon-size-20"></i>
+            </ng-container>
+            <ng-container *ngIf="etat === 0">
+                <i class="fa fa-info-circle text-blue-500 icon-size-20"></i>
+            </ng-container>
+            <p class="mt-4 text-center font-bold text-gray-800">{{ text }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end p-2 border-t border-gray-200 rounded-b-lg">
+            <button (click)="onClose()" type="button"
+                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fas fa-undo mr-2"></i>
+                {{translate('common.annuler')}}
+            </button>
+        </div>
+    </div>
+</div>

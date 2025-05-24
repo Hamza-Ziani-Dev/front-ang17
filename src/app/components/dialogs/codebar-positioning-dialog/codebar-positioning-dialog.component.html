@@ -1,0 +1,77 @@
+<div class="card bg-white shadow-md rounded-md">
+    <div class="opacity-0 h-1">
+        <!-- <ngx-barcode [bc-element-type]="'img'" [bc-format]="'CODE39'" [bc-height]="'66.66'" [bc-value]="cbval"
+        [bc-display-value]="true" #barCode></ngx-barcode>
+
+      <ngx-qrcode [elementType]="'png'" [value]="cbval" #qrCode>
+    </ngx-qrcode> -->
+    </div>
+
+    <div class="card-header flex items-center border-b-0 p-4">
+        <div class="text-lg font-bold text-gray-900 mr-auto">
+            Positionnement du code à barre
+        </div>
+
+        <button (click)="onCancel()" class="btn btn-sm btn-outline-secondary mr-2 px-2 py-1 border border-gray-300 text-gray-600 rounded-md hover:bg-gray-100">
+            <i class="fas fa-undo"></i> Annuler
+        </button>
+
+        <button class="btn btn-sm btn-outline-secondary mr-2 px-2 py-1 border border-gray-300 text-gray-600 rounded-md hover:bg-gray-100" (click)="generateCodeBar('BR')">
+            <i class="fa fa-barcode"></i> Générer un code barre
+        </button>
+
+        <button class="btn btn-sm btn-outline-secondary mr-2 px-2 py-1 border border-gray-300 text-gray-600 rounded-md hover:bg-gray-100" (click)="generateCodeBar('QR')">
+            <i class="fas fa-qrcode"></i> Générer un Qr code"
+        </button>
+
+        <button (click)="onSubmit()" class="btn btn-sm bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600">
+            <i class="fas fa-check" aria-hidden="true"></i> Valider
+        </button>
+    </div>
+
+    <div class="header-separator bg-blue-600 h-1 w-full"></div>
+
+    <div class="card-body p-0">
+        <div class="container mx-auto flex workspace bg-gray-800 p-4">
+            <div id="dragger" (edge)="checkEdge($event)" [bounds]="pdfboundes" [inBounds]="inBounds" (started)="onDragBegin($event)"
+                (movingOffset)="onMoving($event)" *ngIf="showCodeBar" ngDraggable ngResizable [rzAspectRatio]="true" [zIndex]="'1000'"
+                [position]="position" [rzMinWidth]="c[mode].min" [rzMaxWidth]="c[mode].max" class="absolute border border-blue-700"
+                style="position: absolute; border: #0062cc 1px solid;">
+                <img [src]="barCodeStr" class="h-full w-full" alt="barcode">
+            </div>
+
+            <div class="canvas-container mx-auto flex items-center" style="padding-top: 10px; padding-bottom: 10px;">
+                <div *ngIf="isLoaded"></div>
+                <div class="h-auto w-auto" #pdfboundes>
+                    <pdf-viewer
+                    id="pdfCapture"
+                    [src]="pdfSrc"
+                    [render-text]="true"
+                    [page]="page"
+                    [show-all]="false"
+                    class="block"
+                    (page-rendered)="pageRendered($event)"
+                    (after-load-complete)="afterLoadComplete($event)"
+                    #pdfViewer>
+                </pdf-viewer>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto mt-5" *ngIf="!isLoaded">
+            <div class="flex justify-center my-3">
+                <h1>
+                    <div class="lds-dual-ring mx-auto"></div>
+                </h1>
+            </div>
+            <div class="flex justify-center my-3">
+                <h3 class="text-gray-400">
+                    Chargement en cours.
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer p-4 bg-gray-100"></div>
+  </div>

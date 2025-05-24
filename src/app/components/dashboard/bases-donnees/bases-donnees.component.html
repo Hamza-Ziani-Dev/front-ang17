@@ -1,0 +1,69 @@
+<div class="container mx-auto p-1" *transloco="let translate">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="grid grid-cols-1 gap-8 mt-1">
+            <div class="p-2 flex flex-col items-center">
+                <div class="border rounded-lg shadow-sm w-full max-w-xl">
+                    <!-- Header -->
+                    <h2 class="text-lg font-semibold p-2 border-b-2 border-blue-600 text-center">
+                        {{translate('consoleadmin.basededonnees')}} :
+                    </h2>
+
+                    <!-- Toggle Switches Container -->
+                    <div class="p-4 bg-white shadow-lg rounded-lg flex flex-col items-center space-y-6">
+                        <!-- MySQL Toggle -->
+                        <div class="w-full flex justify-between items-center px-4">
+                            <span class="text-gray-700 font-semibold">{{translate('consoleadmin.mysql')}}</span>
+                            <div class="flex items-center">
+                                <div class="relative" (click)="toggleMySQL()">
+                                    <input type="checkbox" class="hidden" [(ngModel)]="isMySQLChecked"
+                                        (change)="onMySQLChange($event)">
+                                    <div class="w-12 h-6 rounded-full flex items-center p-1 cursor-pointer"
+                                        [ngClass]="{'bg-blue-500': isMySQLChecked, 'bg-gray-300': !isMySQLChecked}">
+                                        <div class="w-4 h-4 bg-white rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-6': isMySQLChecked, 'translate-x-0': !isMySQLChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Oracle Toggle -->
+                        <div class="w-full flex justify-between items-center px-4">
+                            <span class="text-gray-700 font-semibold">{{translate('consoleadmin.oracle')}}</span>
+                            <div class="flex items-center">
+                                <div class="relative" (click)="toggleOracle()">
+                                    <input type="checkbox" class="hidden" [(ngModel)]="isOracleChecked"
+                                        (change)="onOracleChange($event)">
+                                    <div class="w-12 h-6 rounded-full flex items-center p-1 cursor-pointer"
+                                        [ngClass]="{'bg-blue-500': isOracleChecked, 'bg-gray-300': !isOracleChecked}">
+                                        <div class="w-4 h-4 bg-white rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-6': isOracleChecked, 'translate-x-0': !isOracleChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Microsoft SQL Server Toggle -->
+                        <div class="w-full flex justify-between items-center px-4">
+                            <span
+                                class="text-gray-700 font-semibold">{{translate('consoleadmin.microsoftsqlserver')}}</span>
+                            <div class="flex items-center">
+                                <div class="relative" (click)="toggleMSSQL()">
+                                    <input type="checkbox" class="hidden" [(ngModel)]="isMSSQLChecked"
+                                        (change)="onMSSQLChange($event)">
+                                    <div class="w-12 h-6 rounded-full flex items-center p-1 cursor-pointer"
+                                        [ngClass]="{'bg-blue-500': isMSSQLChecked, 'bg-gray-300': !isMSSQLChecked}">
+                                        <div class="w-4 h-4 bg-white rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-6': isMSSQLChecked, 'translate-x-0': !isMSSQLChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

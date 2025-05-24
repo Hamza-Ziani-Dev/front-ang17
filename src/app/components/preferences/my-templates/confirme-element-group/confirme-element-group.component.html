@@ -1,0 +1,41 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center"
+    *transloco="let translate">
+    <div class="bg-card rounded-lg shadow-xl w-96">
+        <!-- Header -->
+        <div class="flex flex-wrap justify-between items-center p-2">
+            <h3 class="text-xl font-semibold">{{ title }}</h3>
+            <button (click)="cancel()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+        <!-- Line separator -->
+        <div class="h-1 bg-red-500">
+            <div class="h-full bg-yellow-300 w-1/5"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative max-h-[90vh] overflow-y-auto">
+            <form>
+                <div class="p-4">
+                    <label for="searchName" class="block text-blue-900 font-semibold">
+                        {{ message }} ?
+                    </label>
+                </div>
+            </form>
+
+
+            <!-- Dialog footer -->
+            <div class="bg-card p-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-md justify-start border-t">
+                <button class="flex items-center px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 mr-2"
+                    (click)="action('yes')">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> {{ btnYes }}
+                </button>
+                <button
+                    class="flex items-center px-2 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-100 mr-2"
+                    (click)="action('no')">
+                    <i class="fas fa-undo mr-2"></i> {{ btnNo }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

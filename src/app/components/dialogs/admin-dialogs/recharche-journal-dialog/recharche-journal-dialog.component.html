@@ -1,0 +1,86 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative w-full max-w-7xl mx-auto my-6">
+        <div class="relative flex flex-col w-full bg-card border-0 rounded-lg shadow-lg outline-none focus:outline-none" style="max-height: 80vh; min-height: 500px;">
+
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-1 ml-2 bg-gray-0">
+                <h3 class="text-1xl font-bold">Journal :</h3>
+                <a class="ml-auto cursor-pointer" >
+                    <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+                </a>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-600 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <div class="flex justify-center items-center">
+
+                    <!-- Table -->
+                    <form class="flex flex-col mt-1 pr-3 pl-3 pb-1 bg-card rounded-2xl overflow-hidden w-full">
+                        <div class="bg-card dark:bg-neutral-700">
+                            <table class="min-w-full w-full border-2 border-blue-500 shadow-lg rounded-lg text-left text-xs whitespace-nowrap">
+                                <thead class="uppercase tracking-wider bg-sky-600 text-white">
+                                    <tr>
+                                        <th class="px-2 py-3 text-center">Date</th>
+                                        <th class="px-2 py-3 text-center">Utilisateur</th>
+                                        <th class="px-2 py-3 text-center">Nom du Secondaire</th>
+                                        <th class="px-2 py-3 text-center">Type d'évènement</th>
+                                        <th class="px-2 py-3 text-center">Détails</th>
+                                        <th class="px-2 py-3 text-center">Composante</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let element of journalsData; let i = index" [ngClass]="i % 2 === 0 ? 'bg-card hover:bg-amber-100' : 'bg-blue-50 hover:bg-amber-100'">
+                                        <td class="px-1 py-2 text-center text-secondary">{{ element.date }}</td>
+                                        <td class="px-1 py-2 text-center text-secondary">{{ element.utilisateur }}</td>
+                                        <td class="px-1 py-2 text-center text-secondary">{{ element.nomSecondaire }}</td>
+                                        <td class="px-1 py-2 text-center text-secondary">{{ element.typeEvenement }}</td>
+                                        <td class="px-1 py-2 text-center text-secondary">
+                                            <i class="fa-solid fa-circle-info primary-color icon-size-4"></i>
+                                        </td>
+                                        <td class="px-1 py-2 text-center text-secondary">{{ element.composante }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination -->
+                            <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+                                <ul class="list-style-none flex">
+                                    <li>
+                                        <a class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">{{translate('common.precedent')}}</a>
+                                    </li>
+                                    <li>
+                                        <a class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">1</a>
+                                    </li>
+                                    <li aria-current="page">
+                                        <a class="block rounded bg-blue-100 px-3 py-1.5 text-blue-700 font-medium">2</a>
+                                    </li>
+                                    <li>
+                                        <a class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">3</a>
+                                    </li>
+                                    <li>
+                                        <a class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">{{translate('common.suivant')}}</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Line separator -->
+            <div class="w-full h-0.5" style="background: linear-gradient(to right, #ffc107, #007bff);"></div>
+
+            <!-- Dialog footer -->
+            <div class="bg-card px-2 py-1 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg justify-center">
+                <button type="button" class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fas fa-undo mr-2"></i>
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

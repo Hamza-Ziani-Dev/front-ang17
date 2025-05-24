@@ -1,0 +1,35 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col md:flex-row w-full">
+        <div class=" bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full">
+            <table class="text-left text-xs whitespace-nowrap mx-auto border-2 border-blue-500 shadow-lg w-full">
+                <thead class="uppercase tracking-wider dark:border-neutral-600 bg-sky-600 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.nomcomplet') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.dateconnexion') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.finsession') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (utilisateur of utilisateursConnectes; track utilisateur; let i = $index ) {
+                    <tr [ngClass]="i % 2 === 0 ? 'bg-card hover:bg-amber-100' : 'bg-blue-50 hover:bg-amber-100'">
+                        <th scope="row" class="px-2 py-1 text-center">{{utilisateur.nom}}</th>
+                        <td class="px-2 text-center">{{utilisateur.dateconnecxion}}</td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button>
+                                    <i class="fa-solid fa-right-from-bracket icon-size-4 red-color "></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>

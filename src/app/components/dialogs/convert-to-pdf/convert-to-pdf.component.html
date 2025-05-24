@@ -1,0 +1,31 @@
+<div class="flex items-center justify-between p-4 border-b border-gray-300">
+    <h5 class="text-lg font-bold text-blue-900">Convertir en PDF</h5>
+    <button (click)="action('no')" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+        &times;
+    </button>
+</div>
+
+<div class="w-full bg-primary-500 h-1">
+    <div class="bg-red-600 h-full w-1/5"></div>
+</div>
+
+<div class="p-4">
+    <form>
+        <div class="mb-4">
+            <label for="searchName" class="font-bold text-blue-900">Voulez-vous convertir le fichier en PDF ?</label>
+        </div>
+    </form>
+</div>
+
+<div class="flex justify-end p-2 border-t border-gray-300">
+    <button
+        class="btn-outline-secondary mr-2 flex items-center text-gray-700 border border-gray-300 px-2 py-1 rounded hover:bg-gray-100"
+        (click)="action('no')">
+        <i class="fas fa-undo mr-2"></i>No
+    </button>
+
+    <button class="btn-primary flex items-center bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+        (click)="action('yes')">
+        <i class="fas fa-check mr-2"></i>Yes
+    </button>
+</div>

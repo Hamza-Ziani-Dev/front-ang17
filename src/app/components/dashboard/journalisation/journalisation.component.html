@@ -1,0 +1,81 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <div class="flex justify-end mb-2">
+        <div class="flex items-center  ">
+            <button (click)="openAjouterJournalDialog()"
+                class="bg-blue-500 ml-1 text-white rounded-full px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                <i class="fa-solid fa-users mr-1"></i>
+                {{ translate('consoleadmin.journal') }}
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col md:flex-row w-full">
+        <div class="bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full">
+            <!-- Level Controls -->
+            <div class="space-y-6 p-4">
+                <!-- Low Level -->
+                <div class="flex items-center justify-around">
+                    <label class="text-navy-700 font-medium">{{ translate('consoleadmin.niveaufaible') }} :</label>
+                    <div class="flex items-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full
+                                     peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5
+                                     after:left-[2px] after:bg-white after:border-gray-300 after:border
+                                     after:rounded-full after:h-5 after:w-5 after:transition-all
+                                     peer-checked:bg-blue-500"></div>
+                        </label>
+                        <button class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-info-circle icon-size-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medium Level -->
+                <div class="flex items-center justify-around">
+                    <label class="text-navy-700 font-medium">{{ translate('consoleadmin.niveaumoyen') }} :</label>
+                    <div class="flex items-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full
+                                     peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5
+                                     after:left-[2px] after:bg-white after:border-gray-300 after:border
+                                     after:rounded-full after:h-5 after:w-5 after:transition-all
+                                     peer-checked:bg-blue-500"></div>
+                        </label>
+                        <button class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-info-circle icon-size-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- High Level -->
+                <div class="flex items-center justify-around">
+                    <label class="text-navy-700 font-medium">{{ translate('consoleadmin.niveauelevé') }}:</label>
+                    <div class="flex items-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full
+                                     peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5
+                                     after:left-[2px] after:bg-white after:border-gray-300 after:border
+                                     after:rounded-full after:h-5 after:w-5 after:transition-all
+                                     peer-checked:bg-blue-500"></div>
+                        </label>
+                        <button class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-info-circle icon-size-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Validate Button -->
+                <div class="flex justify-center mt-8">
+                    <button class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600
+                                 transition duration-200 flex items-center gap-2">
+                        <i class="fas fa-check"></i>
+                        {{ translate('common.valider') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

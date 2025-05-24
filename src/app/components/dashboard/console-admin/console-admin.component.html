@@ -1,0 +1,462 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <!-- Drawer -->
+        <mat-drawer #drawer mode="over" class="bg-gray-800 text-white">
+            <div class="flex flex-col p-4">
+                <a (click)="selectTab('organisme')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'organisme' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.organisme') }}</a>
+
+                <a (click)="selectTab('organigramme')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'organigramme' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.organigramme') }}</a>
+
+                <a (click)="selectTab('utilisateurs')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'utilisateurs' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.utilisateurs')}}</a>
+
+                <a (click)="selectTab('types-courrier')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'types-courrier' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.typescourrier') }}</a>
+
+                <a (click)="selectTab('types-document')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'types-document' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.typesdocument') }}</a>
+
+                <a (click)="selectTab('groupes-documents')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'groupes-documents' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.groupesdocuments') }}</a>
+
+                <a (click)="selectTab('catégories-courrier')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'catégories-courrier' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.catégoriescourrier') }}</a>
+
+                <a (click)="selectTab('attributs')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'attributs' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.attributs') }}</a>
+
+                <a (click)="selectTab('processus')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'processus' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.processus') }}</a>
+
+                <!-- {{ translate('consoleadmin.securite') }} Dropdown -->
+                <div class="relative">
+                    <button (click)="toggleDropdown()"
+                        [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                        class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.securite') }}</button>
+
+                    <div *ngIf="isDropdownOpen" class="mt-2">
+                        <a (click)="openListesControlesAcces(); selectTab('securite')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                            class="block px-2 py-1 hover:bg-gray-100">{{ translate('consoleadmin.listcontrolesaccess') }}</a>
+                        <a (click)="openPrivilege(); selectTab('securite')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                            class="block px-2 py-1 hover:bg-gray-100">{{ translate('consoleadmin.privilège') }}</a>
+                    </div>
+                </div>
+
+                <a (click)="selectTab('profils-absence')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'profils-absence' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.profilsabsence') }}</a>
+
+                <a (click)="selectTab('notification')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'notification' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.notification') }}</a>
+
+                <a (click)="selectTab('registre-electronique')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'registre-electronique' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.registreelectronique') }}</a>
+
+                <a (click)="selectTab('destinataires')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'destinataires' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.destinataires') }}</a>
+
+                <a (click)="selectTab('emetteurs')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'emetteurs' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.emetteurs') }}</a>
+
+                <a (click)="selectTab('ldap')" [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'ldap' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.ldap') }}</a>
+
+                <a (click)="selectTab('volumes-stockage')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'volumes-stockage' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.volumesstockage') }}</a>
+
+                <a (click)="selectTab('utilisateurs-connectés')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'utilisateurs-connectés' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.utilisateursconnectés') }}</a>
+
+                <a (click)="selectTab('bases-données')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'bases-données' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.basededonnees') }}</a>
+
+                <a (click)="selectTab('configuration-bordereau')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-bordereau' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.configurationbordereau') }}</a>
+
+                <a (click)="selectTab('configuration-rapport')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-rapport' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.configurationrapport') }}</a>
+
+                <a (click)="selectTab('en-tête')" [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'en-tête' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.entête') }}</a>
+
+                <a (click)="selectTab('journalisation')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'journalisation' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.journalisation') }}</a>
+
+                <a (click)="selectTab('comptes-désactivés')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'comptes-désactivés' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.comptesdésactivés') }}</a>
+
+                <a (click)="selectTab('flux-electronique')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'flux-electronique' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.fluxelectronique') }}</a>
+
+                <a (click)="selectTab('chaînes-connexion')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'chaînes-connexion' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.chaînesconnexions') }}</a>
+
+                <a (click)="selectTab('configuration-documania-capture')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-documania-capture' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.configurationdocumaniacapture') }}</a>
+
+                <a (click)="selectTab('intégration-configuration')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'intégration-configuration' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.intégrationconfiguration') }}</a>
+
+                <a (click)="selectTab('qualités')" [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'qualités' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.qualités') }}</a>
+
+                <a (click)="selectTab('groupe-utilisateurs')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'groupe-utilisateurs' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.groupesutilisateurs') }}</a>
+
+                <a (click)="selectTab('archive-physique')"
+                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'archive-physique' }"
+                    class="py-2 text-sm font-medium rounded">{{ translate('consoleadmin.archivephysique') }}</a>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+
+
+        <mat-drawer-content class="flex flex-col bg-gray-100 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+                <!-- Header -->
+                <div class="bg-sky-600 text-white flex items-center justify-between p-2">
+                    <button mat-icon-button (click)="drawer.toggle()" *ngIf="isMobile" class="ml-12 flex items-center">
+                        <mat-icon class="ml-2">menu</mat-icon>
+                        <span class="ml-2 text-lg font-semibold">{{ translate('consoleadmin.admin') }}</span>
+                    </button>
+
+                    <div class="hidden md:flex flex-wrap items-center">
+                        <a (click)="selectTab('organisme')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'organisme' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.organisme') }}</a>
+
+                        <a (click)="selectTab('organigramme')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'organigramme' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.organigramme') }}</a>
+                        <a (click)="selectTab('utilisateurs')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'utilisateurs' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.utilisateurs')}}</a>
+                        <a (click)="selectTab('types-courrier')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'types-courrier' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.typescourrier') }}</a>
+                        <a (click)="selectTab('types-document')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'types-document' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.typesdocument') }}</a>
+                        <a (click)="selectTab('groupes-documents')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'groupes-documents' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors mr-4">
+                            {{ translate('consoleadmin.groupesdocuments') }}</a>
+                        <a (click)="selectTab('catégories-courrier')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'catégories-courrier' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.catégoriescourrier') }}</a>
+                        <a (click)="selectTab('attributs')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'attributs' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.attributs') }}</a>
+                        <a (click)="selectTab('processus')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'processus' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.processus') }}</a>
+                        <div class="hidden md:flex flex-wrap items-center">
+                            <div class="relative">
+                                <!-- Main button to toggle the dropdown -->
+                                <button (click)="toggleDropdown()"
+                                    [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                                    class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                                    {{ translate('consoleadmin.securite') }}
+                                </button>
+
+                                <!-- Dropdown menu -->
+                                <div *ngIf="isDropdownOpen"
+                                    class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded">
+                                    <a (click)="openListesControlesAcces(); selectTab('securite')"
+                                        [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                                        class="block px-2 py-1 text-gray-800 hover:bg-gray-100">
+                                        {{ translate('consoleadmin.listcontrolesaccess') }}
+                                    </a>
+                                    <a (click)="openPrivilege(); selectTab('securite')"
+                                        [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'securite' }"
+                                        class="block px-2 py-1 text-gray-800 hover:bg-gray-100">
+                                        {{ translate('consoleadmin.privilège') }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a (click)="selectTab('profils-absence')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'profils-absence' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.profilsabsence') }}</a>
+                        <a (click)="selectTab('notification')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'notification' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            notifications</a>
+                        <a (click)="selectTab('registre-electronique')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'registre-electronique' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.registreelectronique') }}</a>
+                        <a (click)="selectTab('destinataires')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'destinataires' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.destinataires') }}</a>
+                        <a (click)="selectTab('emetteurs')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'emetteurs' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.emetteurs') }}</a>
+                        <a (click)="selectTab('ldap')" [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'ldap' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.ldap') }}</a>
+                        <a (click)="selectTab('volumes-stockage')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'volumes-stockage' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.volumesstockage') }}</a>
+                        <a (click)="selectTab('utilisateurs-connectés')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'utilisateurs-connectés' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.utilisateursconnectés') }}</a>
+                        <a (click)="selectTab('bases-données')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'bases-données' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.basededonnees') }}</a>
+                        <a (click)="selectTab('configuration-bordereau')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-bordereau' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.configurationbordereau') }}</a>
+                        <a (click)="selectTab('configuration-rapport')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-rapport' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.configurationrapport') }}</a>
+                        <a (click)="selectTab('en-tête')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'en-tête' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.entête') }}</a>
+                        <a (click)="selectTab('journalisation')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'journalisation' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.journalisation') }}</a>
+                        <a (click)="selectTab('comptes-désactivés')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'comptes-désactivés' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.comptesdésactivés') }}</a>
+                        <a (click)="selectTab('flux-electronique')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'flux-electronique' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.fluxelectronique') }}</a>
+                        <a (click)="selectTab('chaînes-connexion')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'chaînes-connexion' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            Chaînes De Connexion</a>
+                        <a (click)="selectTab('configuration-documania-capture')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'configuration-documania-capture' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.configurationdocumaniacapture') }}</a>
+                        <a (click)="selectTab('intégration-configuration')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'intégration-configuration' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.intégrationconfiguration') }}</a>
+                        <a (click)="selectTab('qualités')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'qualités' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.qualités') }}</a>
+                        <a (click)="selectTab('groupe-utilisateurs')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'groupe-utilisateurs' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.groupesutilisateurs') }}</a>
+                        <a (click)="selectTab('archive-physique')"
+                            [ngClass]="{ 'bg-cyan-50 text-blue-500': activeTab === 'archive-physique' }"
+                            class="px-3 py-2 text-sm font-medium rounded whitespace-nowrap hover:bg-cyan-50 hover:text-blue-500 transition-colors">
+                            {{ translate('consoleadmin.archivephysique') }}</a>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+
+
+                <!-- Subheader -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                         <!-- Button Retour -->
+                       <button type="button" data-twe-ripple-init data-twe-ripple-color="light"
+                       class="inline-block rounded-md bg-gray-800 mr-2 px-4 pb-[5px] pt-[6px] text-xs font-medium leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-gray-700 dark:focus:shadow-gray-700 dark:active:shadow-gray-900">
+                       <i class="fa-solid fa-arrow-rotate-left"></i>
+                       <span class="ml-1 hidden sm:inline">{{translate('common.retour')}}</span>
+                      </button>
+                        <div class="mr-2 h-5 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            {{ activeTab | titlecase }} :
+                        </div>
+                    </div>
+                </div>
+                <!-- End Subheader -->
+
+                <div class="h-1 bg-gradient-to-r from-yellow-400 via-blue-500 to-blue-500"></div>
+
+                <!-- Content Based on Selected Tab -->
+                <div class="flex justify-center items-center w-full">
+                    <ng-container [ngSwitch]="activeTab">
+                        <div *ngSwitchCase="'organisme'" class="w-full ">
+                            <app-organisme></app-organisme>
+                        </div>
+                        <div *ngSwitchCase="'organigramme'" class="w-full ">
+                            <app-organigramme></app-organigramme>
+                        </div>
+
+                        <div *ngSwitchCase="'utilisateurs'" class="w-full ">
+                            <app-utilisateurs></app-utilisateurs>
+                        </div>
+
+
+                        <div *ngSwitchCase="'types-courrier'" class="w-full ">
+                            <app-types-courriers></app-types-courriers>
+                        </div>
+
+
+                        <div *ngSwitchCase="'types-document'" class="w-full ">
+                            <app-types-documents></app-types-documents>
+                        </div>
+
+                        <div *ngSwitchCase="'groupes-documents'" class="w-full ">
+                            <app-groups-documents></app-groups-documents>
+                        </div>
+
+                        <div *ngSwitchCase="'catégories-courrier'" class="w-full ">
+                            <app-categories-courriers></app-categories-courriers>
+                        </div>
+
+                        <div *ngSwitchCase="'attributs'" class="w-full ">
+                            <app-attributs></app-attributs>
+                        </div>
+
+                        <div *ngSwitchCase="'processus'" class="w-full ">
+                            <app-processus></app-processus>
+                        </div>
+
+                        <div [ngSwitch]="activeTab" *ngSwitchCase="'securite'" class="w-full">
+                            <app-securite [selectedContent]="selectedContent"></app-securite>
+                        </div>
+
+                        <div *ngSwitchCase="'profils-absence'" class="w-full ">
+                            <app-profile-absence></app-profile-absence>
+                        </div>
+
+                        <div *ngSwitchCase="'notification'" class="w-full ">
+                            <app-notifications></app-notifications>
+                        </div>
+
+                        <div *ngSwitchCase="'registre-electronique'" class="w-full ">
+                            <app-registre-electronique></app-registre-electronique>
+                        </div>
+
+                        <div *ngSwitchCase="'destinataires'" class="w-full ">
+                            <app-destinataires></app-destinataires>
+                        </div>
+
+                        <div *ngSwitchCase="'emetteurs'" class="w-full ">
+                            <app-emetteurs></app-emetteurs>
+                        </div>
+
+                        <div *ngSwitchCase="'ldap'" class="w-full ">
+                            <app-ldap></app-ldap>
+                        </div>
+
+                        <div *ngSwitchCase="'volumes-stockage'" class="w-full ">
+                            <app-volumes-stockage></app-volumes-stockage>
+                        </div>
+
+                        <div *ngSwitchCase="'utilisateurs-connectés'" class="w-full ">
+                            <app-utilisateurs-connectes></app-utilisateurs-connectes>
+                        </div>
+                        <div *ngSwitchCase="'bases-données'" class="w-full ">
+                            <app-bases-donnees></app-bases-donnees>
+                        </div>
+                        <div *ngSwitchCase="'configuration-bordereau'" class="w-full ">
+                            <app-configuration-bordereau></app-configuration-bordereau>
+                        </div>
+                        <div *ngSwitchCase="'configuration-rapport'" class="w-full ">
+                            <app-configuration-rapport></app-configuration-rapport>
+                        </div>
+                        <div *ngSwitchCase="'en-tête'" class="w-full ">
+                            <app-en-tete></app-en-tete>
+
+                        </div>
+                        <div *ngSwitchCase="'journalisation'" class="w-full ">
+                            <app-journalisation></app-journalisation>
+
+                        </div>
+                        <div *ngSwitchCase="'comptes-désactivés'" class="w-full ">
+                            <app-comptes-desactives></app-comptes-desactives>
+
+                        </div>
+                        <div *ngSwitchCase="'flux-electronique'" class="w-full ">
+                            <app-flux-electronique></app-flux-electronique>
+                        </div>
+                        <div *ngSwitchCase="'chaînes-connexion'" class="w-full ">
+                            <app-chaines-connexion></app-chaines-connexion>
+                        </div>
+                        <div *ngSwitchCase="'configuration-documania-capture'" class="w-full ">
+                            <app-configuration-documania-capture></app-configuration-documania-capture>
+                        </div>
+                        <div *ngSwitchCase="'intégration-configuration'" class="w-full ">
+                            <app-integration-configuration></app-integration-configuration>
+                        </div>
+                        <div *ngSwitchCase="'qualités'" class="w-full ">
+                            <app-qualites></app-qualites>
+                        </div>
+                        <div *ngSwitchCase="'groupe-utilisateurs'" class="w-full ">
+                            <app-groupe-utilisateurs></app-groupe-utilisateurs>
+                        </div>
+                        <div *ngSwitchCase="'archive-physique'" class="w-full ">
+                            <app-archive-physique></app-archive-physique>
+                        </div>
+
+
+                    </ng-container>
+                </div>
+
+
+
+                <!-- No Data template -->
+                <ng-template #NoData>
+                    <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                        <mat-icon class="icon-size-20" [svgIcon]="'heroicons_outline:folder-open'"></mat-icon>
+                        <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                            {{ translate('common.aucuncourrier') }}
+                        </div>
+                    </div>
+                </ng-template>
+                <!-- End No Data template -->
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

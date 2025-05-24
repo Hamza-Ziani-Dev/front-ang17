@@ -1,0 +1,37 @@
+<div class="flex justify-between items-center p-4 border-b border-gray-300" *transloco="let translate">
+    <h5 class="text-xl font-semibold text-gray-800">
+        {{translate('closePopupConfirme.title')}}
+    </h5>
+    <a class="ml-auto cursor-pointer" (click)="this.dialogRef.close()">
+        <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+    </a>
+  
+
+  <div class="bg-primary p-2">
+    <div class="bg-red-500 h-1 w-1/5"></div>
+  </div>
+
+  <div class="p-4">
+    <form>
+      <div class="mb-4">
+        <label for="searchName" class="text-gray-800 font-semibold">
+            {{translate('closePopupConfirme.text')}}
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <div class="flex justify-end p-4 space-x-2">
+    <button
+      class="bg-red-600 text-white hover:bg-blue-600 px-2 py-1 rounded"
+      (click)="action('yes')">
+      <i class="fas fa-times"></i> {{translate('closePopupConfirme.ignore')}}
+    </button>
+
+    <button
+      class="bg-gray-300 text-gray-800 hover:bg-gray-400 px-2 py-1 rounded"
+      (click)="action('no')">
+      <i class="fas fa-undo mr-2"></i> {{translate('closePopupConfirme.Annuler')}}
+    </button>
+  </div>
+</div>

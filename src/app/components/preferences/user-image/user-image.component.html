@@ -1,0 +1,78 @@
+<div class="w-full rounded-md border border-gray-200 shadow-sm" *transloco="let translate">
+
+    <!-- Content -->
+    <div class="p-4">
+        <form [formGroup]="formG">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border rounded-md shadow-sm">
+                    <!-- Card header -->
+                    <div class="px-4 py-3 border-b bg-gray-200">
+                        <h5 class="font-bold text-gray-800">{{translate('preferences.informations')}}</h5>
+                    </div>
+
+                    <!-- Blue header bar -->
+                    <div class="h-1 bg-blue-500"></div>
+
+                    <!-- Card body -->
+                    <div class="p-4 bg-white" style="min-height: 300px;">
+                        <div class="mb-6">
+                            <label for="myInput"
+                                class="block text-sm font-medium text-gray-700 mb-1">{{translate('preferences.photo')}}</label>
+                            <div class="flex">
+                                <input type="text" readonly
+                                    class="flex-1 border border-r-0 rounded-l-md py-1 px-2 text-gray-700 bg-white"
+                                    placeholder="Choose file" [value]="fileModel.fileName || 'Choose file'" />
+                                <label for="myInput"
+                                    class="cursor-pointer bg-gray-200 border border-l-0 rounded-r-md py-1 px-2 text-gray-700">
+                                    {{translate('preferences.browse')}}
+                                </label>
+                                <input type="file" id="myInput" class="hidden" (change)="fileChangeEvent($event)"
+                                    required accept="image/*" formControlName="logo" />
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-2 mb-6">
+                            <button (click)="clear()"
+                                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                <i class="fas fa-undo mr-2"></i> {{translate('common.annuler')}}
+                            </button>
+                            <button *ngIf="logo!=null" (click)="deleteImage()"
+                                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-red-700 bg-white hover:bg-red-300">
+                                <i class="fas fa-undo mr-2"></i> {{translate('common.delete')}}
+                            </button>
+                            <!-- <button *ngIf="logo!=null" (click)="deleteImage()" class="btn rounded btn-outline-danger ml-3"><i class="fas fa-trash"></i> {{config.c.index.supp}}</button> -->
+                            <button (click)="up()"
+                                class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600">
+                                <i class="fas fa-edit mr-2"></i> {{translate('common.modifier')}}
+                            </button>
+                        </div>
+
+                        <div class="flex items-start text-green-600">
+                            <i class="fas fa-info-circle mt-1 mr-2"></i>
+                            <p class="text-sm">{{translate('preferences.tailleimage')}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right column - Image Preview -->
+                <div class="border rounded-md shadow-sm">
+                    <div class="px-4 py-3 border-b bg-gray-200">
+                        <h5 class="font-bold text-gray-800">{{translate('preferences.aperçuimage')}}</h5>
+                    </div>
+
+                    <!-- Blue header bar -->
+                    <div class="h-1 bg-blue-500"></div>
+
+                    <!-- Card body -->
+                    <div class="p-4  bg-white flex items-center justify-center" style="min-height: 300px;">
+                        <div
+                            class="w-32 h-32 rounded-md border-2 border-gray-300 bg-white flex items-center justify-center p-2">
+                            <img id="myImg" class="max-w-full max-h-full"
+                                [src]="!logo ? 'assets/'+us['sexe']+'.png' : logo" alt="Profile image" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

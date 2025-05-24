@@ -1,0 +1,62 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center" *transloco="let translate">
+    <div class="bg-card rounded-lg shadow-xl">
+      <!-- Header -->
+      <div class="flex justify-between items-center p-2">
+        <h3 class="text-xl font-semibold">{{ data.title }}</h3>
+
+          <button (click)="close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+            &times;
+        </button>
+      </div>
+
+      <!-- Line separator -->
+      <div class="h-1 bg-blue-500">
+        <div class="h-full bg-yellow-400 w-1/5"></div>
+      </div>
+      <!-- Content -->
+      <div class="p-6">
+        <form>
+          <div class="form-group">
+            <label for="searchName" class="midnight-blue" style="font-weight: 700;">
+              {{ data.message }}
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-card px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg border-t border-gray-200">
+        <ng-container *ngIf="!data.isDialog">
+       <button
+       style="background-color: var(--red-color); color: var(--white-color);"
+       (click)="dialogRef.close()"
+       class="flex items-center gap-2 px-2 py-1 rounded hover:bg-red-700 transition mr-1"
+     >
+       <i class="fas fa-times font-extrabold text-2xl leading-none"></i>
+       {{ translate('common.close') }}
+     </button>
+        </ng-container>
+
+        <ng-container *ngIf="data.isDialog">
+          <button
+          (click)="respTo('no')"
+          type="button"
+          class="inline-flex items-center justify-center gap-2 px-1 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:bg-sky-500 dark:text-gray-300 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+        >
+        <i class="fa-solid fa-arrow-rotate-left font-extrabold text-2xl leading-none"></i>
+            {{ translate('common.annuler') }}
+       </button>
+       <button
+             style="background-color: var(--red-color); color: var(--white-color);"
+            (click)="respTo('yes')"
+             class="flex items-center gap-2 px-2 py-1 rounded hover:bg-red-700 transition mr-1"
+             >
+             <i class="fas fa-times font-extrabold text-2xl leading-none"></i>
+              {{ translate('common.close') }}
+        </button>
+
+        </ng-container>
+      </div>
+    </div>
+  </div>
+

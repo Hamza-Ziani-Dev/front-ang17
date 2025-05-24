@@ -1,0 +1,36 @@
+<ng-container *ngIf="!hidden">
+    <!-- QR Code Generator Component -->
+    <ngx-kjua
+      [text]="textEnc()"
+      [render]="render"
+      [crisp]="crisp"
+      [minVersion]="minVersion"
+      [ecLevel]="ecLevel"
+      [size]="size"
+      [ratio]="ratio"
+      [fill]="fill"
+      [back]="back"
+      [rounded]="rounded"
+      [quiet]="quiet"
+      [mode]="mode"
+      [mSize]="[mSize, mSize2]"
+      [mPosX]="[mPosX, mPosX2]"
+      [mPosY]="[mPosY, mPosY2]"
+      [label]="label"
+      [fontname]="fontname"
+      [fontcolor]="fontcolor"
+      [fontoutline]="fontoutline"
+      [image]="image"
+      [imageAsCode]="imageAsCode">
+    </ngx-kjua>
+  </ng-container>
+
+  <!-- Hidden Image that will be loaded to be used in QR code -->
+  <img
+  id="img-buffer"
+  class="hidden"
+  src="assets/logo/documania-qr-image.png"
+  (load)="imgLoaded($event)"
+  #imgBuffer />
+
+

@@ -1,0 +1,92 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-1 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    Update Attributes
+                </h3>
+                <a class="ml-auto cursor-pointer" >
+                    <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+                </a>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-600 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <form class="flex flex-col mt-1 pr-3 pl-3 pb-1 bg-card rounded-2xl  overflow-hidden">
+
+
+
+                    <!--   Libellé : -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="libellé" class="block text-sm font-medium "> Libellé :</label>
+                            <input type="text" id="libellé"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="libellé">
+                        </div>
+                    </div>
+
+                    <!--   Libellé en français *: -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="libelléfr" class="block text-sm font-medium "> Libellé en français :</label>
+                            <input type="text" id="libelléfr"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="libellé en français ">
+                        </div>
+                    </div>
+
+                    <!--   Libellé en arabe : -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="libelléar" class="block text-sm font-medium "> Libellé en arabe :</label>
+                            <input type="text" id="libelléar"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="libellé en arabe ">
+                        </div>
+                    </div>
+
+                    <!--   Libellé en englais : -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="libelléen" class="block text-sm font-medium "> Libellé en englais :</label>
+                            <input type="text" id="libelléen"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="libellé en englais ">
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <!-- Line separator -->
+            <div class="w-full h-0.5" style="background: linear-gradient(to right, #ffc107, #007bff);">
+            </div>
+            <!-- Dialog footer -->
+            <div class="bg-card px-2 py-1 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-lg justify-center">
+                <button type="button"
+                    class="w-full inline-flex justify-center items-center rounded-md border border-transparent shadow-sm px-2 py-1 bg-blue-600 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>
+                    Update
+                </button>
+
+                <button type="button" mat-dialog-close
+                    class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <i class="fas fa-undo mr-2"></i>
+                    Annuler
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

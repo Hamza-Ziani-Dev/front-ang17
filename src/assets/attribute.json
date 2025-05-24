@@ -1,0 +1,57 @@
+[
+  {
+    "name": "DateCourrier",
+    "type": "date",
+    "defaulte": ""
+  },
+  {
+    "name": "DateEnregistrement",
+    "type": "date",
+    "defaulte": ""
+  },
+  {
+    "name": "Destinataire",
+    "type": "text",
+    "defaulte": ""
+  },
+  {
+    "name": "Expediteur",
+    "type": "text",
+    "defaulte": ""
+  },
+  {
+    "name": "Nature_Document",
+    "type": "text",
+    "defaulte": "Normale"
+  },
+  {
+    "name": "Nom_Dossier",
+    "type": "text",
+    "defaulte": "Autres"
+  },
+{
+    "name": "Nom_Dossier1",
+    "type": "text",
+    "defaulte": "Autres"
+  },
+{
+    "name": "Nom_Dossier2",
+    "type": "text",
+    "defaulte": "Autres"
+  },
+{
+    "name": "Nom_Dossier3",
+    "type": "text",
+    "defaulte": "Autres"
+  },
+  {
+    "name": "Num_Courrier",
+    "type": "text",
+    "defaulte": ""
+  },
+  {
+    "name": "ObjetCourrier",
+    "type": "text",
+    "defaulte": ""
+  }
+]

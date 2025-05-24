@@ -1,0 +1,104 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    {{translate('common.envoyerdocument')}}
+                </h3>
+                <button (click)="closeDialog()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <form [formGroup]="myform" class="space-y-4">
+                    <!-- Email field -->
+                    <div>
+                        <label class="text-blue-900 font-semibold block mb-1">
+                            {{translate('common.adressedestinataire')}}
+                        </label>
+                        <div class="flex items-start ">
+                            <input type="text" readonly disabled *ngIf="1 >= mailList.length"
+                                class="w-full border border-gray-300 bg-gray-100 rounded px-3 py-2"
+                                formControlName="mailto" />
+                            <textarea disabled readonly *ngIf="mailList.length > 1"
+                                class="w-full border border-gray-300 rounded px-3 py-2 resize-y"
+                                formControlName="mailto"></textarea>
+
+                            <button type="button" (click)="openModal()"
+                                class="px-3 py-2 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CC field -->
+                    <div>
+                        <label class="text-blue-900 font-semibold block mb-1">
+                            CC :
+                        </label>
+                        <div class="flex items-start">
+                            <input type="text" readonly *ngIf="ccList.length <= 1" disabled formControlName="cc"
+                                class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-500 cursor-not-allowed opacity-70" />
+                            <textarea readonly *ngIf="ccList.length > 1" disabled formControlName="cc"
+                                class="w-full border border-gray-300 rounded px-3 py-2 resize-y bg-gray-100 text-gray-500 cursor-not-allowed opacity-70"></textarea>
+
+                            <button type="button" (click)="openModalcc()"
+                                class="px-3 py-2 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300">
+                                +
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Subject field -->
+                    <div>
+                        <label class="text-blue-900 font-semibold block mb-1">
+                            {{translate('common.objet')}} :
+                        </label>
+                        <input type="text" class="w-full border border-gray-300 rounded px-3 py-2"
+                            formControlName="obj" />
+                    </div>
+
+                    <!-- Message field -->
+                    <div>
+                        <label class="text-blue-900 font-semibold block mb-1">
+                            {{translate('common.message')}} :
+                        </label>
+                        <textarea class="w-full border border-gray-300 rounded px-3 py-2 resize-y"
+                            formControlName="body"></textarea>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <!-- Dialog footer -->
+            <div class="bg-card p-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-md justify-start border-t">
+                <!-- Button -->
+                <button type="button" [disabled]="myform.invalid || mailList.length == 0"
+                    (click)="isloading ? false : send()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="mr-2 text-white"
+                        [class]="isloading? 'fas fa-circle-notch fa-spin' : 'fas fa-envelope'"></i>
+                    {{translate('common.envoyer')}}
+                </button>
+
+                <button type="button" (click)="clear()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{translate('common.annuler')}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

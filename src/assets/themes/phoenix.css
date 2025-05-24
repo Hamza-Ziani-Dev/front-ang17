@@ -1,0 +1,91 @@
+.btn-primary, .bg-primary {
+    background-color: #074d68!Important;
+}
+
+.btn-warning, .bg-warning {
+    background-color: #f37e29!Important;
+}
+
+.text-warning {
+    color: #f37e29!Important;
+}
+
+#sidebar-wrapper {
+    background-color: #074d68!Important;
+}
+
+a.list-group-item.active, a.list-group-item:hover {
+    background-color: #00000017!important;
+}
+
+a.list-group-item.active span, a.list-group-item:hover span {
+    color: #C3C3C3;
+}
+
+.list-group-item span {
+    color: #ffff !Important;
+}
+
+.header-sidebar {
+    background-color: rgb(6 70 95)!important;
+}
+
+.header-separator {
+    background-color: #074d68;
+}
+
+.sidebar-divider {
+    background-color: hsla(0, 0%, 100%, 0.15);
+}
+
+thead.table-header {
+    background-color: #074d68!important;
+    border-color: #074d68!important;
+}
+
+.documents-table thead, .documents-table {
+    border-color: #074d68!important;
+}
+
+.toast-warning {
+    background-color: #074d68!important;
+}
+
+.text-primary {
+    color: #074d68!important;
+}
+
+.tooltipl-class {
+    background-color: #074d68!important;
+}
+
+.tooltipl-class .tooltip-inner {
+    background-color: #074d68 !important;
+}
+
+.tooltip-class .arrow::before {
+    border-top-color: #074d68 !important;
+}
+
+input:checked+.slider {
+    background-color: #074d68!important;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #074d68!important;
+}
+
+.ngx-pagination .current {
+    background: #074d68!important;
+
+}
+
+.console-admin-header{
+    background-color: #06465f!important;
+  }
+
+  .nav-tabs .nav-link.active,.nav-tabs .nav-link:hover{
+
+    border-color: #06465f!important;
+    color: #06465f!important;
+  }

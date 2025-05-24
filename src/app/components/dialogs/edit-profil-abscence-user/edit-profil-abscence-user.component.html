@@ -1,0 +1,66 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-1 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    {{ translate('preferences.modifierprofileabsence') }} :
+                </h3>
+                <button (click)="close()"
+                    class="text-gray-900 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+              <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div class="p-4">
+                <form [formGroup]="formGroup" class="space-y-4">
+                    <div>
+                        <label class="block font-semibold text-blue-900 mb-1">{{ translate('preferences.suppléant')}}</label>
+                        <select
+                            formControlName="idSup"
+                            class="custom-select-remove-arrow block w-full rounded border border-gray-300 bg-gray-100 px-4 py-2 text-gray-700 cursor-not-allowed appearance-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            disabled>
+                            <option *ngFor="let u of users" [value]="u['fullName']">
+                            {{ u['fullName'] }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-blue-900 mb-1">{{ translate('preferences.datedébut')
+                            }}</label>
+                        <input type="date" formControlName="dateDebut" [min]="date | date:'yyyy-MM-dd'"
+                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200" />
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-blue-900 mb-1">{{ translate('preferences.datefin')
+                            }}</label>
+                        <input type="date" formControlName="dateFin"
+                            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200" />
+                    </div>
+                </form>
+            </div>
+
+            <!-- Dialog footer -->
+            <div class="flex justify-end gap-2 p-2 border-t">
+                <button (click)="onCancel()" class="px-2 py-1 border rounded text-blue-900 hover:bg-gray-100">
+                    <i class="fas fa-undo mr-2"></i> {{ translate('common.annuler') }}
+                </button>
+                <button (click)="isloading ? null : onSubmit()" [disabled]="!formGroup.valid"
+                    class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
+                    <i [class]="isloading ? 'fas fa-circle-notch fa-spin mr-2' : 'fas fa-edit mr-2'"></i>
+                    {{ translate('common.modifier') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

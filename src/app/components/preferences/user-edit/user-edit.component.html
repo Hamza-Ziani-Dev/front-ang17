@@ -1,0 +1,65 @@
+<div class="mx-auto bg-white shadow-lg rounded-sm overflow-hidden" style="max-width: 90%;" *transloco="let translate">
+
+
+    <!-- Form content -->
+    <div class="p-6">
+        <form *ngIf="formGroupUs" [formGroup]="formGroupUs" class="space-y-4">
+            <div class="grid grid-cols-3 gap-4 items-center">
+                <label for="fullName" class="font-bold text-blue-900">{{translate('consoleadmin.nomcomplet')}}</label>
+                <input type="text" formControlName="fullName" id="fullName"
+                    class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                <label for="mail" class="font-bold text-blue-900">{{translate('consoleadmin.email')}}</label>
+                <input type="email" formControlName="mail" id="mail"
+                    class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+
+                <ng-container formGroupName="contact">
+
+                    <label for="tel" class="font-bold text-blue-900">{{translate('consoleadmin.numtél')}}</label>
+                    <input type="text" formControlName="tel" id="tel"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+
+                    <label for="fax" class="font-bold text-blue-900">{{translate('consoleadmin.fax')}}</label>
+                    <input type="text" formControlName="fax" id="fax"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                    <label for="gsm" class="font-bold text-blue-900">{{translate('consoleadmin.gsm')}}</label>
+                    <input type="text" formControlName="gsm" id="gsm"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                    <label for="adresse" class="font-bold text-blue-900">{{translate('consoleadmin.adresse')}}</label>
+                    <input type="text" formControlName="adresse" id="adresse"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                    <label for="state" class="font-bold text-blue-900">{{translate('consoleadmin.pays')}}</label>
+                    <input type="text" formControlName="state" id="state"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                    <label for="city" class="font-bold text-blue-900">{{translate('consoleadmin.ville')}}</label>
+                    <input type="text" formControlName="city" id="city"
+                        class="form-control col-span-2 px-2 py-1 border rounded w-full">
+
+                    <label for="zip" class="font-bold text-blue-900">{{translate('consoleadmin.zip')}}</label>
+                    <input type="text" formControlName="zip" id="zip"
+                        class="col-span-2 px-2 py-1 border rounded w-full form-control">
+                </ng-container>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" (click)="clear()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i> {{translate('common.annuler')}}
+                </button>
+
+                <button type="button"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600">
+                    <i [class]="isloading ? 'fas fa-circle-notch fa-spin mr-2' : 'fas fa-edit mr-2'"></i>
+                    {{translate('common.modifier')}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

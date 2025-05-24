@@ -1,0 +1,64 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative w-full max-w-md mx-auto my-6">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h3 class="text-1xl font-bold ">
+                    <i class="ri-save-2-line"></i>
+                    {{translate('editortext.enregister')}}
+                </h3>
+                <button (click)="onCancel()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+
+            <!-- Dialog content -->
+            <div class="relative p-2 flex-auto">
+                <form [formGroup]="form" class="flex flex-col mt-1 pr-3 pl-3 pb-1 bg-card rounded-2xl  overflow-hidden">
+
+                    <!-- Reference -->
+                    <div class="flex mb-2">
+                        <div class="flex-auto">
+                            <label for="name"
+                                class="block text-blue-900 font-bold ">{{translate('common.nomfichier')}}</label>
+                            <input type="text" id="name" formControlName="name"
+                                class="mt-1 block w-full py-2 px-3 border bg-card  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="Reference">
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+
+            <!-- Dialog footer -->
+            <div
+                class="bg-card p-2 sm:px-4 flex flex-col-reverse sm:flex-row-reverse sm:justify-start gap-2 border-t rounded-b-lg">
+                <!-- Submit Button -->
+                <button type="button" [disabled]="!form.valid" (click)="isloading ? false : onSubmit()"
+                    class="flex items-center justify-center px-2 py-1.5 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="mr-2" [class]="isloading ? 'fas fa-circle-notch fa-spin' : 'fas fa-save'"></i>
+                    {{ translate('editortext.enregister') }}
+                </button>
+
+                <!-- Cancel Button -->
+                <button type="button" (click)="onCancel()"
+                    class="flex items-center justify-center px-2 py-1.5 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{ translate('common.annuler') }}
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+.black-background {
+    background-color: black;
+  }
+
+  ::ng-deep .mat-mdc-tab-group .mdc-tab-indicator {
+    display: none !important;
+  }
+
+
+  ::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+
+::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+
+
+  .mat-mdc-tab:not(.mdc-tab--stacked) {
+    height: auto !important;
+  }

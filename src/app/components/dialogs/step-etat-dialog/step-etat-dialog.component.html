@@ -1,0 +1,151 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-2"  *transloco="let translate">
+    <!-- Dialog -->
+    <div class="relative w-[80%] sm:w-[70%] max-h-[70vh] overflow-y-auto bg-white border rounded-lg shadow-lg">
+
+      <!-- Header Section -->
+      <div class="flex flex-col sm:flex-row sm:flex-wrap items-start p-2 gap-2">
+        <h5 class="block font-bold text-blue-900 flex-shrink-0">
+          {{translate('steps.suivicourrier')}}
+          <span class="text-[#66b0fd]">{{ data.courrier.reference | truncate }}</span>
+        </h5>
+
+        <h5 class="ml-auto block font-bold text-blue-900 to-hide flex-shrink-0">
+            {{translate('steps.nomcategorie')}}
+          <span class="text-[#66b0fd]"> {{ data.courrier.natureName | truncate }}</span>
+        </h5>
+
+        <h5 class="ml-auto block font-bold text-blue-900 to-hide flex-shrink-0">
+            {{translate('steps.typeprocessus')}}
+          <span class="text-[#66b0fd]"> {{ data.courrier.typeName | truncate }}</span>
+        </h5>
+
+        <h5 class="ml-auto block font-bold text-blue-900 to-hide flex-shrink-0">
+            {{translate('steps.nomprocessus')}}
+           <span class="text-[#66b0fd]"> {{ data.courrier.processName | truncate }}</span>
+        </h5>
+
+        <!-- Control Icons -->
+        <div class="flex items-center ml-auto">
+          <a class="cursor-pointer relative group mr-2" (click)="instruction()">
+            <img class="w-6 h-6" src="assets/instruction.png" alt="Instruction Icon" />
+            <div
+              class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-full mr-2 hidden group-hover:block bg-blue-800 text-white text-sm rounded-md py-1 px-2 shadow-md whitespace-nowrap">
+                {{translate('steps.instruction')}}
+            </div>
+          </a>
+
+          <button (click)="onClose()"
+            class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="h-1 bg-blue-600 relative">
+        <div class="h-full bg-yellow-400 w-1/5"></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="pt-4">
+        <div id="stepper1" class="overflow-x-auto mb-6 px-2">
+            <div class="flex items-center gap-2 sm:gap-4 min-w-full">
+              <!-- Départ -->
+              <div class="flex flex-col items-center min-w-[72px]">
+                <i class="fas fa-map-marker-alt text-blue-600 text-2xl sm:text-4xl"></i>
+                <span class="text-xs sm:text-sm font-semibold text-blue-900">
+                    {{translate('steps.depart')}}
+                </span>
+              </div>
+
+              <!-- Ligne -->
+              <div class="flex-grow h-0.5 bg-gray-300"></div>
+
+              <!-- Étapes -->
+              <ng-container *ngFor="let etp of steps">
+                <div class="flex flex-col items-center min-w-[72px] sm:min-w-[90px] max-w-[100px] text-center">
+                  <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white text-xs sm:text-base mb-1"
+                        [ngClass]="{
+                          'bg-blue-500': etp.etat === 1 && etp.statusPassed === 0,
+                          'bg-green-500': etp.etat === 2 || etp.statusPassed === 3,
+                          'bg-red-500': etp.etat === -1 || etp.etat === -2 || etp.statusPassed === 1 || etp.statusPassed === 2,
+                          'bg-gray-400': etp.etat === 0,
+                          'bg-yellow-500': etp.etat === 3 && etp.statusPassed === 0
+                        }">
+                    <i *ngIf="etp.etat === 3 && etp.statusPassed === 0" class="fas fa-hourglass-end"></i>
+                    <i *ngIf="(etp.etat === 0 || etp.etat === -2) && etp.statusPassed === 0" class="far fa-clock"></i>
+                    <i *ngIf="(etp.etat === 1 || etp.etat === -1) && etp.statusPassed === 0" class="fas fa-check"></i>
+                    <i *ngIf="etp.statusPassed === 1" class="fas fa-arrow-right"></i>
+                    <i *ngIf="etp.statusPassed === 2" class="fas fa-times"></i>
+                    <i *ngIf="etp.statusPassed === 3" class="fas fa-check"></i>
+                  </span>
+
+                  <span class="text-xs sm:text-sm font-semibold text-blue-900">
+                    {{ etp.name }}
+                  </span>
+
+                  <div class="flex gap-1 mt-1 text-xs">
+                    <a *ngIf="etp.motifDeRetour" (click)="openModal(etp)" class="text-yellow-500">
+                      <i class="fas fa-backward"></i>
+                    </a>
+                    <a *ngIf="etp.commentaire && etp.commentaire !== ''" (click)="openModal2(etp)" class="text-blue-500">
+                      <i class="fas fa-history"></i>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="flex-grow h-0.5 bg-gray-300"></div>
+              </ng-container>
+
+              <!-- Fin -->
+              <div class="flex flex-col items-center min-w-[72px] text-center">
+                <i class="fas fa-flag-checkered text-2xl sm:text-4xl"
+                   [ngClass]="{'text-green-500': data.courrier.finalise, 'text-gray-400': !data.courrier.finalise}"></i>
+                <span class="text-xs sm:text-sm font-bold text-blue-900 mt-1">
+                    {{translate('steps.fin')}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+
+        <!-- Footer -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center border-t justify-between gap-4 p-2">
+          <div class="space-y-2">
+            <h3 *ngIf="stepName !== ''" class="text-xs sm:text-sm font-bold text-blue-900 mt-1">
+              <i class="fas fa-info-circle mr-2"></i>
+              {{translate('steps.nouveauetape')}} <span class="text-xs sm:text-sm font-semibold text-blue-900">{{ stepName }}</span>
+            </h3>
+
+            <h3 *ngIf="data.courrier.finalise === 'fini'" class="text-green-500 text-xs sm:text-sm font-bold">
+              <i class="fas fa-info-circle mr-2"></i>
+              {{translate('steps.courriertraites')}}
+            </h3>
+
+            <h3 *ngIf="data.courrier.finalise === 'cloturer'" class="text-green-500 text-xs sm:text-sm font-bold">
+              <i class="fas fa-info-circle mr-2"></i>
+              {{translate('steps.courriercloture')}}
+            </h3>
+
+            <h3 *ngIf="data.courrier.finalise === 'accusation'" class="text-red-500 text-xs sm:text-sm font-bold">
+              <i class="fas fa-info-circle mr-2"></i>
+              {{translate('steps.courrieraccuse')}}
+            </h3>
+
+            <h3 *ngIf="data.courrier.finalise === 'abondonne'" class="text-red-500 text-xs sm:text-sm font-bold">
+              <i class="fas fa-info-circle mr-2"></i>
+              {{translate('steps.courrierabondonne')}}
+            </h3>
+          </div>
+
+
+          <button (click)="closeDialog()"
+            class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            <i class="fas fa-undo mr-2"></i> {{translate('steps.fermer')}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>

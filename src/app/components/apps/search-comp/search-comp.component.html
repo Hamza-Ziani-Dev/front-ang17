@@ -1,0 +1,148 @@
+<div class="relative  rounded-lg shadow-md bg-white border-l-4 border-blue-500 p-1" *transloco="let translate">
+    <div class="flex items-center justify-end px-2 py-0 border-b">
+      <div class="relative">
+        <a [matMenuTriggerFor]="menu" class="cursor-pointer" >
+            <i class="fas fa-ellipsis-h"></i>
+        </a>
+        <mat-menu #menu="matMenu"
+            class="absolute left-0 w-8 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+
+
+            <a  class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                (click)="goTo()">
+                <i class="fas fa-rocket mr-2"></i>
+                <span>{{translate('common.executer')}}</span>
+            </a>
+
+            <hr class="my-1 border-gray-200" />
+
+            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                (click)="delete()">
+                <span style="color: rgb(228, 66, 37); "><i
+                        class="fas fa-trash-alt mr-2"></i>
+                </span>
+                {{translate('common.supprimer')}}
+            </a>
+        </mat-menu>
+      </div>
+    </div>
+
+    <div class="p-0">
+      <div class="flex flex-row px-2 py-2">
+        <a id="search-clickable" (click)="goTo()" class="w-1/3 text-center">
+          <div class="flex justify-center">
+            <svg width="50px" viewBox="0 -3.66 65.015 65.015" xmlns="http://www.w3.org/2000/svg">
+                <g id="Group_99" data-name="Group 99" transform="translate(-107.858 -217.309)">
+                  <g id="Group_97" data-name="Group 97">
+                    <path id="Path_247" data-name="Path 247"
+                      d="M158.251,220.766H133.473l-5.725-3.457H114.226a2.911,2.911,0,0,0-2.912,2.912v30.934a2.911,2.911,0,0,0,2.912,2.912h44.025a2.911,2.911,0,0,0,2.911-2.912V223.676A2.911,2.911,0,0,0,158.251,220.766Z"
+                      fill="#f7971d" />
+                    <path id="Path_248" data-name="Path 248"
+                      d="M161.162,242.6V227.133a2.914,2.914,0,0,0-2.911-2.914H114.226a2.914,2.914,0,0,0-2.912,2.914V242.6Z"
+                      fill="#dce2e9" />
+                    <path id="Path_249" data-name="Path 249"
+                      d="M158.251,220.766H133.473l-5.725-3.457H114.226a2.911,2.911,0,0,0-2.912,2.912V221.6a2.911,2.911,0,0,1,2.912-2.912h13.522l5.725,3.455h24.778a2.913,2.913,0,0,1,2.911,2.912v-1.383A2.911,2.911,0,0,0,158.251,220.766Z"
+                      fill="#ffc52f" opacity="0.5" style="mix-blend-mode: screen;isolation: isolate" />
+                    <path id="Path_250" data-name="Path 250"
+                      d="M161.707,226.293H110.771a2.913,2.913,0,0,0-2.913,2.913l3.456,30.933a2.911,2.911,0,0,0,2.912,2.912h44.025a2.911,2.911,0,0,0,2.911-2.912l3.455-30.933A2.912,2.912,0,0,0,161.707,226.293Z"
+                      fill="#ffc52f" />
+                    <path id="Path_251" data-name="Path 251"
+                      d="M110.771,227.676h50.936a2.911,2.911,0,0,1,2.83,2.254l.08-.724a2.912,2.912,0,0,0-2.91-2.913H110.771a2.913,2.913,0,0,0-2.913,2.913l.081.724A2.911,2.911,0,0,1,110.771,227.676Z"
+                      fill="#ffc52f" opacity="0.5" style="mix-blend-mode: screen;isolation: isolate" />
+                  </g>
+                  <path id="Path_252" data-name="Path 252"
+                    d="M161.162,260.139l.592-5.3a14.7,14.7,0,1,0-27.687,8.211h24.184A2.911,2.911,0,0,0,161.162,260.139Z"
+                    fill="#8c93a1" opacity="0.6" style="mix-blend-mode: multiply;isolation: isolate" />
+                  <g id="Group_98" data-name="Group 98">
+                    <rect id="Rectangle_36" data-name="Rectangle 36" width="4.156" height="12.401"
+                      transform="translate(157.7 262.706) rotate(-45)" fill="#dce2e9" />
+                    <path id="Path_253" data-name="Path 253"
+                      d="M165.421,252.721a14.7,14.7,0,1,1-14.7-14.7A14.7,14.7,0,0,1,165.421,252.721Z" fill="#dce2e9" />
+                    <path id="Path_254" data-name="Path 254"
+                      d="M161.682,252.721a10.964,10.964,0,1,1-10.964-10.965A10.965,10.965,0,0,1,161.682,252.721Z"
+                      fill="#8c93a1" />
+                    <path id="Path_255" data-name="Path 255"
+                      d="M150.718,262.616a9.895,9.895,0,1,1,9.894-9.9A9.9,9.9,0,0,1,150.718,262.616Z" fill="#5a6271"
+                      opacity="0.6" />
+                    <path id="Path_256" data-name="Path 256"
+                      d="M141.833,253.735a9.895,9.895,0,0,1,16.368-7.484A9.892,9.892,0,1,0,144.247,260.2,9.843,9.843,0,0,1,141.833,253.735Z"
+                      fill="#5a6271" opacity="0.6" />
+                    <path id="Path_257" data-name="Path 257"
+                      d="M150.718,257.606a4.885,4.885,0,1,1,4.885-4.885A4.888,4.888,0,0,1,150.718,257.606Z"
+                      fill="#5a6271" />
+                    <path id="Path_258" data-name="Path 258"
+                      d="M147.01,258.946a1.9,1.9,0,1,1,1.9-1.9A1.9,1.9,0,0,1,147.01,258.946Z" fill="#f3f3f3"
+                      opacity="0.5" />
+                    <path id="Path_259" data-name="Path 259"
+                      d="M157.45,251.192c-.937.937-2.879.517-4.336-.94s-1.879-3.4-.942-4.335,2.879-.516,4.337.941S158.385,250.256,157.45,251.192Z"
+                      fill="#f3f3f3" opacity="0.5" />
+                    <path id="Path_260" data-name="Path 260" d="M160.6,267.028l7.219,7.22a3.055,3.055,0,0,0,4.3-4.3l-7.219-7.219Z"
+                      fill="#5a6271" />
+                    </g>
+                    </g>
+            </svg>
+          </div>
+          <div class="text-center mt-3 font-semibold text-sm text-gray-800">
+            {{ search.name }}
+          </div>
+          <div class="text-center mt-1 text-xs text-gray-500">
+            {{ search['search_date'] }}
+          </div>
+        </a>
+
+        <div class="relative w-px bg-gray-300 mx-2"></div>
+
+        <div class="flex-1 px-0 my-auto">
+          <ul class="flex flex-wrap p-0">
+            <li *ngFor="let ss of search['search']; let i = index" class="m-1">
+              <ng-container *ngIf="ss.attribute.id == 5">
+                <ng-container *ngIf="ss.value.split('/_/').length > 1">
+                  <span *ngFor="let val of ss.value.split('/_/')" class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                    <span class="text-orange-500 font-bold">#</span> {{ val }}
+                  </span>
+                </ng-container>
+              </ng-container>
+              <span *ngIf="ss.value.split('/__/').length > 1" class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                <span class="text-orange-500 font-bold">#</span> {{ ss.value.split('/__/')[1] }}
+              </span>
+              <span *ngIf="ss.value.split('/__/').length == 1 && ss.attribute.id != 9 && ss.attribute.id != 5" class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                <span class="text-orange-500 font-bold">#</span> {{ ss.value }}
+              </span>
+            </li>
+
+            <ng-container *ngIf="searchForm?.deDate">
+              <li class="m-1">
+                <span class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                  <span class="text-orange-500 font-bold">#</span> {{ searchForm.deDate + ' -> ' + searchForm.toDate }}
+                </span>
+              </li>
+            </ng-container>
+
+            <ng-container *ngIf="searchForm?.fini">
+              <li class="m-1" *ngIf="searchForm.fini == 'fini'">
+                <span class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                  <span class="text-orange-500 font-bold">#</span> {{translate('common.clot')}}
+                </span>
+              </li>
+              <li class="m-1" *ngIf="searchForm.fini == 'abondonne'">
+                <span class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                  <span class="text-orange-500 font-bold">#</span> {{translate('common.abondonne')}}
+                </span>
+              </li>
+              <li class="m-1" *ngIf="searchForm.fini == 'encours'">
+                <span class="inline-flex items-center px-2 py-1 border rounded-full text-xs text-gray-600">
+                  <span class="text-orange-500 font-bold">#</span> {{translate('common.encours')}}
+                </span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end px-2 py-1 border-t">
+      <a (click)="goTo()" class="rounded-full px-2 text-gray-700 hover:text-gray-900">
+        <i class="fas fa-arrow-circle-right text-base"></i>
+      </a>
+    </div>
+  </div>

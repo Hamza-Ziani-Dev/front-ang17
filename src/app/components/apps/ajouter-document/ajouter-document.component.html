@@ -1,0 +1,344 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <mat-drawer-content class="flex flex-col bg-card dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                        <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()"
+                            >
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+                        </button>
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            <h5 class="font-bold text-blue-900"> {{translate("ajouterdocument.ajouterdocument")}} :</h5>
+                          </div>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Ajouter Document -->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab>
+                        <ng-template matTabContent>
+                        <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                            <div class="flex flex-wrap">
+                                <!-- Left Side - Form -->
+                                <div class="p-1 border-2 w-full md:w-1/3 overflow-y-auto">
+                                    <form [formGroup]="docFormGroup">
+                                        <!-- Document Groups -->
+                                        <div class="mb-2">
+                                            <label class="block text-blue-900 font-bold  mb-2">
+                                                {{ translate('ajouterdocument.groupesdocuments') }}
+                                                <span class="text-red-600">*</span>
+                                            </label>
+                                            <select formControlName="GroupDoc"
+                                                (change)="changeGroupDoc($event.target.value)"
+                                                class="w-full min-w-[33.33%] h-10 rounded-md border border-gray-300 bg-white py-1 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-800 hover:bg-gray-50 transition-colors duration-200">
+                                                <option *ngFor="let item of groupDoc" [value]="item.goupId">
+                                                    {{ item.groupLabel }}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="docFormGroup.get('GroupDoc').touched && docFormGroup.get('GroupDoc').invalid"
+                                                class="text-red-500 text-sm font-medium mt-1">
+                                                <div *ngIf="docFormGroup.get('GroupDoc').errors?.required">
+                                                    {{ translate('validation.champsrequis') }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Document Type -->
+                                        <div class="mb-2">
+                                            <label class="block text-blue-900 font-bold  mb-2">
+                                                {{ translate('ajouterdocument.typedocument') }}
+                                                <span class="text-red-600">*</span>
+                                            </label>
+                                            <select formControlName="type" (change)="changeType($event, 1)"
+                                                class="w-full h-10 rounded-md border border-gray-300 bg-white py-1 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-800 transition duration-150 ease-in-out hover:bg-gray-50">
+                                                <option *ngFor="let item of doctypes" [value]="item.id">
+                                                    {{ item.libelle?.slice(0, 60) }}{{ item.libelle?.length > 60 ? '...' : '' }}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="docFormGroup.get('type').touched && docFormGroup.get('type').invalid"
+                                                class="text-red-500 text-sm font-medium mt-1">
+                                                <div *ngIf="docFormGroup.get('type').errors?.required">
+                                                    {{ translate('validation.champsrequis') }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Dynamic Attributes -->
+                                        <div *ngIf="isLoaded" formArrayName="attrs">
+
+                                            <!-- Toggle Documents -->
+                                            <div *ngIf="pr !== 1" class="mt-2 mb-2">
+                                                <div class="flex items-center">
+                                                    <span class="block text-blue-900 font-bold  mr-2">
+                                                        {{ translate('ajoutercourrier.ajouterdocument') }}:
+                                                    </span>
+
+                                                    <div class="relative" (click)="fileAddOptionChange($event)">
+                                                        <div class="w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer"
+                                                            [ngClass]="{'bg-blue-500': isFileAddOption, 'bg-gray-300': !isFileAddOption}">
+                                                            <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                                                [ngClass]="{'translate-x-full': isFileAddOption, 'translate-x-0': !isFileAddOption}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Attributes Dynamic -->
+                                            <ng-container *ngIf="attrsForms && attrsForms.length > 0">
+                                                <ng-container *ngFor="let a of attrsForms.controls; let i = index"
+                                                    [formGroupName]="i">
+                                                    <div class="mb-2" *ngIf="attributes[i]['visib'] == 1">
+                                                        <ng-container>
+                                                            <label
+                                                                *ngIf="attributes[i].name != 'Fichier' || (attributes[i].name == 'Fichier' && isFileAddOption)"
+                                                                class="block text-blue-900 font-bold  mb-2">
+                                                                <!-- {{ attributes[i].name }} -->
+                                                        <!-- {{attributes[i] | json}} -->
+                                                        {{ getLabel(attributes[i], config.lang) }}
+                                                                  <!-- {{attributes[i]['libelle'+config.lang] }} -->
+                                                                <ng-container *ngIf="attributes[i].required == 1">
+                                                                    <span class="text-red-600">*</span>
+                                                                </ng-container> :
+                                                            </label>
+                                                        </ng-container>
+
+                                                        <!-- List/Dropdown Fields -->
+                                                        <div class="w-full mb-2"
+                                                            *ngIf="attributes[i].type.name=='listDb'|| attributes[i].type.name=='ListDep' || attributes[i].type.name=='List'">
+                                                            <select formControlName="val"
+                                                                (selectionChange)="changeValue($event.value, attributes[i])"
+                                                                [ngbTooltip]="attrVals['l' + attributes[i].name]"
+                                                                tooltipClass="tooltipl-class"
+                                                                class="w-full min-w-[33.33%] h-10 rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-800 hover:bg-gray-50 transition-colors duration-200">
+                                                                <option
+                                                                    *ngFor="let dt of $any(attributes[i].type.name == 'ListDep' ? depArrays : mappedArray)['id' + attributes[i].id]"
+                                                                    [value]="dt.key">
+                                                                    {{ dt.value }}
+                                                                </option>
+                                                            </select>
+                                                            <div *ngIf="a.get('val').touched && a.get('val').invalid && attributes[i].required == 1"
+                                                                class="text-red-500 text-sm font-medium mt-1">
+                                                                <div *ngIf="a.get('val').errors?.required">
+                                                                    {{ translate('validation.champsrequis') }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Standard Input Fields -->
+                                                        <div class="w-full flex mb-2"
+                                                            *ngIf="attributes[i].name!= 'HTML_CONTENT' && attributes[i]?.type.name != 'fichier' && attributes[i]?.type.name != 'longtext' && attributes[i].type.name != 'List' && attributes[i].type.name != 'ListDep' && attributes[i].type.name != 'listDb'">
+                                                            <input formControlName="val"
+                                                                *ngIf="attributes[i]?.type.name != 'date'"
+                                                                [type]="attributes[i]?.type.name"
+                                                                class="flex-1 min-w-[33.33%] h-10 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                                                [placeholder]="attributes[i].name" max="{{today}}"
+                                                                min="1000-01-01" />
+
+                                                            <input formControlName="val" onkeydown="return false"
+                                                                *ngIf="attributes[i]?.type.name == 'date'"
+                                                                [type]="attributes[i]?.type.name"
+                                                                class="flex-1 min-w-[33.33%] h-10 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                                                [placeholder]="attributes[i].name" max="{{today}}"
+                                                                min="1000-01-01" />
+
+                                                            <div *ngIf="isFileAddOption" class="flex items-center">
+                                                                <button type="button"
+                                                                    [class]="ShowCroper && currentAtt == attributes[i]?.name ? 'h-10 px-4 bg-yellow-400 border border-gray-300 rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500': 'h-10 px-4 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500'"
+                                                                    (click)="ShowCroper && currentAtt == attributes[i]?.name ? recognizeAttr(attributes[i]?.name, i, attributes[i]?.type.name) : selectAttr(attributes[i]?.name, i)">
+                                                                    <i
+                                                                        [class]="ShowCroper && currentAtt == attributes[i]?.name ? 'fas fa-hand-point-up' : 'fas fa-crop'"></i>
+                                                                </button>
+                                                            </div>
+
+                                                            <div *ngIf="a.get('val').touched && a.get('val').invalid && attributes[i].required == 1"
+                                                                class="text-red-500 text-sm font-medium mt-1">
+                                                                <div *ngIf="a.get('val').errors?.required">
+                                                                    {{ translate('validation.champsrequis') }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Reference Warning -->
+                                                        <div class="mt-1 w-full mb-2">
+                                                            <span *ngIf="attributes[i]?.name == 'Reference'"
+                                                                class="text-sm text-red-600" [hidden]="!existRef">
+                                                                {{translate('ajoutercourrier.existRef')}}
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Longtext Area -->
+                                                        <div class="flex mb-2"
+                                                            *ngIf="attributes[i].name!= 'HTML_CONTENT' &&  attributes[i]?.type.name == 'longtext'">
+                                                            <textarea formControlName="val"
+                                                                class="flex-1 min-w-[33.33%] h-10 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                                                [placeholder]="attributes[i].name"></textarea>
+
+                                                            <div *ngIf="isFileAddOption" class="flex items-center">
+                                                                <!-- <button type="button"
+                                                                    [class]="ShowCroper && currentAtt == attributes[i]?.name ? 'h-10 px-4 bg-yellow-400 border border-gray-300 rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500': 'h-10 px-4 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500'"
+                                                                    (click)="ShowCroper && currentAtt == attributes[i]?.name ? recognizeAttr(attributes[i]?.name, i, attributes[i]?.type.name) : selectAttr(attributes[i]?.name, i)">
+                                                                    <i
+                                                                        [class]="ShowCroper && currentAtt == attributes[i]?.name ? 'fas fa-hand-point-up' : 'fas fa-crop'"></i>
+                                                                </button> -->
+                                                                <button type="button"
+                                                                    [class]="ShowCroper && currentAtt == attributes[i]?.name
+                                                                        ? 'h-10 px-4 bg-yellow-400 border border-gray-300 rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500'
+                                                                        : 'h-10 px-4 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500'"
+                                                                    (click)="ShowCroper && currentAtt == attributes[i]?.name
+                                                                        ? recognizeAttr(attributes[i]?.name, i, attributes[i]?.type.name)
+                                                                        : selectAttr(attributes[i]?.name, i)">
+                                                                    <i
+                                                                        [class]="ShowCroper && currentAtt == attributes[i]?.name ? 'fas fa-hand-point-up' : 'fas fa-crop'"></i>
+                                                                </button>
+                                                            </div>
+
+                                                            <div *ngIf="a.get('val').touched && a.get('val').invalid && attributes[i].required == 1"
+                                                                class="text-red-500 text-sm mt-1">
+                                                                <div *ngIf="a.get('val').errors?.required">
+                                                                    {{ translate('validation.champsrequis') }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- File Input -->
+                                                        <div
+                                                            *ngIf="attributes[i]?.type.name == 'fichier' && isFileAddOption">
+                                                            <div class="flex mb-2 w-full">
+                                                                <div class="relative flex-1">
+                                                                    <input type="file"
+                                                                        (change)="fileChangeEvent($event)"
+                                                                        formControlName="val"
+                                                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                                        id="fileInput" lang="fr"
+                                                                        accept=".jpg,.png,.jpeg,.gif,.bmp,.tif,.tiff,.pdf" />
+
+                                                                    <div
+                                                                        class="w-full h-10 px-3 flex items-center text-gray-500 bg-white border border-gray-300 rounded-l-md cursor-pointer hover:bg-gray-50 text-xs sm:text-sm">
+                                                                        <span class="truncate">
+                                                                            {{ fileModel.fileName == undefined ? 'Choisir un fichier' : (fileModel.fileName) }}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Scanner Button -->
+                                                                <button type="button" (click)="scan()"
+                                                                    class="h-10 px-4 text-gray-700 bg-white border-y border-l border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs sm:text-sm">
+                                                                    {{translate('ajoutercourrier.scanner')}}
+                                                                </button>
+
+                                                                <!-- Nouveau Button -->
+                                                                <button type="button" (click)="editor()"
+                                                                    class="h-10 px-4 text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs sm:text-sm">
+                                                                    {{translate('ajoutercourrier.nouveau')}}
+                                                                </button>
+                                                            </div>
+
+
+                                                            <!-- Convert To Pdf -->
+                                                            <div *ngIf="fileModel.fileName && (fileModel.fileName.split('.')[1]==='tiff'||fileModel.fileName.split('.')[1]==='tif')"
+                                                                class="form-group row mx-4">
+                                                                <label class="switch">
+                                                                    <ng-container> <input type="checkbox"
+                                                                            (change)="convertToPdf($event)">
+                                                                    </ng-container>
+                                                                    <span class="slider round"></span>
+                                                                </label>
+                                                                <p class="text-muted my-auto pl-1">convertPdf</p>
+                                                            </div>
+                                                            <!-- codeBar To Pdf -->
+                                                            <div *ngIf="false"
+                                                                class="flex items-center gap-3 px-3 py-1 to-hide">
+                                                                <label
+                                                                    class="relative inline-flex items-center cursor-pointer">
+                                                                    <ng-container>
+                                                                        <input #chck [disabled]="added == 1" id="chck"
+                                                                            type="checkbox"
+                                                                            (change)="codeBarToPdf($event)"
+                                                                            class="sr-only peer" />
+                                                                    </ng-container>
+                                                                    <div
+                                                                        class="w-10 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-500 transition-colors duration-300">
+                                                                    </div>
+                                                                    <span
+                                                                        class="absolute w-4 h-4 bg-white rounded-full transform peer-checked:translate-x-4 transition-transform duration-300"></span>
+                                                                </label>
+                                                                <p class="text-sm text-gray-500">Générer code à barre
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </form>
+
+
+
+                                </div>
+
+                                <!-- Right Side - PDF Viewer -->
+                                <div class="bg-gray-50 w-full md:w-2/3" *ngIf="isFileAddOption">
+                                    <div class="p-2 border-2">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <h3 class="font-semibold block text-sm text-gray-700">
+                                                {{translate('ajoutercourrier.visualiser')}}</h3>
+                                            <h4 class="block text-blue-900 font-bold ">
+                                                {{translate('ajoutercourrier.languedocument')}}:</h4>
+                                            <select (change)="onSelectLang($event)"
+                                                class="rounded-md border border-gray-300 bg-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out hover:bg-gray-50 text-gray-800 py-2 px-3">
+                                                <option value="fra">{{translate('ajoutercourrier.francais')}}</option>
+                                                <option value="ara">{{translate('ajoutercourrier.arabe')}}</option>
+                                                <option value="eng">{{translate('ajoutercourrier.anglais')}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="h-1 bg-blue-500">
+                                            <div class="h-full bg-yellow-400 w-1/5"></div>
+                                        </div>
+                                        <ng-container *ngIf="!isLoading">
+                                            <iframe *ngIf="uri" [src]="uri" frameborder="0" width="100%" height="840px"
+                                                id="viewerframe" #frame></iframe>
+                                            <div *ngIf="!uri" class="black-background"
+                                                style="width: 100%; height: 840px;"></div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Footer -->
+                             <div class="p-2 mt-4 flex justify-end  w-full space-x-2 border-t">
+                                <button (click)="close()"
+                                    class="px-2 py-2 rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 flex items-center">
+                                    <i class="fa-solid fa-times mr-2"></i>
+                                    {{translate('ajoutercourrier.annuler')}}
+                                </button>
+                                <button (click)="isloading ? false : onSubmit()"
+                                    [disabled]="isFileAddOption ? (!docFormGroup.valid || (selectedFile == undefined)) : !docFormGroup.valid"
+                                    class="px-2 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 flex items-center">
+                                    <i class="fa-solid fa-save mr-2"></i>
+                                    {{translate('ajoutercourrier.ajouter')}}
+                                </button>
+                            </div>
+                        </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

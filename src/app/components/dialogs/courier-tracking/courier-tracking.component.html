@@ -1,0 +1,110 @@
+<!-- courier-tracking.component.html -->
+<div class="tracking-dialog">
+    <!-- Header -->
+    <div class="flex items-center justify-between sm:p-2 border-b bg-gray-200 dark:bg-transparent">
+        <div class="flex items-center">
+            <div class="font-bold ml-2">
+                Suivi de courrier (Réf) :
+                <span class="font-bold text-blue-500">
+                    2024160105
+                </span>
+            </div>
+
+            <div class="font-bold ml-2">
+                Nom de Catégorie :
+                <span class="font-bold text-blue-500">
+                    Depart Chef
+                </span>
+            </div>
+
+            <div class="font-bold ml-2">
+
+                Type courrier :
+                <span class="font-bold text-blue-500">
+                    Courrier départ
+                </span>
+            </div>
+
+            <div class="font-bold ml-2">
+                Nom du processus :
+                <span class=" text-blue-500">
+                    Depart Chef service
+                </span>
+            </div>
+
+        </div>
+
+
+        <div
+            class="flex flex-col sm:flex-row items-start sm:items-center font-medium text-secondary text-sm sm:text-base">
+            <ng-container >
+                <img src="assets/images/instruction.png" style="width: 40px;height: 40px;" alt="">
+            </ng-container>
+            <ng-container>
+                <button (click)="onClose()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </ng-container>
+        </div>
+    </div>
+    <!-- End Header -->
+ <!-- Line separator -->
+ <div class="w-full h-1" style="background: linear-gradient(to right, #ffc107, #007bff);">
+</div>
+<div class="dialog-content">
+    <div class="tracking-steps">
+        <!-- Start step -->
+        <div class="step start">
+            <div class="step-icon">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <span>Départ</span>
+        </div>
+
+        <div class="step-line"></div>
+
+        <!-- Steps loop -->
+        <ng-container *ngFor="let step of steps; let last = last">
+            <div class="step"
+                [ngClass]="step.status"
+                (mouseover)="showStepDetails(step)"
+                (mouseleave)="hideStepDetails()">
+                <div class="step-icon">
+                    <i *ngIf="step.status === 'completed'" class="fa-solid fa-check"></i>
+                    <i *ngIf="step.status === 'pending'" class="fa-solid fa-arrow-right"></i>
+                </div>
+                <span>{{step.name}}</span>
+
+                <!-- Card details on hover -->
+                <div class="card-details" *ngIf="step.showDetails">
+                    <div class="card-content">
+                        <p>{{step.description}}</p>
+                        <p>Status: {{step.status}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line between steps -->
+            <div class="step-line" *ngIf="!last"></div>
+        </ng-container>
+
+        <div class="step-line"></div>
+        <!-- End step -->
+        <div class="step end">
+            <div class="step-icon">
+                <i class="fa-solid fa-flag-checkered"></i>
+            </div>
+            <span>Fin</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dialog-footer">
+        <div class="status">
+            <i class="fas fa-check-circle status-icon"></i>
+            <span>Courrier traité (Fin de processus)</span>
+        </div>
+        <button mat-button (click)="onClose()">Fermer</button>
+    </div>
+</div>
+</div>

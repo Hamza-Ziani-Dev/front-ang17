@@ -1,0 +1,116 @@
+<ng-container>
+    <div id="stepper1" class="w-full" *transloco="let translate">
+        <div class="w-full px-4 py-1 border-b bg-card dark:bg-transparent">
+            <div class="flex items-center justify-between w-full">
+
+              <!-- Step 1 -->
+              <div class="flex items-center space-x-2"
+                   [ngClass]="currentStep >= 1 ? 'text-blue-600 font-semibold' : 'text-gray-400'">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full border-2"
+                     [ngClass]="{
+                       'bg-blue-500 text-white border-blue-600': currentStep === 1,
+                       'border-blue-600': currentStep > 1,
+                       'border-gray-300 bg-white': currentStep < 1
+                     }">1</div>
+                     <span
+                        class="text-md font-bold sm:max-w-none max-w-[4ch] truncate w-fit"
+                        [attr.title]="translate('ajouterliaison.recharcherdocument')">
+                        {{ translate('ajouterliaison.recharcherdocument') }}
+                    </span>
+                <!-- <span class="text-md font-bold">{{ translate('ajouterliaison.recharcherdocument') }}</span> -->
+              </div>
+
+              <!-- Line -->
+              <div class="flex-1 h-px mx-2"
+                   [ngClass]="{ 'bg-blue-600': currentStep > 1, 'bg-gray-300': currentStep <= 1 }"></div>
+
+              <!-- Step 2 -->
+              <div class="flex items-center space-x-2"
+                   [ngClass]="currentStep >= 2 ? 'text-blue-600 font-semibold' : 'text-gray-400'">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full border-2"
+                     [ngClass]="{
+                       'bg-blue-500 text-white border-blue-600': currentStep === 2,
+                       'border-blue-600': currentStep > 2,
+                       'border-gray-300 bg-white': currentStep < 2
+                     }">2</div>
+                      <span
+                        class="text-md font-bold sm:max-w-none max-w-[4ch] truncate w-fit"
+                        [attr.title]="translate('ajouterliaison.selectionnerdocument')">
+                        {{ translate('ajouterliaison.selectionnerdocument') }}
+                    </span>
+                <!-- <span class="text-md font-bold">{{ translate('ajouterliaison.selectionnerdocument') }}</span> -->
+              </div>
+
+              <!-- Line -->
+              <div class="flex-1 h-px mx-2"
+                   [ngClass]="{ 'bg-blue-600': currentStep > 2, 'bg-gray-300': currentStep <= 2 }"></div>
+
+              <!-- Step 3 -->
+              <div class="flex items-center space-x-2"
+                   [ngClass]="currentStep >= 3 ? 'text-blue-600 font-semibold' : 'text-gray-400'">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full border-2"
+                     [ngClass]="{
+                       'bg-blue-500 text-white border-blue-600': currentStep === 3,
+                       'border-blue-600': currentStep > 3,
+                       'border-gray-300 bg-white': currentStep < 3
+                     }">3</div>
+                      <span
+                        class="text-md font-bold sm:max-w-none max-w-[4ch] truncate w-fit"
+                        [attr.title]="translate('ajouterliaison.recharchercourriers')">
+                        {{ translate('ajouterliaison.recharchercourriers') }}
+                    </span>
+                <!-- <span class="text-md font-bold">{{ translate('ajouterliaison.recharchercourriers') }}</span> -->
+              </div>
+
+              <!-- Line -->
+              <div class="flex-1 h-px mx-2"
+                   [ngClass]="{ 'bg-blue-600': currentStep > 3, 'bg-gray-300': currentStep <= 3 }"></div>
+
+              <!-- Step 4 -->
+              <div class="flex items-center space-x-2"
+                   [ngClass]="currentStep >= 4 ? 'text-blue-600 font-semibold' : 'text-gray-400'">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full border-2"
+                     [ngClass]="{
+                       'bg-blue-500 text-white border-blue-600': currentStep === 4,
+                       'border-blue-600': currentStep > 4,
+                       'border-gray-300 bg-white': currentStep < 4
+                     }">4</div>
+                     <span
+                        class="text-md font-bold sm:max-w-none max-w-[4ch] truncate w-fit"
+                        [attr.title]="translate('ajouterliaison.selectionnerourriers')">
+                        {{ translate('ajouterliaison.selectionnerourriers') }}
+                    </span>
+                <!-- <span class="text-md font-bold">{{ translate('ajouterliaison.selectionnerourriers') }}</span> -->
+              </div>
+
+            </div>
+        </div>
+
+
+
+        <ng-container>
+          <div [hidden]="currentStep == 3 || currentStep == 4">
+            <app-rechercher-document
+                *ngIf="!linked"
+                [link]="'true'"
+                (documentSelected)="documentSelected($event)"
+                (next)="goStep($event)"
+                >
+           </app-rechercher-document>
+          </div>
+          <div [hidden]="currentStep === 1 || currentStep === 2">
+            <app-rechercher-courrier
+                *ngIf="!linked"
+                [operation]="mode"
+                [linkDoc]="'1'"
+                (folderSelected)="selectedFolders($event)"
+                [listOfSelectedFolders]="listOfSelectedFolders"
+                [DocumentId]="selectedDocumentId"
+                (validLink)="Validate($event)"
+                (next)="goStep($event)"
+                >
+        </app-rechercher-courrier>
+          </div>
+        </ng-container>
+    </div>
+</ng-container>

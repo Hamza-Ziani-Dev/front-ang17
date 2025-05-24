@@ -1,0 +1,38 @@
+<div class="pb-1 pl-1">
+    <div class="p-2 flex bg-transparent mb-0">
+        <a class="border rounded-full bg-white ml-auto mr-1" (click)="btnPlusInfos(null)">
+            <span class="badge badge-danger havea absolute right-3 top-3 rounded-full">
+                <span class="badge badge-pill badge-light pl-2 py-1 text-white text-xs">.</span>
+            </span>
+            <i [class]="isOpen ? 'fas fa-angle-up times-size ml-auto p-1 px-2 fa-flip-vertical' : 'fas fa-angle-up times-size ml-auto p-1 px-2'" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div  *ngIf="isOpen" id="plusInfos" class="card border shadow hidden">
+        <div class="card-header flex justify-between items-center">
+            <i class="fas fa-info-circle my-auto mr-2"></i>
+            <h5 class="h5 midnight-blue my-auto py-0 font-bold">{{annotation.title}} <small *ngIf="annotation.name" class="text-muted"> ({{annotation.name}}) </small></h5>
+        </div>
+
+        <div class="header-separator bg-primary">
+            <div class="header-separator bg-warning w-1/5"></div>
+        </div>
+
+        <div class="card-body py-0 pb-2">
+            <div class="flex">
+                <img style="max-width: 70px;" src="assets/converstation.png" class="m-auto fas fa-times-circle" />
+            </div>
+        </div>
+
+        <div class="px-2">
+            <div class="form-group">
+                <label *ngIf="annotation.etat==3" for="folder-type" class="midnight-blue font-bold">Motif de retour :</label>
+                <label *ngIf="annotation.etat==2" for="folder-type" class="midnight-blue font-bold">instruction</label>
+                <div class="input-group">
+                    <textarea *ngIf="!annotation.isVoice" [(ngModel)]="annotation.text" disabled class="form-control"></textarea>
+                    <audio style="width:100%" *ngIf="annotation.isVoice" id="player" controls [src]="safeUrl"></audio>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

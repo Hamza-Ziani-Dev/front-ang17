@@ -1,0 +1,18 @@
+/* Icon styling inside the card */
+.icon-container {
+    margin-top: 1px;
+    font-size: 4rem !important;
+}
+
+::ng-deep .mat-mdc-tab-group .mdc-tab-indicator {
+    display: none !important;
+  }
+
+
+  ::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }
+
+::ng-deep .mat-mdc-tab-header {
+    display: none !important;
+  }

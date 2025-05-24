@@ -1,0 +1,29 @@
+<div *ngIf="!isCompleted" >Loading...</div>
+
+
+
+<lib-ngx-image-zoom *ngIf="isCompleted"
+[thumbImage]="thumb"
+[fullImage]="imgPath"
+[magnification]="1"
+[enableScrollZoom]="true"
+[enableLens]="true"
+[lensWidth]="150"
+[lensHeight]="150"
+[circularLens]="true"
+
+></lib-ngx-image-zoom>
+
+
+<!-- <div>
+    <ngx-pano-viewer
+      [image]="PATH_TO_YOUR_PANORAMA_IMAGE"
+      [useZoom]="false"
+      (viewChange)="onViewChange($event)"
+    />
+    <ngx-spin-viewer
+      [imageUrl]="PATH_TO_YOUR_SPRITE_IMAGE"
+      [rowCount]="42"
+      [scale]="1"
+    />
+  </div> -->

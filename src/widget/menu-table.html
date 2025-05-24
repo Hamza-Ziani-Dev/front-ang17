@@ -1,0 +1,30 @@
+<table *ngIf="mode != 1" class="documents-table w-full mx-auto border-2 border-blue-400 rounded-md shadow-lg text-left text-md whitespace-nowrap">
+    <thead style="background-color: var(--header-color);color:var(--white-color)">
+      <tr>
+        <th  scope="col" class="p-2 text-left">
+          doc
+        </th>
+        <th scope="col" class="p-2 text-left">
+            visualiser
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of docs;let i = index" 
+          [ngClass]="{'bg-zinc-100': i % 2 === 0,'bg-white': i % 2 !== 0,'border-t': true,'hover:bg-yellow-100': true}"
+          class="border-b border-gray-200">
+        
+        
+       
+         <td container="body" [openDelay]="300" [closeDelay]="200" placement="top" [ngbTooltip]="a['fileName']"
+        tooltipClass="tooltip-class" class="p-2 truncate">{{a['fileName']}}
+    </td>
+    <td (click)="openViewer(a['id'])" class="p-2">
+        <span class="mr-2 inline-block w-5">
+            <i style="cursor: pointer;" class="fas fa-search text-blue-500" container="body" [openDelay]="300" 
+                tooltipClass="tooltipl-class" [closeDelay]="500" placement="left" [ngbTooltip]="visualiser"></i>
+        </span>
+    </td>
+      </tr>
+    </tbody>
+</table>

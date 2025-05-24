@@ -1,0 +1,86 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <div class="flex justify-end mb-2">
+        <div class="flex items-center">
+            <button (click)="openAjouterProfileAbsenceDialog()"
+                class="bg-blue-500 ml-1 text-white rounded-full px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                <i class="fa-solid fa-user-plus mr-1"></i>
+                {{ translate('consoleadmin.ajouterprofileabsence') }}
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col md:flex-row w-full">
+        <div class=" bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full">
+            <table class="text-left text-xs whitespace-nowrap mx-auto border-2 border-blue-500 shadow-lg w-full">
+                <thead class="uppercase tracking-wider dark:border-neutral-600 bg-sky-600 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.utilisateurs') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.suppléant') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.datedébut') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.datefin') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-gray-100 hover:bg-orange-100 dark:hover:bg-orange-600">
+                        <th scope="row" class="px-2 py-1 text-center">Saad Dalm</th>
+                        <td class="px-2 text-center">El Mehdi</td>
+                        <td class="px-2 text-center">01-12-2023</td>
+                        <td class="px-2 text-center">01-12-2023</td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button [matMenuTriggerFor]="folderMenu" aria-label="Actions">
+                                    <i class="fa-solid fa-caret-down icon-size-4 primary-color"></i>
+                                </button>
+                                <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                    <button mat-menu-item (click)="openSupprimerDialog()">
+                                        <i class="fa-solid fa-trash red-color mr-2"></i> supprimer
+                                    </button>
+                                    <button mat-menu-item (click)="openModifierDialog()">
+                                        <i class="fa-solid fa-pen-to-square primary-color mr-2"></i> modifier
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+                <ul class="list-style-none flex">
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            {{translate('common.precedent')}}
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            1
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <a class="block rounded bg-blue-100 px-3 py-1.5 text-blue-700 font-medium">
+                            2
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            3
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            {{translate('common.suivant')}}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+</div>

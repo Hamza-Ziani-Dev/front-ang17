@@ -1,0 +1,36 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center" *transloco="let translate">
+    <div class="bg-card rounded-lg shadow-xl w-96">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-2">
+            <h3 class="text-xl font-semibold">{{translate('confirmation.supp')}}</h3>
+            <button (click)="onCancel()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+        </div>
+        <!-- Line separator -->
+        <div class="h-1 bg-red-600">
+            <div class="h-full bg-yellow-400 w-1/5"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+            <p>
+                {{translate('confirmation.text')}} ? {{ data.global? data.message : data.target? data.target:translate('confirmation.courrier') }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-card px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse border-t border-gray-200 rounded-b-lg">
+            <button (click)="action('yes')" type="button"
+                class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-600  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <i class="fa-solid fa-trash mr-1"></i>
+                {{translate('confirmation.supp')}}
+            </button>
+            <button (click)="action('no')" type="button"
+                class="mt-3 w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-black text-base font-medium text-white hover:bg-black  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <i class="fa-solid fa-rotate-left mr-1"></i>
+                {{translate('confirmation.cancel')}}
+            </button>
+        </div>
+
+    </div>
+</div>

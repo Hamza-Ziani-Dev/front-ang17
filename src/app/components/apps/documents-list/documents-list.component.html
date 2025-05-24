@@ -1,0 +1,441 @@
+<div class="bg-card absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-fulldark:bg-transparent">
+        <!-- Drawer -->
+        <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()"
+                        class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+
+        <mat-drawer-content class="flex flex-col bg-card  dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 text-center border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                        <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-2 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+                        </button>
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-md sm:text-sm md:text-md font-bold">
+                            <h6 class="m-0 text-blue-900 mr-2">
+                                <ul class="flex flex-wrap items-center">
+                                    <li class="flex items-center" *ngFor="let fol of foldersPath;let i = index">
+                                        <a (click)="goFolderPath(fol, i)"
+                                            [class]=" i == foldersPath.length - 1 ? 'text-blue-800' : 'text-gray-500'"
+                                            class="px-0 font-bold cursor-pointer">
+                                            <p class="my-auto flex items-center">
+                                                <span class="px-1" *ngIf="i != 0">/</span>
+                                                <span>{{ fol.reference }}</span>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </h6>
+                        </div>
+                    </div>
+
+                    <!-- Right Section: Folders/Files Info or Breadcrumbs -->
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center text-gray-500 text-xs sm:text-sm">
+                        <div class="separator hidden sm:block border-l border-gray-300 mx-2"></div>
+                        <ng-container *ngIf="selectedDocs.length > 0">
+                            <span #actions class="mr-2.5">
+                                <a class="mr-4 cursor-pointer" (click)="downloadzip()">
+                                    <i class="fas fa-download text-gray-500 text-base" tooltipClass="tooltip-class"
+                                        container="body" [openDelay]="300" [closeDelay]="200" placement="top"
+                                        [ngbTooltip]="'download'"></i>
+                                </a>
+                            </span>
+                        </ng-container>
+
+                        <button *ngIf="folder.finalise != 'fini'"
+                            class="bg-blue-500 hover:bg-blue-500 text-white px-2 py-2 rounded mr-1 flex items-center"
+                            (click)="addDoc()">
+                            <i class="fas fa-file-medical mr-2"></i>
+                            <span class="to-hide">{{translate('common.adddoc')}}</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Documents List -->
+                <mat-tab-group class="sm:px-2" class="no-indicator">
+                    <mat-tab>
+                        <ng-template matTabContent>
+                            <ng-container *ngIf="totalCheck == 1">
+                                <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md"
+                                    *ngIf="totalCheck == 1">
+                                    <!-- Folders section -->
+                                    <div class="flex px-0" *ngIf="showFolders">
+                                        <div class="w-1/12 flex items-center justify-center">
+                                            <button (click)="previousFolders()"
+                                                class="text-2xl text-gray-600 hover:text-blue-500 focus:outline-none"
+                                                [hidden]="folderPage == 0">
+                                                <i class="fas fa-angle-left"></i>
+                                            </button>
+                                        </div>
+                                        <div class="w-10/12 px-0">
+                                            <div class="w-full">
+                                                <div class="flex flex-wrap" *ngIf="isLoading">
+                                                    <div class="w-1/8 mb-2 p-1 text-center"
+                                                        *ngFor="let folder of folderChilds">
+                                                        <app-folder [folder]="folder" (folderClick)="goToChild(f)"
+                                                            [fromLst]="true"
+                                                            (detailsDrawer)="openDetailsDrawer(folder)">
+                                                            <div class="relative inline-block" contextmenu>
+                                                                <a [matMenuTriggerFor]="menu" class="cursor-pointer"
+                                                                    (click)="click(folder)">
+                                                                    <i class="fas fa-ellipsis-h"></i>
+                                                                </a>
+                                                                <mat-menu #menu="matMenu"
+                                                                    class="absolute left-0  w-20 py-0 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                                    <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                                        (click)="isfav ? this.DeleteFavoritefolder(folder.id) : addToFavorite(folder.id)">
+                                                                        <span style="color: #FDCC0D; ">
+                                                                            <i class="fas fa-star mr-2"></i>
+                                                                        </span>
+                                                                        <span class="ml-2">{{ isfav ?
+                                                                            translate('courrierList.removeFav') :
+                                                                            translate('courrierList.addFav') }}</span>
+                                                                    </a>
+
+                                                                    <hr class="my-1 border-gray-200" />
+
+                                                                    <a *ngIf="folder.finalise != 'fini' "
+                                                                        class="flex items-center px-2 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                                        (click)="editFolder(folder)">
+                                                                        <i class="fas fa-edit mr-2"></i>
+                                                                        <span
+                                                                            class="ml-2">{{translate('common.modifier')}}</span>
+                                                                    </a>
+
+                                                                    <hr class="my-1 border-gray-200" />
+
+                                                                    <a class="flex items-center px-2 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                                        (click)="delete(folder.id)">
+                                                                        <span style="color: rgb(228, 66, 37); "><i
+                                                                                class="fas fa-trash-alt mr-2"></i>
+                                                                        </span>
+
+                                                                        <span
+                                                                            class="ml-2">{{translate('common.delete')}}</span>
+                                                                    </a>
+                                                                </mat-menu>
+                                                            </div>
+                                                        </app-folder>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-1/12 flex items-center justify-center">
+                                            <button [hidden]="folderPage == totalFolderPages - 1 || totalFolderPages == 1
+                                                " (click)="nextFolders()"
+                                                class="text-2xl text-gray-600 hover:text-blue-500 focus:outline-none">
+                                                <i class="fas fa-angle-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Documents section -->
+                                    <div *ngIf="showDocuments" class="w-full p-6">
+                                        <div class="flex">
+                                            <div class="w-full">
+                                                <table class="documents-table w-full mx-auto border-2 border-blue-400 rounded-md shadow-lg text-left text-sm whitespace-nowrap">
+                                                    <thead style="background-color: var(--header-color);color:var(--white-color)">
+                                                        <tr>
+                                                            <th class="w-[12%] px-2 py-1 relative">
+                                                                <button class="w-full flex "
+                                                                    (click)="isDropdownOpen = !isDropdownOpen">
+                                                                    <span> {{translate('common.selectionner')}}</span>
+                                                                    <i class="fas ml-2" [ngClass]="{
+                                                                      'fa-chevron-up': isDropdownOpen,
+                                                                      'fa-chevron-down': !isDropdownOpen
+                                                                    }"></i>
+                                                                </button>
+
+                                                                <div *ngIf="isDropdownOpen"
+                                                                    class="absolute left-0 mt-1 w-40 bg-white border border-gray-300 rounded shadow-md z-50">
+                                                                    <a class="block px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
+                                                                        [ngClass]="{ 'pointer-events-none opacity-50': isPageSeleced }"
+                                                                        (click)="selectAll($event); isDropdownOpen = false">{{translate('common.selectionnerpage')}}
+                                                                    </a>
+                                                                    <a class="block px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
+                                                                        [ngClass]="{ 'pointer-events-none opacity-50': selectedDocs.length == resultTotal }"
+                                                                        (click)="selectAll($event); isDropdownOpen = false">{{translate('common.selectionnertout')}}
+                                                                    </a>
+                                                                    <div class="border-t border-gray-200 my-1"></div>
+                                                                    <a class="block px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
+                                                                        [ngClass]="{ 'pointer-events-none opacity-50': selectedDocs.length == 0 }"
+                                                                        (click)="unSelectAll(); isDropdownOpen = false">{{translate('common.deselectionner')}}
+                                                                    </a>
+                                                                </div>
+                                                            </th>
+                                                            <th class="p-1 text-center"
+                                                                *ngIf="folder.finalise == 'fini' && hideExportation">
+                                                                {{translate('common.archivecm')}}
+                                                            </th>
+                                                            <th class="p-1 text-center">{{translate('common.document')}}
+                                                            </th>
+                                                            <th class="p-1 text-center">{{translate('common.type')}}
+                                                            </th>
+                                                            <th class="p-1 text-center">
+                                                                {{translate('common.dateenregistrement')}}</th>
+                                                            <th class="p-1 text-center">{{translate('common.actions')}}
+                                                            </th>
+                                                            <th class="p-1 text-center">
+                                                                {{translate('common.proprietaire')}}</th>
+                                                            <th class="p-1 text-center">{{translate('common.details')}}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let document of documents | paginate : { itemsPerPage: showFolders ? 8 : 12, currentPage: page + 1, totalItems: totalEl, id: 'id1' }; let i = index"
+                                                            [ngClass]="{'bg-zinc-100': i % 2 === 0,'bg-white': i % 2 !== 0,'border-t': true,'hover:bg-yellow-100': true}">
+
+                                                            <td class="px-2 py-1 text-center">
+                                                                <input type="checkbox"
+                                                                    [checked]="selectedDocs.indexOf(document['document']['id']) != -1  "
+                                                                    (change)="addToList($event, document['document'])" />
+                                                            </td>
+
+                                                            <td class="p-1 text-center align-middle"
+                                                                *ngIf="folder.finalise == 'fini' && hideExportation">
+                                                                <div class="flex justify-center items-center space-x-1">
+
+                                                                    <svg width="15px"
+                                                                        *ngIf="document['document']['archiveCm'] == 1"
+                                                                        viewBox="0 0 64 64"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        class="iconify iconify--emojione"
+                                                                        preserveAspectRatio="xMidYMid meet">
+                                                                        <circle cx="32" cy="32" r="30" fill="#4bd37b">
+                                                                        </circle>
+                                                                        <path fill="#fff"
+                                                                            d="M46 14L25 35.6l-7-7.2l-7 7.2L25 50l28-28.8z">
+                                                                        </path>
+                                                                    </svg>
+
+                                                                    <svg height="15px" width="15px"
+                                                                        *ngIf="document['document']['archiveCm'] == 0"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 512 512">
+                                                                        <path style="fill:#FF7855;"
+                                                                            d="M0,256c0,141.384,114.615,256,256,256l22.261-256L256,0C114.615,0,0,114.615,0,256z" />
+                                                                        <path style="fill:#FF562B;"
+                                                                            d="M256,0v512c141.384,0,256-114.616,256-256S397.384,0,256,0z" />
+                                                                        <polygon style="fill:#FFFFFF;"
+                                                                            points="161.555,114.333 114.333,161.555 208.778,256 114.333,350.445 161.555,397.667 256,303.222 278.261,256 256,208.778" />
+                                                                        <polygon style="fill:#FFEAC3;"
+                                                                            points="397.667,161.555 350.445,114.333 256,208.778 256,303.222 350.445,397.667 397.667,350.445 303.222,256" />
+                                                                    </svg>
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="p-1 text-center" (click)="openViewer(document['document']['id'],document['document']['fileName'],document['document']['contentType'])">
+                                                                <span>
+                                                                    <i style="cursor: pointer" container="body"
+                                                                        [openDelay]="300" [closeDelay]="700"
+                                                                        placement="left"
+                                                                        tooltipClass="tooltip-class-thumb"
+                                                                        [ngbTooltip]="(document['document']['contentType'] == 'application/pdf' || document['document']['contentType'] == 'image/jpeg' || document['document']['contentType'] == 'image/tiff') ? doc : '' "
+                                                                        [class]="getFontAwesomeIconFromMIME(document['document']['contentType'])"></i>
+                                                                </span>
+                                                            </td>
+
+                                                            <td class="p-1 text-center">{{
+                                                                document.document.type.libelle }}</td>
+                                                            <td class="p-1 text-center">{{ document.document.upload_date
+                                                                | date:
+                                                                "dd/MM/yyyy HH:mm:ss" }}</td>
+
+                                                            <td class="text-center">
+                                                                <div
+                                                                    class="flex items-center justify-center gap-1 text-blue-500">
+                                                                    <button (click)="send(document.document)">
+                                                                        <i
+                                                                            class="fas fa-envelope hover:text-blue-700 transition"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        (click)="downloadFile(document.document.id)">
+                                                                        <i
+                                                                            class="fas fa-download hover:text-blue-700 transition"></i>
+                                                                    </button>
+                                                                    <button [matMenuTriggerFor]="menu">
+                                                                        <i class="fas fa-caret-down"></i>
+                                                                    </button>
+
+                                                                    <mat-menu #menu="matMenu" class="py-0">
+                                                                        <ng-container *ngIf="folder.finalise != 'fini'">
+                                                                            <button class="custom-menu-item"
+                                                                                (click)="getDocToUp(document['document'])">
+                                                                                <i class="fas fa-edit ml-2"></i>
+                                                                                <span
+                                                                                    class="mr-2 ml-2">{{translate('common.modifier')}}</span>
+                                                                            </button>
+                                                                            <mat-divider></mat-divider>
+                                                                        </ng-container>
+
+                                                                        <ng-container
+                                                                            *ngIf="folder.finalise == 'fini' && hideExportation && document['document']['archiveCm'] == 0">
+                                                                            <button class="custom-menu-item"
+                                                                                (click)="exportDocument(document['document'],folder.id)">
+                                                                                <i class="fas fa-edit ml-2"></i>
+                                                                                <span
+                                                                                    class="mr-2 ml-2">{{translate('common.archivecm')}}</span>
+                                                                            </button>
+                                                                            <mat-divider></mat-divider>
+                                                                        </ng-container>
+
+                                                                        <button class="custom-menu-item"
+                                                                            (click)="moveTo(document['document'])">
+                                                                            <i class="fas fa-cut ml-2"></i>
+                                                                            <span
+                                                                                class="mr-2 ml-2">{{translate('common.deplacer')}}</span>
+                                                                        </button>
+                                                                        <mat-divider></mat-divider>
+
+                                                                        <ng-container *ngIf="hideWordToPdf">
+                                                                            <ng-container
+                                                                                *ngIf="document['document']['contentType'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
+                                                                                <button class="custom-menu-item"
+                                                                                    (click)="exportWordPdf(document)">
+                                                                                    <i
+                                                                                        class="fas fa-file-pdf-o ml-2"></i>
+                                                                                    <span
+                                                                                        class="mr-2 ml-2">{{translate('common.exportpdf')}}</span>
+                                                                                </button>
+                                                                                <mat-divider></mat-divider>
+                                                                            </ng-container>
+                                                                        </ng-container>
+
+                                                                        <button class="custom-menu-item"
+                                                                            (click)="unlinkDocument(document['document']['id'])">
+                                                                            <i class="fas fa-unlink ml-2"></i>
+                                                                            <span
+                                                                                class="mr-2 ml-2">{{translate('common.detacher')}}</span>
+                                                                        </button>
+                                                                        <mat-divider></mat-divider>
+
+                                                                        <button class="custom-menu-item"
+                                                                            (click)="version(document['document'], document['document']['type']['name'])">
+                                                                            <i class="fas fa-code-branch ml-2"></i>
+                                                                            <span
+                                                                                class="mr-2 ml-2">{{translate('common.anciennesversions')}}</span>
+                                                                        </button>
+                                                                        <mat-divider></mat-divider>
+
+                                                                        <button class="custom-menu-item"
+                                                                            (click)="onDelete(document['document']['id'])">
+                                                                            <i
+                                                                                class="text-red-500 fas fa-trash-alt ml-2"></i>
+                                                                            <span
+                                                                                class="text-red-500 mr-2 ml-2">{{translate('common.delete')}}</span>
+                                                                        </button>
+                                                                    </mat-menu>
+
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="p-1 text-center">{{
+                                                                document.document.owner.fullName }}</td>
+
+                                                            <td class="p-1 text-center">
+                                                                <a (click)="openDetailsDrawer(document.document)"
+                                                                    class="text-blue-500 hover:text-blue-700">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="flex justify-center mt-4"
+                                                    *ngIf="(showFolders && totalEl > 8) || (!showFolders && totalEl > 12)">
+                                                    <pagination-controls [previousLabel]="'Précédent'"
+                                                        [nextLabel]="'Suivant'" directionLinks="true" autoHide="true"
+                                                        responsive="true" screenReaderPaginationLabel="Pagination"
+                                                        screenReaderPageLabel="page"
+                                                        screenReaderCurrentLabel="Vous êtes sur la page"
+                                                        (pageChange)="goPage($event - 1)" id="id1" maxSize="14"
+                                                        class="pagination-controls">
+                                                    </pagination-controls>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <!-- No data message -->
+                                    <ng-container *ngIf="!showDocuments && !showFolders && noData == true">
+                                        <div class="flex flex-auto flex-col items-center justify-center ">
+                                            <i class="fa fa-folder-open icon-size-16" aria-hidden="true"></i>
+                                            <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                                                {{translate('common.0docpartager') }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+
+                <!-- Loading -->
+                <ng-container *ngIf="totalCheck == -1">
+                    <div
+                        class="flex flex-wrap justify-center items-center w-full h-full mx-auto mt-8 shadow-md bg-white">
+                        <div class="flex flex-col justify-center items-center space-y-4">
+                            <!-- Spinning Icon -->
+                            <div class="h-15 w-15 border-8 border-t-blue-600 border-gray-300 rounded-full animate-spin">
+                            </div>
+                            <!-- Loading Text -->
+                            <div class="text-lg text-black">
+                                {{translate('courrierList.load') }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- End Loading -->
+
+                <ng-template #doc>
+                    <div id="MyDIv" style="margin-left: 45px" class="main-container"></div>
+                    <pdf-viewer *ngIf="isPdf" [src]="base64" style="overflow: hidden" [page]="0" [original-size]="false"
+                        [show-all]="false" [show-borders]="true"
+                        style="display: block; height: 250px; width: 180px"></pdf-viewer>
+                    <iframe *ngIf="!isPdf && uri" [src]="uri" frameborder="0" class="m-0"
+                        style="display: block; height: 250px; width: 180px"></iframe>
+                </ng-template>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

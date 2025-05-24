@@ -1,0 +1,384 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+
+
+
+        <mat-drawer-content class="flex flex-col bg-gray-100 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+
+
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                        <!-- Button Retour -->
+                        <button
+                        class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                        (click)="goBack()"
+                        >
+                        <i class="fas fa-chevron-left"></i>
+                        {{translate('common.retour')}}
+                    </button>
+
+                        <!-- Gradient Vertical Separator -->
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            {{translate('ajoutercourrier.documentspartages')}} :
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex sm:flex-row items-start sm:items-center font-normal text-secondary text-sm sm:text-base">
+                        <ng-container>
+                            <div class="mr-2">{{translate("common.total")}} : 4</div>
+                        </ng-container>
+                        <div class="flex items-center space-x-1">
+                            <button *ngIf="!isMobileView" (click)="showTableView()">
+                                <mat-icon svgIcon="feather:align-justify"
+                                    [ngClass]="{'primary-color': isTableViewActive}" title="Table View"></mat-icon>
+                            </button>
+                            <button (click)="showMosaicView()">
+                                <mat-icon svgIcon="heroicons_outline:squares-2x2"
+                                    [ngClass]="{'primary-color': isMosaicViewActive}" title="Mosaic View"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+
+
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Results Documents Partages Mosaique -->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab label="Documents Partages" *ngIf="!showTable">
+                        <ng-template matTabContent>
+                            <ng-container *ngIf="files.length > 0; else NoData">
+                                <div class="relative flex items-center justify-center mt-4">
+
+                                    <!-- Content Container -->
+                                    <div class="flex flex-wrap justify-center -m-2">
+                                        <ng-container *ngFor="let file of paginatedFiles; let i = index">
+                                            <div class="relative w-40 h-40 m-2 p-4 shadow rounded-2xl bg-card">
+                                                <!-- Top-right icon with Menu Trigger -->
+                                                <button mat-icon-button [matMenuTriggerFor]="fileMenu"
+                                                    class="absolute top-1.5 right-1.5 w-8 h-8 min-h-8 z-20 text-gray-600">
+                                                    <i class="fas fa-ellipsis-h"></i>
+                                                </button>
+
+                                                <!-- Menu Definition -->
+                                                <mat-menu #fileMenu="matMenu">
+                                                    <button mat-menu-item (click)="openProcessusDialog()">
+                                                        <i class="fa-solid fa-code-branch gray-color mr-2"></i>
+                                                        {{ translate("common.proccessus") }}
+                                                    </button>
+                                                    <button mat-menu-item (click)="openSupprimerDialog()"
+                                                        class="flex items-center">
+                                                        <i class="fas fa-trash text-red-500 mr-2"></i>
+                                                        <span>{{ translate('common.supprimer') }}</span>
+                                                    </button>
+
+                                                </mat-menu>
+
+                                                <!-- Card Content with Clickable Folder -->
+                                                <a class="absolute inset-0 flex flex-col p-4 cursor-pointer z-10">
+                                                    <div class="aspect-[9/6]">
+                                                        <div class="flex items-center justify-center h-full">
+                                                            <i
+                                                                class="fa-solid fa-envelope icon-size-14 text-yellow-400"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="flex flex-col flex-auto justify-center text-center text-sm font-medium">
+                                                        <div class="truncate">{{file.name }}</div>
+                                                        <ng-container>
+                                                            <div class="text-secondary truncate">{{ file.date }}
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </a>
+
+                                                <!-- Bottom-right Icon -->
+                                                <button (click)="openDetailsDrawer(slideIndex + i)"
+                                                    class="absolute bottom-1.5 right-1.5 w-8 h-8 min-h-8 z-20"
+                                                    mat-icon-button>
+                                                    <mat-icon class="icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:information-circle'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+
+                                <!-- Pagination -->
+                                <div *ngIf="files.length > 12" class="flex justify-center items-center space-x-2 mt-4">
+                                    <button (click)="previousPage()" [disabled]="currentPage === 0"
+                                        class="flex items-center px-3 py-1 rounded bg-blue-500 hover:bg-blue-500 text-white disabled:bg-gray-300 disabled:text-gray-500">
+                                        <i class="fas fa-chevron-left mr-2"></i>
+                                        {{translate('common.precedent')}}
+                                    </button>
+                                    <ng-container *ngFor="let page of getPaginationArray(); let i = index">
+                                        <button *ngIf="i < 3 || i > totalPages - 4 || Math.abs(i - currentPage) <= 1"
+                                            (click)="goToPage(i)" [class.bg-blue-500]="i === currentPage"
+                                            [class.text-white]="i === currentPage" class="px-3 py-1 rounded"
+                                            [ngClass]="{'bg-blue-500 text-secondary': i === currentPage, 'bg-card': i !== currentPage}">
+                                            {{ i + 1 }}
+                                        </button>
+                                        <span *ngIf="i === 3 && currentPage > 4">...</span>
+                                        <span *ngIf="i === totalPages - 4 && currentPage < totalPages - 5">...</span>
+                                    </ng-container>
+                                    <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1"
+                                        class="flex items-center px-3 py-1 rounded bg-blue-500 hover:bg-blue-500 text-white disabled:bg-gray-300 disabled:text-gray-500">
+                                        {{translate('common.suivant')}}
+                                        <i class="fas fa-chevron-right ml-2"></i> <!-- Next Icon -->
+                                    </button>
+                                </div>
+
+                            </ng-container>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+
+                <!-- Results Documents Partages Table -->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab label="Documents Partages" *ngIf="showTable">
+                        <ng-template matTabContent>
+                            <div class="flex justify-center items-center">
+                                <!-- Table -->
+                                <ng-container>
+                                    <div class="bg-card dark:bg-neutral-700">
+                                        <table
+                                            class="min-w-full w-[90%] mx-auto border-2 border-blue-500 shadow-lg rounded-lg text-left text-xs whitespace-nowrap">
+                                            <thead class="uppercase tracking-wider bg-sky-600 text-white">
+                                                <tr>
+                                                    <th class="px-2 py-3 text-center"> {{translate('common.ouvrir')}}
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">{{translate('common.reference')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">
+                                                        {{translate('common.dateenregistrement')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">
+                                                        {{translate('common.datereception')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">{{translate('common.types')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">{{translate('common.categorie')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">
+                                                        {{translate('common.destinataires')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">{{translate('common.objects')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">
+                                                        {{translate('common.proprietaire')}}
+                                                        <a href="" class="inline">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 320 512"
+                                                                class="w-[0.75rem] h-[0.75rem] inline ml-1 text-white mb-[1px]"
+                                                                fill="currentColor">
+                                                                <path
+                                                                    d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
+                                                            </svg>
+                                                        </a>
+                                                    </th>
+                                                    <th class="px-2 py-3 text-center">{{translate('common.actions')}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let element of results; let i = index"
+                                                    [ngClass]="i % 2 === 0 ? 'bg-card hover:bg-amber-100' : 'bg-blue-50 hover:bg-amber-100'">
+
+                                                    <td class="px-2 text-center">
+                                                        <div class="relative group">
+                                                            <button (click)="OpenViewDoc()"
+                                                                class="flex items-center justify-center p-2 bg-transparent">
+                                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                    width="24px" height="24px" viewBox="0,0,256,256">
+                                                                    <g fill="none" fill-rule="nonzero" stroke="none"
+                                                                        stroke-width="1" stroke-linecap="butt"
+                                                                        stroke-linejoin="miter" stroke-miterlimit="10"
+                                                                        stroke-dasharray="" stroke-dashoffset="0"
+                                                                        font-family="none" font-weight="none"
+                                                                        font-size="none" text-anchor="none"
+                                                                        style="mix-blend-mode: normal">
+                                                                        <g transform="scale(5.33333,5.33333)">
+                                                                            <path
+                                                                                d="M37,45h-26c-1.657,0 -3,-1.343 -3,-3v-36c0,-1.657 1.343,-3 3,-3h19l10,10v29c0,1.657 -1.343,3 -3,3z"
+                                                                                fill="#fcc419"></path>
+                                                                            <path d="M40,13h-10v-10z" fill="#010b13">
+                                                                            </path>
+                                                                            <path d="M30,13l10,10v-10z" fill="#fcc419">
+                                                                            </path>
+                                                                            <path
+                                                                                d="M15,23h18v2h-18zM15,27h18v2h-18zM15,31h18v2h-18zM15,35h10v2h-10z"
+                                                                                fill="#e3f2fd"></path>
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                            </button>
+                                                            <span
+                                                                class="absolute left-1/2 transform -translate-x-1/2 -translate-y-full bg-blue-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                                                style="top: -2px; margin-bottom: 1px;">
+                                                                Ouvrir
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.reference }}
+                                                    </td>
+                                                    <td class="px-1 text-center text-secondary">{{
+                                                        element.registrationDate }}</td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.receptionDate
+                                                        }}</td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.type }}</td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.category }}
+                                                    </td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.sender }}
+                                                    </td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.subject }}
+                                                    </td>
+                                                    <td class="px-1 text-center text-secondary">{{ element.owner }}</td>
+                                                    <td class="px-1 text-center text-secondary">
+                                                        <div class="flex justify-center items-center">
+                                                            <button mat-icon-button [matMenuTriggerFor]="folderMenu"
+                                                                aria-label="Actions">
+                                                                <i class="fa-solid fa-ellipsis icon-size-4"></i>
+                                                            </button>
+                                                            <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                                                <button mat-menu-item (click)="openProcessusDialog()">
+                                                                    <i
+                                                                        class="fa-solid fa-code-branch gray-color mr-2"></i>
+                                                                    {{ translate("common.proccessus") }}
+                                                                </button>
+                                                                <button mat-menu-item (click)="openSupprimerDialog()">
+                                                                    <i class="fa-solid fa-trash red-color mr-2"></i>
+                                                                    {{ translate("common.supprimer") }}
+                                                                </button>
+                                                            </mat-menu>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <nav class="mt-5 flex items-center justify-center text-sm"
+                                            aria-label="Page navigation example">
+                                            <ul class="list-style-none flex">
+                                                <li>
+                                                    <a
+                                                        class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                                                        {{translate('common.precedent')}}
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                                                        1
+                                                    </a>
+                                                </li>
+                                                <li aria-current="page">
+                                                    <a
+                                                        class="block rounded bg-blue-100 px-3 py-1.5 text-blue-700 font-medium">
+                                                        2
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                                                        3
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                                                        {{translate('common.suivant')}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </mat-drawer-content>
+
+
+
+    </mat-drawer-container>
+</div>

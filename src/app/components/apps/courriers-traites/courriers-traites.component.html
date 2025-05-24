@@ -1,0 +1,970 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <!-- Drawer -->
+        <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()"
+                        class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+        <mat-drawer-content class="flex flex-col bg-gray-50 dark:bg-transparent">
+            <div class="flex flex-col flex-auto">
+
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                        <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-2 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()">
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+                        </button>
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="flex items-center justify-between sm:p-1 bg-card dark:bg-transparent">
+                            <div *ngIf="!isResult; then searchHeaderBlock else resultHeaderBlock"></div>
+                            <ng-template #searchHeaderBlock>
+                                <div class="flex items-center rounded-md justify-between px-4 py-1">
+                                    <h5 class="font-bold text-blue-900">
+                                        {{translate('courriertraites.rechercherprocessustraites')}}</h5>
+
+                                </div>
+                            </ng-template>
+
+                            <ng-template #resultHeaderBlock>
+                                <div class="flex items-center rounded-md justify-between px-1 py-1">
+                                    <h5 class="font-bold text-blue-900">{{translate('common.listeprocessustraites')}}
+                                    </h5>
+
+                                </div>
+                                <div class="flex items-center gap-2 flex-wrap  sm:mt-0">
+                                    <a (click)="mode(1)" class="cursor-pointer hidden md:inline-block"
+                                        [ngClass]="viewMode === 1 ? 'text-blue-600' : 'text-gray-400'">
+                                        <i class="fas fa-list"></i>
+                                    </a>
+                                    <a (click)="mode(0)" class="cursor-pointer"
+                                        [ngClass]="viewMode === 0 ? 'text-blue-600' : 'text-gray-400'">
+                                        <i class="fab fa-microsoft"></i>
+                                    </a>
+                                    <div
+                                        class="flex sm:flex-row items-start sm:items-center font-normal text-secondary text-sm sm:text-base">
+                                        <ng-container>
+                                            <span *ngIf="resultTotal" class="text-muted">
+                                                <small class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                    {{ resultTotal }}
+                                                    {{ resultTotal > 1 ? translate('courriermonequipe.courriers') :
+                                                    translate('courriermonequipe.courrier') }}
+                                                </small>
+                                            </span>
+                                        </ng-container>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center text-gray-500 text-xs sm:text-sm">
+                        <div class="separator hidden sm:block border-l border-gray-300 mx-2"></div>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+
+                <!-- Courrier Traites-->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab>
+                        <div *ngIf="!isResult; then searchBlock; else resultBlock"></div>
+                        <ng-template #searchBlock>
+                            <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                                <div class="flex justify-center">
+                                    <form [formGroup]="ArchiveForm"
+                                        class="w-[60%] flex flex-col p-4 bg-card shadow rounded overflow-hidden">
+                                        <!-- Reference -->
+                                        <div class="mb-6">
+                                            <label for="ref" class="block font-bold text-blue-900 mb-2">
+                                                {{translate("common.reference")}} :
+                                            </label>
+                                            <input formControlName="reference" type="text" id="ref"
+                                                class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+                                                placeholder="Référence" />
+                                        </div>
+
+                                        <!-- Status -->
+                                        <div class="mb-6">
+                                            <label for="folder-type" class="block font-bold text-blue-900 mb-2">
+                                                {{translate("common.statut")}} :
+                                            </label>
+                                            <select [clearable]="true" formControlName="fini" id="folder-type"
+                                                class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
+                                                <option value="encours">{{translate('courriermonequipe.encours')}}
+                                                </option>
+                                                <option value="abondonne">{{translate('courriermonequipe.abondonne')}}
+                                                </option>
+                                                <option value="fini">{{translate('courriermonequipe.finalisee')}}
+                                                </option>
+
+                                            </select>
+                                        </div>
+
+                                        <!-- Date Range -->
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                            <div>
+                                                <label class="block font-bold text-blue-900 mb-2">
+                                                    {{translate("common.date")}}
+                                                </label>
+                                                <input formControlName="deDate" (change)="changeDate()" type="date"
+                                                    max="3000-12-31" min="1000-01-01"
+                                                    class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500" />
+                                            </div>
+                                            <div>
+                                                <label class="block font-bold text-blue-900 mb-2">
+                                                    {{translate('common.au')}} :
+                                                </label>
+                                                <input formControlName="toDate" type="date" max="3000-12-31"
+                                                    min="1000-01-01"
+                                                    class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Folder Type -->
+                                        <div class="mb-6">
+                                            <label class="block font-bold text-blue-900 mb-2">
+                                                {{translate("common.typecourrier")}} :
+                                            </label>
+                                            <select formControlName="type" (change)="changeSuit($event)"
+                                                (clear)="clearchamp($event)"
+                                                class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500">
+                                                <option *ngFor="let ft of folderTypes" [value]="ft.id">
+                                                    {{ ft.name }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Sender/Receiver Selector -->
+                                        <div class="mb-6" *ngIf="acc != null">
+                                            <ng-container *ngIf="acc.cat == dep || acc.cat == inter">
+                                                <label class="block font-bold text-blue-900 mb-2">
+                                                    {{translate("common.emetteur")}} :
+                                                </label>
+                                                <select
+                                                    class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
+                                                    formControlName="sender" [clearable]="false"
+                                                    (change)="changeSender($event)">
+                                                    <option *ngFor="let dt of receivers" [value]="dt.id">
+                                                        {{ dt.name }}
+                                                    </option>
+                                                </select>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="acc.cat == arr">
+                                                <label class="block font-bold text-blue-900 mb-2">
+                                                    {{translate("common.destinataires")}} :
+                                                </label>
+                                                <input formControlName="sender" list="users" id="us" type="text"
+                                                    class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500" />
+                                                <datalist id="users">
+                                                    <optgroup [label]="config.c['index']['choisedest']">
+                                                        <option *ngFor="let dt of senders" [value]="dt.name">
+                                                            {{ dt.name }}
+                                                        </option>
+                                                    </optgroup>
+                                                </datalist>
+                                            </ng-container>
+                                        </div>
+
+                                        <!-- Selected Receivers -->
+                                        <div class="mb-6" *ngIf="selectedReceivers.length > 0">
+                                            <ul class="flex flex-wrap gap-2">
+                                                <li *ngFor="let da of selectedReceivers"
+                                                    class="flex items-center space-x-2 border border-blue-500 text-gray-700 rounded-full px-3 py-1 shadow">
+                                                    <span class="font-bold text-orange-500">#</span>{{ da }}
+                                                    <button type="button" (click)="supp(da)"
+                                                        class="ml-2 text-red-600 font-bold">
+                                                        ×
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Object -->
+                                        <div class="mb-6">
+                                            <label class="block font-bold text-blue-900 mb-2">
+                                                {{translate("common.objet")}} :
+                                            </label>
+                                            <textarea formControlName="objet"
+                                                class="w-full px-4 py-1 border border-gray-300 rounded focus:outline-none focus:ring"></textarea>
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="flex items-center justify-center gap-4">
+                                            <button type="submit" (click)="goPage()" [disabled]="ArchiveForm.invalid"
+                                                class="lex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 gap-2">
+                                                <i [class]="
+                                                isLoading ? 'fa fa-search' : 'fas fa-circle-notch fa-spin'
+                                                "></i>
+                                                {{translate("common.rechercher")}}
+                                            </button>
+                                            <button type="button" (click)="clear()"
+                                                class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-undo mr-2"></i>{{translate("common.annuler")}}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #resultBlock>
+                            <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                                <ng-container *ngIf="totalCheck == 1">
+                                    <div *ngIf="isLoading" class="pt-4">
+                                        <!-- Table -->
+                                        <ng-container *ngIf="!isMobile && viewMode === 1">
+                                            <table
+                                                class="documents-table w-full mx-auto border-2 border-blue-400 rounded-md shadow-lg text-left text-md whitespace-nowrap"
+                                                *ngIf="totalEl >= 1">
+                                                <thead
+                                                    style="background-color: var(--header-color);color:var(--white-color)"
+                                                    >
+                                                    <tr>
+                                                        <th *ngIf="hideStatus" scope="col" class="p-1 text-left">
+                                                            {{translate('common.status')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1 text-left">
+                                                            {{translate('common.ouvrir')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            <div class="flex items-center">
+                                                                <span
+                                                                    class="mr-1">{{translate('common.reference')}}</span>
+                                                                <ul class="list-none cursor-pointer"
+                                                                    (click)="sortBy('reference')">
+                                                                    <li class="h-[5px]">
+                                                                        <i
+                                                                            [class]="'fas fa-sort-up ' + ( (currentParam=='reference' && currentOrder==true)||currentParam!='reference' ? ( (currentParam=='reference' && currentOrder==true)||currentParam!='reference' ? 'text-white':'text-gray-200') : 'text-gray-200') "></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i
+                                                                            [class]="'fas fa-sort-down ' + ( currentParam=='reference' && currentOrder==false ? ( currentParam=='reference' && currentOrder==false ? 'text-white':'text-gray-200') : 'text-gray-200')"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+
+                                                        <th *ngIf="hideRefAuto" scope="col" class="p-1 text-left">
+                                                            {{translate('common.numerotation')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            <div class="flex items-center">
+                                                                <span
+                                                                    class="mr-1">{{translate('common.dateenregistrement')}}</span>
+                                                                <ul class="list-none cursor-pointer"
+                                                                    (click)="sortBy('creation_date')">
+                                                                    <li class="h-[5px]">
+                                                                        <i
+                                                                            [class]="'fas fa-sort-up ' + ( (currentParam=='creation_date' && currentOrder==true)||currentParam!='creation_date' ? ( (currentParam=='creation_date' && currentOrder==true)||currentParam!='creation_date' ? 'text-white':'text-gray-200') : 'text-gray-200') "></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i
+                                                                            [class]="'fas fa-sort-down ' + ( currentParam=='creation_date' && currentOrder==false ? ( currentParam=='creation_date' && currentOrder==false ? 'text-white':'text-gray-200') : 'text-gray-200')"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            <div class="flex items-center">
+                                                                <span
+                                                                    class="mr-1">{{translate('common.datereception')}}</span>
+                                                                <ul class="list-none cursor-pointer"
+                                                                    (click)="sortBy('dateReception')">
+                                                                    <li class="h-[5px]">
+                                                                        <i
+                                                                            [class]="'fas fa-sort-up ' + ( (currentParam=='dateReception' && currentOrder==true)||currentParam!='dateReception' ? ( (currentParam=='dateReception' && currentOrder==true)||currentParam!='dateReception' ? 'text-white':'text-gray-200') : 'text-gray-200') "></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i
+                                                                            [class]="'fas fa-sort-down ' + ( currentParam=='dateReception' && currentOrder==false ? ( currentParam=='dateReception' && currentOrder==false ? 'text-white':'text-gray-200') : 'text-gray-200')"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="p-1 ">
+                                                            <div class="flex items-center">
+                                                                <span class="mr-1">{{translate('common.type')}}</span>
+                                                                <ul class="list-none cursor-pointer"
+                                                                    (click)="sortBy('typeName')">
+                                                                    <li class="h-[5px]">
+                                                                        <i
+                                                                            [class]="'fas fa-sort-up ' + ( (currentParam=='typeName' && currentOrder==true)||currentParam!='typeName' ? ( (currentParam=='typeName' && currentOrder==true)||currentParam!='typeName' ? 'text-white':'text-gray-200') : 'text-gray-200') "></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i
+                                                                            [class]="'fas fa-sort-down ' + ( currentParam=='typeName' && currentOrder==false ? ( currentParam=='typeName' && currentOrder==false ? 'text-white':'text-gray-200') : 'text-gray-200')"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            {{translate('common.categorie')}}
+                                                        </th>
+
+                                                        <th scope="col" class="p-1">
+                                                            {{translate('common.emetteuretdestinataire')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            {{translate('common.objet')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            {{translate('common.proprietaire')}}
+                                                        </th>
+                                                        <th scope="col" class="p-1">
+                                                            {{translate('common.actions')}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- Alternating row colors to match the image -->
+                                                <tbody>
+                                                    <tr *ngFor="let f of foldersResut | paginate: {itemsPerPage: 22,currentPage: page + 1,totalItems: totalEl,id:'id1'};let i = index"
+                                                        [ngClass]="{'bg-zinc-100': i % 2 === 0,'bg-white': i % 2 !== 0,'border-t': true,'hover:bg-yellow-100': true}"
+                                                        class="border-b border-gray-200">
+                                                        <td *ngIf="hideStatus" class="p-1">
+                                                            <div class="status-container">
+                                                                <svg width="15px" *ngIf="f.finalise == 'fini'"
+                                                                    container="body" [openDelay]="300"
+                                                                    [closeDelay]="500" placement="top"
+                                                                    tooltipClass="tooltipl-class" [ngbTooltip]="fini"
+                                                                    viewBox="0 0 64 64"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                    aria-hidden="true" role="img"
+                                                                    class="iconify iconify--emojione"
+                                                                    preserveAspectRatio="xMidYMid meet">
+                                                                    <circle cx="32" cy="32" r="30" fill="#4bd37b">
+                                                                    </circle>
+                                                                    <path fill="#fff"
+                                                                        d="M46 14L25 35.6l-7-7.2l-7 7.2L25 50l28-28.8z">
+                                                                    </path>
+                                                                </svg>
+
+                                                                <svg width="15px" *ngIf="f.finalise == 'accusation'"
+                                                                    container="body" [openDelay]="300"
+                                                                    [closeDelay]="500" placement="top"
+                                                                    tooltipClass="tooltipl-class" [ngbTooltip]="accuse"
+                                                                    version="1.1" id="Capa_1"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                                                    y="0px" viewBox="0 0 58 58"
+                                                                    style="enable-background:new 0 0 58 58;"
+                                                                    xml:space="preserve">
+                                                                    <g>
+                                                                        <g>
+                                                                            <polygon style="fill:#EFEBDE;"
+                                                                                points="46.5,14 32.5,0 1.5,0 1.5,58 46.5,58 		" />
+                                                                            <g>
+                                                                                <path style="fill:#D5D0BB;"
+                                                                                    d="M11.5,23h25c0.552,0,1-0.447,1-1s-0.448-1-1-1h-25c-0.552,0-1,0.447-1,1S10.948,23,11.5,23z" />
+                                                                                <path style="fill:#D5D0BB;"
+                                                                                    d="M11.5,15h10c0.552,0,1-0.447,1-1s-0.448-1-1-1h-10c-0.552,0-1,0.447-1,1S10.948,15,11.5,15z" />
+                                                                                <path style="fill:#D5D0BB;"
+                                                                                    d="M36.5,29h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,29,36.5,29z" />
+                                                                                <path style="fill:#D5D0BB;"
+                                                                                    d="M36.5,37h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,37,36.5,37z" />
+                                                                                <path style="fill:#D5D0BB;"
+                                                                                    d="M36.5,45h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,45,36.5,45z" />
+                                                                            </g>
+                                                                            <polygon style="fill:#D5D0BB;"
+                                                                                points="32.5,0 32.5,14 46.5,14 		" />
+                                                                        </g>
+                                                                        <g>
+                                                                            <circle style="fill:#ED7161;" cx="44.5"
+                                                                                cy="46" r="12" />
+                                                                            <path style="fill:#FFFFFF;"
+                                                                                d="M45.914,46l3.536-3.536c0.391-0.391,0.391-1.023,0-1.414s-1.023-0.391-1.414,0L44.5,44.586
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    l-3.536-3.536c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414L43.086,46l-3.536,3.536c-0.391,0.391-0.391,1.023,0,1.414
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293l3.536-3.536l3.536,3.536c0.195,0.195,0.451,0.293,0.707,0.293
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    s0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414L45.914,46z" />
+                                                                        </g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                </svg>
+
+                                                                <svg *ngIf="f.closeEnd == true" width="15px"
+                                                                    container="body" [openDelay]="300"
+                                                                    [closeDelay]="500" placement="top"
+                                                                    tooltipClass="tooltipl-class"
+                                                                    [ngbTooltip]="closeToexpire" version="1.1"
+                                                                    id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                                                    y="0px" viewBox="0 0 451.277 451.277"
+                                                                    style="enable-background:new 0 0 451.277 451.277;"
+                                                                    xml:space="preserve">
+                                                                    <circle style="fill:#e28743;" cx="225.638"
+                                                                        cy="225.638" r="225.638" />
+                                                                    <path style="opacity:0.1;enable-background:new    ;"
+                                                                        d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+                                                                    <path style="fill:#EBF0F3;"
+                                                                        d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  C253.078,112.944,240.769,100.633,225.637,100.633z" />
+                                                                    <rect x="217.498" y="139.571" style="fill:#2F4859;"
+                                                                        width="16.23" height="26.296" />
+                                                                    <circle style="fill:#3A556A;" cx="225.638"
+                                                                        cy="258.611" r="96.317" />
+                                                                    <circle style="fill:#FFFFFF;" cx="225.638"
+                                                                        cy="258.611" r="78.152" />
+                                                                    <g>
+                                                                        <rect x="224.568" y="186.112"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="224.568" y="325.018"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="292.055" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="153.165" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="259.266" y="315.709"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="189.844" y="195.426"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="162.463" y="292.253"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="282.779" y="222.81"
+                                                                            transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="257.318" y="197.401"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="187.888" y="317.672"
+                                                                            transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="284.72" y="290.291"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="164.431" y="220.886"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                    </g>
+                                                                    <path style="fill:#E56353;"
+                                                                        d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+                                                                    <circle style="fill:#64798A;" cx="225.638"
+                                                                        cy="258.611" r="6.021" />
+                                                                    <path style="fill:#3A556A;"
+                                                                        d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                </svg>
+
+                                                                <svg *ngIf="f.inProgress == true " width="15px"
+                                                                    container="body" [openDelay]="300"
+                                                                    [closeDelay]="500" placement="top"
+                                                                    tooltipClass="tooltipl-class"
+                                                                    [ngbTooltip]="closeToexpire" version="1.1"
+                                                                    id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                                                    y="0px" viewBox="0 0 451.277 451.277"
+                                                                    style="enable-background:new 0 0 451.277 451.277;"
+                                                                    xml:space="preserve">
+                                                                    <circle style="fill:#4bd37b;" cx="225.638"
+                                                                        cy="225.638" r="225.638" />
+                                                                    <path style="opacity:0.1;enable-background:new    ;"
+                                                                        d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+                                                                    <path style="fill:#EBF0F3;"
+                                                                        d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  C253.078,112.944,240.769,100.633,225.637,100.633z" />
+                                                                    <rect x="217.498" y="139.571" style="fill:#2F4859;"
+                                                                        width="16.23" height="26.296" />
+                                                                    <circle style="fill:#3A556A;" cx="225.638"
+                                                                        cy="258.611" r="96.317" />
+                                                                    <circle style="fill:#FFFFFF;" cx="225.638"
+                                                                        cy="258.611" r="78.152" />
+                                                                    <g>
+                                                                        <rect x="224.568" y="186.112"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="224.568" y="325.018"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="292.055" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="153.165" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="259.266" y="315.709"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="189.844" y="195.426"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="162.463" y="292.253"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="282.779" y="222.81"
+                                                                            transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="257.318" y="197.401"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="187.888" y="317.672"
+                                                                            transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="284.72" y="290.291"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="164.431" y="220.886"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                    </g>
+                                                                    <path style="fill:#E56353;"
+                                                                        d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+                                                                    <circle style="fill:#64798A;" cx="225.638"
+                                                                        cy="258.611" r="6.021" />
+                                                                    <path style="fill:#3A556A;"
+                                                                        d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                </svg>
+
+                                                                <svg *ngIf="f.isExpire == true" width="15px"
+                                                                    container="body" [openDelay]="300"
+                                                                    [closeDelay]="500" placement="top"
+                                                                    tooltipClass="tooltipl-class" [ngbTooltip]="expire"
+                                                                    version="1.1" id="Layer_1"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                                                    y="0px" viewBox="0 0 451.277 451.277"
+                                                                    style="enable-background:new 0 0 451.277 451.277;"
+                                                                    xml:space="preserve">
+                                                                    <circle style="fill:#F92e2e;" cx="225.638"
+                                                                        cy="225.638" r="225.638" />
+                                                                    <path style="opacity:0.1;enable-background:new    ;"
+                                                                        d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+                                                                    <path style="fill:#EBF0F3;"
+                                                                        d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  C253.078,112.944,240.769,100.633,225.637,100.633z" />
+                                                                    <rect x="217.498" y="139.571" style="fill:#2F4859;"
+                                                                        width="16.23" height="26.296" />
+                                                                    <circle style="fill:#3A556A;" cx="225.638"
+                                                                        cy="258.611" r="96.317" />
+                                                                    <circle style="fill:#FFFFFF;" cx="225.638"
+                                                                        cy="258.611" r="78.152" />
+                                                                    <g>
+                                                                        <rect x="224.568" y="186.112"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="224.568" y="325.018"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="292.055" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="153.165" y="257.536"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="259.266" y="315.709"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="189.844" y="195.426"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="162.463" y="292.253"
+                                                                            transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="282.779" y="222.81"
+                                                                            transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="257.318" y="197.401"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="187.888" y="317.672"
+                                                                            transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)"
+                                                                            style="fill:#64798A;" width="6.052"
+                                                                            height="2.14" />
+                                                                        <rect x="284.72" y="290.291"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                        <rect x="164.431" y="220.886"
+                                                                            transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)"
+                                                                            style="fill:#64798A;" width="2.14"
+                                                                            height="6.052" />
+                                                                    </g>
+                                                                    <path style="fill:#E56353;"
+                                                                        d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+                                                                    <circle style="fill:#0000;" cx="225.638"
+                                                                        cy="258.611" r="6.021" />
+                                                                    <path style="fill:#0000;"
+                                                                        d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                    <g>
+                                                                    </g>
+                                                                </svg>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-1 text-center">
+                                                            <i (click)="openFolder(f)"
+                                                                class="fas fa-envelope-open text-blue-500 cursor-pointer"></i>
+                                                        </td>
+
+                                                        <td class="p-1">
+                                                            {{ f.reference }}
+                                                        </td>
+                                                        <td *ngIf="hideRefAuto" class="p-1">
+                                                            {{ f.autoRef }}
+                                                        </td>
+                                                        <td class="p-1">
+                                                            {{ f.creation_date | date: "dd/MM/yyyy hh:mm:ss" }}
+                                                        </td>
+                                                        <td class="p-1">
+                                                            <span>
+                                                                {{ f.dateReception | date: "dd/MM/yyyy" }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="p-1">
+                                                            <div class="relative group w-fit">
+                                                                <span class="block truncate max-w-[150px]">
+                                                                    {{ f.typeName | truncate }}
+                                                                </span>
+
+                                                                <!-- Tooltip -->
+                                                                <div
+                                                                    class="absolute bottom-full left-1/2 mb-3 hidden group-hover:block
+                                                           max-w-xs w-max bg-blue-500 text-white text-sm rounded px-2 py-1
+                                                           transform -translate-x-1/2 whitespace-normal z-50 shadow-lg
+                                                           transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                                                                    {{ f.typeName }}
+
+                                                                    <!-- Arrow -->
+                                                                    <div
+                                                                        class="absolute top-full left-1/2 transform -translate-x-1/2">
+                                                                        <div class="w-0 h-0 border-l-8 border-l-transparent
+                                                                  border-r-8 border-r-transparent
+                                                                  border-t-8 border-t-blue-500"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="p-1">
+                                                            <div class="relative group w-fit">
+                                                                <span class="block truncate max-w-[150px]">
+                                                                    {{ f.natureName | truncate }}
+                                                                </span>
+
+                                                                <!-- Tooltip -->
+                                                                <div
+                                                                    class="absolute bottom-full left-1/2 mb-3 hidden group-hover:block
+                                                           max-w-xs w-max bg-blue-500 text-white text-sm rounded px-2 py-1
+                                                           transform -translate-x-1/2 whitespace-normal z-50 shadow-lg
+                                                           transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                                                                    {{ f.natureName }}
+
+                                                                    <!-- Arrow -->
+                                                                    <div
+                                                                        class="absolute top-full left-1/2 transform -translate-x-1/2">
+                                                                        <div class="w-0 h-0 border-l-8 border-l-transparent
+                                                                  border-r-8 border-r-transparent
+                                                                  border-t-8 border-t-blue-500"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+
+                                                        <td *ngIf="f.emet__ != null" class="p-1">
+                                                            {{ f.emet__ }}
+                                                        </td>
+
+                                                        <td *ngIf="f.dest.length > 0" class="p-1 text-center">
+                                                            <button
+                                                                class="border-none outline-none bg-transparent m-0 p-0"
+                                                                (click)="openDest(f)">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td *ngIf="f.dest.length == 0 && f.emet__ == null" class="p-1">
+                                                            N/A</td>
+                                                        <td class="p-1">
+                                                            {{ f.objet }}
+                                                        </td>
+                                                        <td class="p-1">
+                                                            {{ f.owner.fullName }}
+                                                        </td>
+                                                        <td class="p-1 text-center">
+                                                            <div class="btn-group options-menu">
+                                                                <button [matMenuTriggerFor]="menu">
+                                                                    <i class="fas fa-ellipsis-h"></i>
+                                                                </button>
+                                                                <mat-menu #menu="matMenu">
+                                                                    <button [hidden]="f.hasProcess == 0"
+                                                                        (click)="openModal(f)" class="custom-menu-item">
+                                                                        <i
+                                                                            class="fas fa-code-branch mr-2 ml-2 text-blue-500"></i>
+                                                                        {{translate('common.processus')}}
+                                                                    </button>
+                                                                </mat-menu>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-container>
+                                        <!-- Mosaique -->
+                                        <ng-container *ngIf="isMobile || viewMode === 0">
+                                            <div *ngIf="resultTotal != 0">
+                                                <div
+                                                    class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                                    <div
+                                                        *ngFor="let f of foldersResut | paginate: {itemsPerPage: 18,currentPage:page + 1,totalItems:totalEl}">
+
+                                                        <app-folder [folder]="f" (detailsDrawer)="openDetailsDrawer(f)">
+                                                            <div class="relative inline-block" contextmenu>
+                                                                <a [matMenuTriggerFor]="menu" class="cursor-pointer">
+                                                                    <i class="fas fa-ellipsis-h"></i>
+                                                                </a>
+                                                                <mat-menu #menu="matMenu"
+                                                                    class="absolute left-0 w-20 py-0 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+
+                                                                    <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                        (click)="openModal(f)">
+                                                                        <i class="fas fa-code-branch mr-2 ml-2"
+                                                                            [hidden]="f.hasProcess == 0"></i>
+                                                                        <span
+                                                                            class="mr-2">{{translate('common.processus')}}</span>
+                                                                    </a>
+
+                                                                </mat-menu>
+                                                            </div>
+                                                        </app-folder>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+                                         <div *ngIf="resultTotal == 0"  class="w-full">
+                                        <div class="flex justify-center my-4">
+                                            <h1><i class="fa fa-folder-open icon-size-16 text-gray-400" aria-hidden="true"></i></h1>
+                                        </div>
+                                        <div class="flex justify-center my-4">
+                                            <h3 class="text-gray-400">{{ translate('common.aucuncourrier') }}</h3>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="flex justify-center mt-4" *ngIf="totalEl > 12 && totalCheck == 1">
+                                        <div class="flex items-center">
+                                            <pagination-controls [nextLabel]="'Next'" [previousLabel]="'Previews'"
+                                                directionLinks="true" autoHide="true" responsive="true"
+                                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                                screenReaderCurrentLabel="You're on page" id="id1"
+                                                (pageChange)="goPage($event - 1)" class="pagination-controls">
+                                            </pagination-controls>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div *ngIf="totalCheck == -1" class="text-center my-8">
+                                    <div class="flex justify-center items-center">
+                                        <div
+                                            class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600">
+                                        </div>
+                                    </div>
+                                    <h3 class="text-muted mt-4">{{translate('courrierList.load')}}</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                    </mat-tab>
+                </mat-tab-group>
+                <!-- End Courrier Traites-->
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

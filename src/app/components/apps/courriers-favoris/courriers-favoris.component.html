@@ -1,0 +1,192 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <!-- Drawer -->
+        <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()" class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+
+        <mat-drawer-content class="flex flex-col bg-gray-50 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+
+                       <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()"
+                            >
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+                        </button>
+
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+
+                            <h5 class="font-bold text-blue-900">{{translate('favoris.courrierfavoris')}} :</h5>
+
+                        </div>
+                    </div>
+                    <div
+                        class="flex mr-1 sm:flex-row items-start sm:items-center font-normal text-secondary text-xs sm:text-sm">
+                        <div class="flex items-center space-x-1">
+                            <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                              {{ translate('common.total') }} :
+                            </h6>
+                            <span class="text-xs sm:text-sm text-midnight-blue">
+                               {{ totalfolderFav }}
+                            </span>
+                          </div>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+                 <!-- Line separator -->
+                 <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Courrier Favoris-->
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab>
+                        <ng-template matTabContent >
+                            <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                            <ng-container *ngIf="totalCheck == 1">
+                                <div class="relative flex items-center justify-center mt-4 mb-4">
+                                    <!-- Content Container -->
+                                        <div *ngIf="favoriteFolders.length > 0; else NoData"
+                                            class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                        <ng-container *ngFor="let folder of favoriteFolders;let i=index">
+                                            <app-folder [folder]="folder" [retour]="'fav'" [isFav]="true"
+                                            (detailsDrawer)="openDetailsDrawer(folder)">
+                                            <!-- menu -->
+                                            <div class="relative inline-block" contextmenu>
+                                                <a [matMenuTriggerFor]="menu" class="cursor-pointer">
+                                                    <i class="fas fa-ellipsis-h"></i>
+                                                </a>
+                                                <mat-menu #menu="matMenu"
+                                                    class="absolute left-0  w-20 py-0 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                    <!-- Add to Favorites -->
+                                                    <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                        (click)="DeleteFavoritefolder(folder.id)">
+                                                        <span style="color: #FDCC0D; ">
+                                                            <i class="fas fa-star mr-2"></i>
+                                                        </span>
+                                                        {{  translate('common.retirerfavoris')  }}
+
+                                                    </a>
+                                                    <!-- Divider -->
+                                                    <hr class="my-1 border-gray-200" />
+
+                                                    <!-- Edit Option -->
+                                                    <a *ngIf="folder.finalise != 'fini' && folder.finalise != 'accusation'" class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                        (click)="openModifierDialog(folder)">
+                                                        <i class="fas fa-edit mr-2"></i>
+                                                        <span>{{translate('common.modifier')}}</span>
+                                                    </a>
+
+
+                                                    <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                                        (click)="delete(folder.id)">
+                                                        <span style="color: rgb(228, 66, 37); "><i
+                                                                class="fas fa-trash-alt mr-2"></i>
+                                                        </span>
+                                                        {{translate('common.supprimer')}}
+                                                    </a>
+                                                </mat-menu>
+                                            </div>
+                                           </app-folder>
+                                        </ng-container>
+                                    </div>
+                                </div>
+
+
+                                <!-- Pagination -->
+                                <div *ngIf="totalEl > itemsPerPage" class="flex justify-center items-center gap-2 p-4 text-sm select-none">
+
+                                <!-- Previous Button -->
+                                <button (click)="previousPage()"
+                                        [disabled]="page === 0"
+                                        class="px-2 text-gray-900 hover:text-gray-600 disabled:text-gray-300">
+                                &laquo; {{ translate('common.precedent') }}
+                                </button>
+
+                                <!-- Page Numbers -->
+                                <ng-container *ngFor="let pageNum of getPaginationArray()">
+                                <ng-container *ngIf="pageNum === -1">
+                                    <span class="px-2">...</span>
+                                </ng-container>
+                                <button *ngIf="pageNum !== -1"
+                                        (click)="goToPage(pageNum)"
+                                        [ngClass]="{
+                                            'bg-blue-500 text-white': pageNum === page,
+                                            'text-black hover:text-blue-600': pageNum !== page
+                                        }"
+                                        class="w-6 h-6 rounded-sm text-center">
+                                    {{ pageNum + 1 }}
+                                </button>
+                                </ng-container>
+
+                                <!-- Next Button -->
+                                <button (click)="nextPage()"
+                                        [disabled]="page >= totalPages - 1"
+                                        class="px-2 text-gray-900 hover:text-gray-600 disabled:text-gray-300">
+                                {{ translate('common.suivant') }} &raquo;
+                                </button>
+                                </div>
+
+                            </ng-container>
+                            <div *ngIf="totalCheck == -1" class="text-center my-8">
+                                <div class="flex justify-center items-center">
+                                    <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                  </div>
+                              <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }}</h3>
+                            </div>
+                        </div>
+                        </ng-template>
+
+
+                    </mat-tab>
+                </mat-tab-group>
+
+
+
+
+                <!-- End Courrier Favoris-->
+                <!-- No Data template -->
+                <ng-template #NoData>
+                    <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                        <mat-icon class="icon-size-16 text-gray-400" [svgIcon]="'heroicons_outline:folder-open'"></mat-icon>
+                        <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                            {{translate('common.aucuncourrier')}}
+                        </div>
+                    </div>
+                </ng-template>
+                <!-- End No Data template -->
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

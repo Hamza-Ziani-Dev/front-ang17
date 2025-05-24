@@ -1,0 +1,32 @@
+<div class="flex items-center px-2 py-1 bg-gray-100 border-b border-gray-300" *transloco="let translate">
+    <h5 class="text-lg font-bold text-blue-900">{{translate("common.supprimer")}}</h5>
+    <button (click)="this.dialogRef.close()"
+        class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+        &times;
+    </button>
+</div>
+
+
+<!-- Line separator -->
+
+<div class="h-1 bg-red-600">
+    <div class="h-full bg-yellow-400 w-1/5"></div>
+</div>
+
+<div class="p-4">
+    <form>
+        <div class="mb-4">
+            <label for="searchName" class="block text-blue-900 font-semibold">{{ msg }}</label>
+        </div>
+    </form>
+</div>
+
+<div class="flex justify-end p-2 border-t border-gray-300" *transloco="let translate">
+    <button class="btn btn-outline mr-2 text-gray-600 border-gray-400 hover:bg-gray-200" (click)="action('no')">
+        <i class="fas fa-undo"></i> {{translate("common.annuler")}}
+    </button>
+
+    <button class="btn bg-red-600 text-white hover:bg-red-700" (click)="action('yes')">
+        <i class="fas fa-trash-alt"></i> {{translate("common.supprimer")}}
+    </button>
+</div>

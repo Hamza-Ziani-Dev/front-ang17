@@ -1,0 +1,78 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <!-- Dialog -->
+    <div class="relative w-full max-w-2xl min-h-90 max-h-[90%] overflow-y-auto bg-white border rounded-lg shadow-lg">
+        <!-- Header -->
+        <div class="flex items-center p-2 border-b">
+
+            <h5 *ngIf="mode=='add'" class="text-lg font-bold text-indigo-700">
+                Ajouter un modèle
+            </h5>
+            <h5 *ngIf="mode=='edit'" class="text-lg font-bold text-indigo-700">
+                Modifier un modèle
+            </h5>
+            <!-- <a class="ml-auto cursor-pointer" (click)="close()">
+                <span><i class="fa fa-times text-red-500  text-lg" aria-hidden="true"></i></span>
+            </a> -->
+            <button (click)="close()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                &times;
+            </button>
+
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="h-1 bg-blue-500">
+            <div class="h-full bg-yellow-400 w-1/5"></div>
+        </div>
+
+        <!-- Main Form Body -->
+        <div class="p-4">
+            <form [formGroup]="myform">
+                {{myform.value | json}}
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 " for="modelName">
+                        Nom :
+                    </label>
+                    <div class="mt-2">
+                        <input type="text" id="modelName" formControlName="modelName"
+                            class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none " />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 " for="modelDesc">
+                        Description :
+                    </label>
+                    <div class="mt-2">
+                        <textarea id="modelDesc" formControlName="modelDesc"
+                            class="block w-full p-2 border border-gray-300 rounded-md focus:outline-none "></textarea>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="p-2 border-t">
+            <div class="flex justify-end">
+                <button class="bg-gray-300 text-gray-700 px-2 py-1 rounded-md mr-2" (click)="clearGroup()">
+                    <i class="fas fa-undo"></i>
+                    Annuler
+                </button>
+
+                <button *ngIf="mode == 'edit'" class="bg-indigo-500 text-white px-2 py-1 rounded-md mr-2"
+                    (click)="editGroup()">
+                    <i class="fas fa-edit"></i>
+                    Modifier
+                </button>
+
+                <button *ngIf="mode == 'add'" [disabled]="myform.invalid == true || this.onAdding == true"
+                    class="bg-blue-500 text-white px-2 py-1 rounded-md" (click)="addGroup()">
+                    <i class="fas fa-plus"></i>
+                    Ajouter
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>

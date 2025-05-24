@@ -1,0 +1,89 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-2 sm:px-0" *transloco="let translate">
+    <!-- Dialog -->
+    <div class="relative w-full sm:w-[60%] max-h-[90vh] overflow-y-auto bg-white border rounded-lg shadow-lg">
+  
+      <!-- Header -->
+      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between p-3 sm:p-2">
+        <h3 class="text-blue-900 text-sm sm:text-lg font-bold">
+          {{ translate('steps.annotationmotifrejetprocessus') }}
+          <span class="text-blue-600 underline cursor-pointer break-all">
+            {{ this.courrier.reference }}
+          </span>
+        </h3>
+        <button (click)="onClose()" class="text-gray-700 hover:text-black font-extrabold text-3xl sm:text-4xl leading-none px-2">
+          &times;
+        </button>
+      </div>
+  
+      <!-- Progress bar -->
+      <div class="h-1 bg-blue-500">
+        <div class="h-full bg-yellow-400 w-1/5"></div>
+      </div>
+  
+      <!-- Content -->
+      <div class="p-2 space-y-6">
+        <ng-container *ngFor="let etp of steps">
+          <ng-container *ngIf="(etp.etat == -1 || etp.etat == 1 || etp.isBack == 1) && etp.details?.length > 0">
+  
+            <!-- Attributaire group container -->
+            <div class="border-2 border-blue-400 rounded-md p-2 shadow-sm space-y-2">
+              <div class="text-sm sm:text-base font-semibold">
+                {{ translate('steps.attributaire') }} {{ etp.traitant?.fullName || etp.users?.[0]?.fullName || '-' }}
+              </div>
+  
+              <!-- Table wrapper for horizontal scroll -->
+              <div class="overflow-x-auto">
+                <table class="min-w-full border border-blue-400 rounded-md shadow-lg text-sm text-left whitespace-nowrap">
+                  <thead style="background-color: var(--header-color);color:var(--white-color)"
+                         class="uppercase tracking-wider text-xs sm:text-sm">
+                    <tr>
+                      <th class="border px-2 py-1 text-center">{{ translate('steps.annotation') }}</th>
+                      <th class="border px-2 py-1 text-center">{{ translate('steps.motifretour') }}</th>
+                      <th class="border px-2 py-1 text-center">{{ translate('steps.datevalidation') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let etpD of etp.details" class="bg-white even:bg-gray-100">
+                      <td class="border px-2 py-1 text-center">
+                        <ng-container *ngIf="!etpD.isVoice">
+                          {{ etpD.instruction || '-' }}
+                        </ng-container>
+                        <ng-container *ngIf="etpD.isVoice">
+                          <button class="btn btn-primary m-0" (click)="loadVoice(etpD)">
+                            <i class="fas fa-microphone"></i>
+                          </button>
+                        </ng-container>
+                      </td>
+                      <td class="border px-2 py-1 text-center">
+                        {{ etpD.isVoice ? '-' : (etpD.motif || '-') }}
+                      </td>
+                      <td class="border px-2 py-1 text-center">
+                        {{ etpD.status == 'SEND' ? (etpD.dateAvance | date: 'dd-MM-yyyy HH:mm') :
+                           etpD.status == 'RETURN' ? (etpD.dateRet | date: 'dd-MM-yyyy HH:mm') : '-' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <!-- No data -->
+              <div *ngIf="steps[0].details.length <= 0" class="w-full">
+                <div class="my-10 px-4">
+                  <div class="flex justify-center my-6">
+                    <h1><i class="fa fa-search text-gray-400 text-5xl" aria-hidden="true"></i></h1>
+                  </div>
+                  <div class="flex justify-center my-4">
+                    <h3 class="text-gray-500 text-xl text-center">
+                      {{ translate('steps.aucundetails') }}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  

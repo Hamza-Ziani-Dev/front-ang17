@@ -1,0 +1,55 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative mx-auto my-6 w-[60%]">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+                <h5 class="text-1xl font-bold ">
+                    {{translate('backDetail.titre')}}
+                    <span class="text-blue-400 font-semibold"> {{ stpName }} </span>
+                    {{translate('backDetail.titre1')}}
+                    <span class="text-blue-400 font-semibold"> {{ stpbName }} </span>
+                </h5>
+                <button (click)="dialogRef.close()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Header Separator -->
+            <div class="h-1 bg-blue-600 relative">
+                <div class="h-full bg-yellow-400 w-1/5 absolute top-0 left-0"></div>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4">
+                <div class="overflow-x-auto">
+                    <table
+                        class="min-w-full border border-blue-400 rounded-md shadow-lg text-sm text-left whitespace-nowrap">
+                        <thead style="background-color: var(--header-color);color:var(--white-color)"
+                            class=" uppercase tracking-wider text-xs sm:text-sm">
+                            <tr>
+                                <th class="border px-2 py-1 text-center">{{translate('backDetail.appro')}}</th>
+                                <th class="border px-2 py-1 text-center">{{translate('backDetail.motif')}}</th>
+                                <th class="border px-2 py-1 text-center">{{translate('backDetail.dr')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let etp of step.details;">
+                                <tr *ngIf="etp.instruction == null" class="bg-white even:bg-gray-100">
+                                    <td class="border px-2 py-1 text-center">
+                                        {{ etp.suppName == null ? etp.user.fullName : etp.suppName }}
+                                    </td>
+                                    <td class="border px-2 py-1 text-center">{{ etp.motif }}</td>
+                                    <td class="border px-2 py-1 text-center">{{ etp.dateRet | date:'dd-MM-yyyy hh:mm' }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

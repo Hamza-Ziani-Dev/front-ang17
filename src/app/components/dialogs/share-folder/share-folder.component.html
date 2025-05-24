@@ -1,0 +1,93 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50"
+    *transloco="let translate">
+    <div class="relative mx-auto my-6 w-[30%]">
+        <div
+            class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <div class="flex items-center rounded-md justify-between px-2 py-1 bg-gray-50">
+                <h5 class="text-lg font-bold text-blue-900">{{translate('common.partagercourrier')}}</h5>
+                <button (click)="close()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div class="relative p-2 max-h-[90vh] overflow-y-auto">
+                <form [formGroup]="myform" class="space-y-6">
+                    <div>
+                        <label class="text-blue-900 font-bold block mb-2">
+                            {{ 'Message ' + " : " }}
+                        </label>
+                        <div>
+                            <textarea formControlName="message"
+                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- User Input Field -->
+                    <div>
+                        <label class="text-blue-900 font-bold block mb-2">
+                            {{ "Utilisateur "+ " : " }}
+                        </label>
+                        <div>
+                            <input
+                                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
+                                formArrayName="us" (change)="addUserToLst($event)" list="users" id="us" type="text" />
+                            <datalist id="users">
+                                <optgroup [label]="'Merci de choisir un ou plusieurs utilisateurs'">
+                                    <option *ngFor="let u of lstUser" [value]="u['fullName']">
+                                        {{ u['fullName'] }}
+                                    </option>
+                                </optgroup>
+                            </datalist>
+                        </div>
+
+                        <!-- Selected Users -->
+                        <hr *ngIf="dataArray.length > 0" class="my-4 border-gray-300" />
+                        <div *ngIf="dataArray.length > 0" class="mt-4">
+                            <ul class="flex flex-wrap gap-2 mb-4">
+                                <li *ngFor="let da of dataArray; let i = index"
+                                    class="bg-gray-100 border border-blue-400 text-gray-700 rounded-full px-3 py-1 shadow text-sm flex items-center">
+                                    <span class="text-orange-500 font-bold mr-1">#</span>{{ da }}
+                                    <button type="button"
+                                        class="ml-2 text-red-500 hover:text-red-700 font-bold focus:outline-none"
+                                        (click)="suppUs(da)">
+                                        x
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+
+                <!-- Dialog footer -->
+                <div class="bg-card p-2 sm:px-1 sm:flex sm:flex-row-reverse rounded-md justify-start border-t">
+                    <!-- Button -->
+                    <button type="button" (click)='send()'
+                        class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                        <span class="sr-only">Loading...</span><i *ngIf="isLoading == false"
+                            class="fas fa-share mr-2"></i>
+                        {{translate('common.envoyer')}}
+                    </button>
+
+                    <button type="button" (click)="clear()"
+                        class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-undo mr-2"></i>
+                        {{translate('common.annuler')}}
+                    </button>
+
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>

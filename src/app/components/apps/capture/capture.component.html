@@ -1,0 +1,105 @@
+ <div class="flex justify-center p-2" *transloco="let translate">
+    <div class="w-full max-w-md">
+        <div *ngIf="!isAlreadyHasSession; else alreadyHasSession" class="flex flex-col items-center justify-center">
+            <!-- QR Generator Section -->
+            <app-qr-generator [curentCanal]="canal" [sessionId]="session"></app-qr-generator>
+
+            <div class="text-center mt-1">
+              <h5 class="text-md font-medium flex items-center justify-center gap-2">
+                {{ translate('scanner.scannezcodeQR') }}
+                <button (click)="toggleAlert(alert)" class="text-blue-500 hover:text-blue-600">
+                  <i class="fas fa-info-circle"></i>
+                </button>
+              </h5>
+            </div>
+
+            <!-- Alert Section -->
+            <div #alert class="hidden bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 my-2" role="alert">
+              {{ translate('scanner.telappdocumania') }}
+            </div>
+
+            <!-- Download Buttons Section -->
+            <div class="flex justify-center gap-4 mt-2 ">
+
+              <a class="inline-flex">
+                <button class="inline-flex items-center px-2 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  <i class="fab fa-apple mr-2"></i>
+                  {{ translate('scanner.iOS') }}
+                </button>
+              </a>
+              <a href="assets/downloads/SetupDocumaniaScan.msi">
+                <button class="inline-flex items-center px-2 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  <i class="fab fa-android mr-2"></i>
+                  {{ translate('scanner.android') }}
+                </button>
+              </a>
+            </div>
+          </div>
+
+      <!-- <div *ngIf="!isAlreadyHasSession; else alreadyHasSession">
+        <app-qr-generator [curentCanal]="canal" [sessionId]="session"></app-qr-generator>
+
+        <div class="text-center mt-2">
+          <h5 class="text-lg font-medium flex items-center justify-center gap-2">
+            {{ translate('scanner.scannezcodeQR') }}
+            <button (click)="toggelAlert(alert)" class="text-blue-500 hover:text-blue-600">
+              <i class="fas fa-info-circle"></i>
+            </button>
+          </h5>
+        </div>
+
+        <div #alert class="hidden bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 my-4" role="alert">
+            {{ translate('scanner.telappdocumania') }}
+        </div>
+
+        <div class="flex justify-center gap-4 mt-6">
+          <a class="inline-flex">
+            <button class="inline-flex items-center px-2 py-1 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <i class="fab fa-apple mr-2"></i>
+               {{ translate('scanner.iOS') }}
+            </button>
+          </a>
+          <a href="assets/downloads/SetupDocumaniaScan.msi">
+            <button class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <i class="fab fa-android mr-2"></i>
+               {{ translate('scanner.android') }}
+            </button>
+          </a>
+        </div>
+      </div> -->
+
+      <ng-template #alreadyHasSession>
+        <div class="text-center">
+          <h5 class="text-lg font-medium mb-4">
+            {{ translate('scanner.dejaetabliconnexion') }}
+          </h5>
+
+          <div class="relative inline-block my-8">
+            <i class="fas fa-mobile text-blue-600 text-[150px]"></i>
+            <i class="fas fa-check-circle text-green-500 text-2xl absolute -right-2 -bottom-2 bg-white rounded-full p-1"></i>
+          </div>
+
+          <h5 class="text-lg font-medium mb-2">
+            {{ translate('scanner.veuillezcapturerdocuments') }}
+          </h5>
+
+          <div class="flex justify-center gap-4">
+            <button (click)="refreshCapture()" class="inline-flex items-center px-2 py-1 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <i class="fas fa-sync mr-2"></i>
+                {{ translate('scanner.actualiser') }}
+            </button>
+
+            <button (click)="logoutCapture()" [hidden]="isConfLogout" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              {{ translate('scanner.finsession') }}
+            </button>
+
+            <button (click)="logoutCapture()" [hidden]="!isConfLogout" class="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <i class="fas fa-sign-out-alt mr-2"></i>
+              {{ translate('scanner.confirmerdéconnexion') }}
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>

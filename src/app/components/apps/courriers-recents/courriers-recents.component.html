@@ -1,0 +1,455 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <!-- Drawer -->
+        <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()" class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-drawer>
+        <!-- End Drawer -->
+
+
+        <mat-drawer-content class="flex flex-col bg-gray-50 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-2 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+
+                        <!-- <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div> -->
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            <h5 class="font-bold text-blue-900">
+                                {{translate('courrierList.courriersrecents')}}
+                            </h5>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- End Header -->
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Content -->
+                <ng-container *ngIf="all === 1; else loading">
+
+                    <!-- Il y a 1 jours -->
+                    <mat-tab-group class="px-1 sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                        <mat-tab label="{{translate('courrierList.oneDay')}}">
+                            <ng-template matTabContent>
+                             <div *ngIf="isLoading" class="w-full p-4 bg-white rounded-md justify-center align-content-center shadow-md">
+
+                                    <div class="flex flex-wrap sm:flex-row items-center justify-end font-normal text-secondary text-xs sm:text-sm space-x-2">
+
+                                        <ng-container *ngIf="weekPages && weekPages.length > 1">
+                                            <div class="flex items-center space-x-2">
+                                              <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                {{translate("courrierList.page")}}
+
+                                              </h6>
+                                              <select id="week" [(ngModel)]="week" class="text-midnight-blue border border-gray-300 rounded-md p-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" (change)="changeWeek($event)">
+                                              <option *ngFor="let c of weekPages;let i=index" [value]="i">
+                                                {{ i + 1 }}
+                                              </option>
+                                              </select>
+                                            </div>
+                                          </ng-container>
+
+
+
+                                        <ng-container *ngIf="countOfLastWeek > 0 && totalCheckweek != -1">
+                                          <div class="flex items-center space-x-1">
+                                            <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                {{translate("courrierList.total")}}
+                                            </h6>
+                                            <span class="text-xs sm:text-sm text-midnight-blue">
+                                              {{ (pageNumber + 1) * 6 }} / {{ countOfLastWeek }}
+                                            </span>
+                                          </div>
+                                        </ng-container>
+
+                                      </div>
+
+                                    <div class="flex flex-wrap justify-center gap-2 mt-1">
+
+                                        <div *ngIf="countOfLastWeek > 0 && totalCheckweek != -1" class="flex">
+                                            <button (click)="Previous()"
+                                                class="bg-transparent text-black hover:text-blue-700  rounded-md"
+                                                [hidden]="pageNumber == 0">
+                                                <i class="fas fa-angle-left icon-size-16"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                            <ng-container *ngFor="let folder of lastWeekFolders" >
+                                            <app-folder [folder]="folder" [retour]="'recent'"
+                                                (detailsDrawer)="openDetailsDrawer(folder)">
+                                                <div class="relative inline-block" contextmenu>
+                                                    <a [matMenuTriggerFor]="menu" class="cursor-pointer"
+                                                        (click)="click(folder)">
+                                                        <i class="fas fa-ellipsis-h"></i>
+                                                    </a>
+                                                    <mat-menu #menu="matMenu"
+                                                        class="absolute left-0 w-20 py-0 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                        <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                            (click)="isfav ?this.DeleteFavoritefolder(folder.id,1) : addToFavorite(folder.id,1)">
+                                                            <span style="color: #FDCC0D; ">
+                                                                <i class="fas fa-star mr-2"></i>
+                                                            </span>
+                                                            {{ isfav ? translate('courrierList.removeFav') : translate('courrierList.addFav') }}
+
+                                                        </a>
+
+                                                        <hr class="my-1 border-gray-200" />
+
+                                                        <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                            (click)="editFolder(folder)">
+                                                            <i class="fas fa-edit mr-2"
+                                                                *ngIf="folder.finalise != 'fini' && folder.finalise != 'accusation'"></i>
+                                                            <span class="ml-2">{{ translate("courrierList.edit") }}</span>
+                                                        </a>
+                                                        <hr class="my-1 border-gray-200" />
+
+                                                        <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                            (click)="deleteFolder(folder.id,1)">
+                                                            <span style="color: rgb(228, 66, 37); "><i
+                                                                    class="fas fa-trash-alt mr-2"></i>
+                                                            </span>
+                                                            {{ translate("courrierList.delete") }}
+                                                        </a>
+                                                    </mat-menu>
+                                                </div>
+                                            </app-folder>
+                                        </ng-container>
+                                        </div>
+
+
+
+                                        <div class="flex">
+                                            <button (click)="next()"
+                                                class="bg-transparent text-black  hover:text-blue-700 rounded-sm "
+                                                [hidden]="pageNumber == totalweekpage - 1 || totalweekpage <= 1">
+                                                <i class="fas fa-angle-right icon-size-16"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!--  No Data  -->
+                                    <ng-container *ngIf="totalCheckweek == 1 && countOfLastWeek ==0">
+                                        <div
+                                            class="flex flex-auto flex-col items-center justify-center">
+                                            <i class="fa fa-folder-open icon-size-16 text-gray-400" aria-hidden="true"></i>
+                                            <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                                                {{ translate("courrierList.aucun") }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <!-- End No Data  -->
+                                    <!-- Loading -->
+                                      <div *ngIf="totalCheckweek == -1"  class="text-center my-8">
+                                        <div class="flex justify-center items-center">
+                                            <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                          </div>
+                                      <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+                                     </div>
+                                      <!-- End Loading -->
+
+                              </div>
+                            </ng-template>
+                        </mat-tab>
+                    </mat-tab-group>
+
+
+                    <!-- Il y a 3 jour -->
+                    <mat-tab-group class="px-1 sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+
+                        <mat-tab label="{{translate('courrierList.3days')}}">
+                            <ng-template matTabContent>
+                              <div *ngIf="isLoading" class="w-full p-4 bg-white rounded-md justify-center align-content-center shadow-md">
+
+                                    <!-- Total Items Header -->
+                                    <div class="flex flex-wrap sm:flex-row items-center justify-end font-normal text-secondary text-xs sm:text-sm space-x-2">
+
+                                        <ng-container *ngIf="mounthPages && mounthPages.length > 1">
+                                            <div class="flex items-center space-x-2">
+                                              <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                {{translate("courrierList.page")}}
+                                              </h6>
+                                              <select id="month" [(ngModel)]="month" class="text-midnight-blue border border-gray-300 rounded-md p-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" (change)="changeMonth($event)">
+                                                <option *ngFor="let c of mounthPages;let i=index" [value]="i">{{i+1}}</option>
+                                              </select>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="countOfLastMonth > 0 && totalCheckMonth == 1">
+
+                                            <div class="flex items-center space-x-1">
+                                                <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                  {{translate("courrierList.total")}}
+                                                </h6>
+                                                <span class="text-xs sm:text-sm text-midnight-blue">
+                                                  {{ (pageNumber + 1) * 6 }} / {{ countOfLastMonth }}
+                                                </span>
+                                              </div>
+                                        </ng-container>
+                                    </div>
+                                    <div class="flex flex-wrap justify-center gap-2 mt-1">
+
+                                        <!-- Previous Button -->
+                                        <div *ngIf="totalCheckMonth!=-1" class="flex justify-center">
+                                            <button (click)="PreviousMonth()"
+                                                class="bg-transparent text-black hover:text-blue-700 rounded-md"
+                                                *ngIf="pageNumberMonth > 0">
+                                                <i class="fa-solid fa-angle-left icon-size-16"></i>
+                                            </button>
+                                        </div>
+
+                                        <ng-container *ngIf="countOfLastMonth > 0 && totalCheckMonth == 1">
+                                            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                            <ng-container *ngFor="let folder of lastMonthFolders">
+                                                <app-folder [folder]="folder" [retour]="'recent'"
+                                                    (detailsDrawer)="openDetailsDrawer(folder)">
+                                                    <!-- menu -->
+                                                    <div class="relative inline-block" contextmenu>
+                                                        <a [matMenuTriggerFor]="menu" class="cursor-pointer"
+                                                            (click)="click(folder)">
+                                                            <i class="fas fa-ellipsis-h"></i>
+                                                        </a>
+                                                        <mat-menu #menu="matMenu"
+                                                            class="absolute left-0 w-20 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                            <!-- Add to Favorites -->
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="isfav ?this.DeleteFavoritefolder(folder.id,2) : addToFavorite(folder.id,2)">
+                                                                <span style="color: #FDCC0D; ">
+                                                                    <i class="fas fa-star mr-2"></i>
+                                                                </span>
+                                                              {{ isfav ? translate('courrierList.removeFav') : translate('courrierList.addFav') }}
+
+
+                                                            </a>
+
+                                                            <!-- Divider -->
+                                                            <hr class="my-1 border-gray-200" />
+
+                                                            <!-- Edit Option -->
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="editFolder(folder)">
+                                                                <i class="fas fa-edit mr-2"
+                                                                    *ngIf="folder.finalise != 'fini' && folder.finalise != 'accusation'"></i>
+                                                                <span>{{translate("courrierList.edit")}}</span>
+                                                            </a>
+                                                            <!-- Divider -->
+                                                            <hr class="my-1 border-gray-200" />
+
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="deleteFolder(folder.id,2)">
+                                                                <span style="color: rgb(228, 66, 37); "><i
+                                                                        class="fas fa-trash-alt mr-2"></i>
+                                                                </span>
+                                                                {{translate("courrierList.delete")}}
+                                                            </a>
+                                                        </mat-menu>
+                                                    </div>
+                                                </app-folder>
+                                            </ng-container>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- Next Button -->
+                                        <div *ngIf="totalCheckMonth!=-1" class="flex justify-center">
+                                            <button (click)="nextMonth()"
+                                                class="bg-transparent text-black hover:text-blue-700 rounded-md"
+                                                [hidden]="pageNumberMonth == totalMonthpage - 1 ||totalMonthpage <= 1">
+                                                <i class="fa-solid fa-angle-right icon-size-16"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- No Data -->
+                                    <ng-container *ngIf="countOfLastMonth == 0 && totalCheckMonth == 1">
+                                        <div
+                                            class="flex flex-auto flex-col items-center justify-center">
+                                            <i class="fa fa-folder-open icon-size-16 text-gray-400" aria-hidden="true"></i>
+                                            <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                                               {{translate("courrierList.aucun")}}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <!-- End No Data -->
+                                    <!-- Loading -->
+                                      <div  *ngIf="totalCheckMonth == -1" class="text-center my-8">
+                                        <div class="flex justify-center items-center">
+                                            <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                          </div>
+                                      <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+                                     </div>
+                                      <!-- End Loading -->
+
+                              </div>
+                            </ng-template>
+                        </mat-tab>
+                    </mat-tab-group>
+
+
+                    <!-- Il y a 7 jour -->
+                    <mat-tab-group class="px-1 sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+
+                        <mat-tab label="{{translate('courrierList.week')}}">
+                            <ng-template matTabContent>
+                              <div *ngIf="isLoading" class="w-full p-4 bg-white rounded-md justify-center align-content-center shadow-md">
+                                    <!-- Total Items Header -->
+                                    <div class="flex flex-wrap sm:flex-row items-center justify-end font-normal text-secondary text-xs sm:text-sm space-x-2">
+                                        <ng-container *ngIf="oldPages && oldPages.length > 1">
+                                            <div class="flex items-center space-x-2">
+                                              <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                {{translate('courrierList.page')}}
+                                              </h6>
+                                              <select id="old" [(ngModel)]="old" class="text-midnight-blue border border-gray-300 rounded-md p-1 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" (change)="changeOld($event)">
+                                              <option *ngFor="let c of oldPages;let i=index " [value]="i">{{i+1}}</option>
+                                              </select>
+                                            </div>
+                                          </ng-container>
+                                        <ng-container *ngIf="countOld > 0 && totalCheckOld == 1">
+                                            <div class="flex items-center space-x-1">
+                                                <h6 class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                                  {{translate("courrierList.total")}}
+                                                </h6>
+                                                <span class="text-xs sm:text-sm text-midnight-blue">
+                                                  {{ (pageNumber + 1) * 6 }} / {{ countOld }}
+                                                </span>
+                                              </div>
+                                        </ng-container>
+                                    </div>
+                                    <div class="flex flex-wrap justify-center gap-2 mt-1">
+
+                                        <!-- Previous Button -->
+                                        <div *ngIf="totalCheckOld!=-1" class="flex justify-center">
+                                            <button (click)="PreviousOLD()"
+                                                class="bg-transparent text-black hover:text-blue-700 rounded-md"
+                                                *ngIf="pageNumberOld > 0">
+                                                <i class="fa-solid fa-angle-left icon-size-16"></i>
+                                            </button>
+                                        </div>
+
+                                        <ng-container *ngIf="countOld > 0 && totalCheckOld == 1">
+                                            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                            <ng-container *ngFor="let folder of OLDFolders">
+                                                <app-folder [folder]="folder" [retour]="'recent'"
+                                                    (detailsDrawer)="openDetailsDrawer(folder)">
+                                                    <!-- menu -->
+                                                    <div class="relative inline-block" contextmenu>
+                                                        <a [matMenuTriggerFor]="menu" class="cursor-pointer"
+                                                            (click)="click(folder)">
+                                                            <i class="fas fa-ellipsis-h"></i>
+                                                        </a>
+                                                        <mat-menu #menu="matMenu"
+                                                            class="absolute left-0 w-20 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="isfav ?this.DeleteFavoritefolder(folder.id,3) : addToFavorite(folder.id,3)">
+                                                                <span style="color: #FDCC0D; ">
+                                                                    <i class="fas fa-star mr-2"></i>
+                                                                </span>
+                                                              {{ isfav ? translate('courrierList.removeFav') : translate('courrierList.addFav') }}
+
+
+                                                            </a>
+
+                                                            <hr class="my-1 border-gray-200" />
+
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="editFolder(folder)">
+                                                                <i class="fas fa-edit mr-2"
+                                                                    *ngIf="folder.finalise != 'fini' && folder.finalise != 'accusation'"></i>
+                                                                <span
+                                                                    class="ml-2">{{translate("courrierList.edit")}}</span>
+                                                            </a>
+                                                            <hr class="my-1 border-gray-200" />
+
+                                                            <a class="flex items-center px-1 py-0 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                                                                (click)="deleteFolder(folder.id,3)">
+                                                                <span style="color: rgb(228, 66, 37); "><i
+                                                                        class="fas fa-trash-alt mr-2"></i>
+                                                                </span>
+                                                                {{translate("courrierList.delete")}}
+                                                            </a>
+                                                        </mat-menu>
+                                                    </div>
+                                                </app-folder>
+                                            </ng-container>
+                                            </div>
+                                        </ng-container>
+                                        <div *ngIf="totalCheckOld != -1" class="flex justify-center">
+                                            <button (click)="nextOLD()"
+                                                class="bg-transparent text-black hover:text-blue-700 rounded-md"
+                                                [hidden]="pageNumberOld == totaloldpage - 1 || totaloldpage <= 1">
+                                                <i class="fa-solid fa-angle-right icon-size-16"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- No Data -->
+                                    <ng-container *ngIf="countOld==0 && totalCheckOld==1">
+                                        <div
+                                            class="flex flex-auto flex-col items-center justify-center">
+                                            <i class="fa fa-folder-open icon-size-16 text-gray-400" aria-hidden="true"></i>
+                                            <div class="mt-1 text-2xl font-semibold tracking-tight text-secondary">
+                                               {{translate("courrierList.aucun")}}
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <!-- End No Data -->
+                                      <!-- Loading -->
+                                      <div  *ngIf="totalCheckOld == -1" class="text-center my-8">
+                                        <div class="flex justify-center items-center">
+                                            <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                          </div>
+                                      <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+                                    </div>
+                                      <!-- End Loading -->
+
+                              </div>
+                            </ng-template>
+                        </mat-tab>
+                    </mat-tab-group>
+                </ng-container>
+
+                <!-- Loading -->
+                <ng-template #loading>
+                    <div class="w-full p-4 bg-white rounded-md justify-center align-content-center shadow-md">
+                    <div class="text-center my-8">
+                        <div class="flex justify-center items-center">
+                            <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                        </div>
+                    <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+                    </div>
+                    </div>
+                </ng-template>
+                <!-- End Loading -->
+
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

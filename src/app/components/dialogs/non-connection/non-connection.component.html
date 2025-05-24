@@ -1,0 +1,34 @@
+<div class="card-header flex justify-between items-center">
+    <h5 class="h5 midnight-blue my-0 py-0 font-bold">{{ title }}</h5>
+    <!-- <a class="ml-auto" (click)="close()">
+        <span>
+            <i class="fa fa-times times-size" aria-hidden="true"></i>
+        </span>
+    </a> -->
+    <button (click)="close()" class="ml-auto text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+        &times;
+    </button>
+  </div>
+
+  <div class="header-separator bg-primary">
+    <div class="header-separator bg-danger w-1/5"></div>
+  </div>
+
+  <div class="card-body flex">
+    <div class="mx-auto">
+        <i class="fas fa-times-circle text-red-600" style="font-size: 100px;"></i>
+    </div>
+  </div>
+
+  <div class="card-body flex">
+    <div class="mx-auto">
+        <p class="midnight-blue text-lg">{{ message }}</p>
+    </div>
+  </div>
+
+  <div class="modal-footer flex justify-end">
+    <button type="button" class="border border-gray-300 text-gray-700 rounded px-2 py-1 hover:bg-gray-100 transition" (click)="close()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        {{"Fermer"}}
+    </button>
+  </div>

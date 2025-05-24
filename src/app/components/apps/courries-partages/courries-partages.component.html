@@ -1,0 +1,277 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+            <!-- Drawer -->
+            <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false"
+            [position]="'end'" [disableClose]="false">
+            <div class="p-2">
+                <div class="flex items-center ml-auto">
+                    <button (click)="closeDrawer()" class="text-gray-700 ml-auto hover:text-red-600 font-extrabold text-4xl leading-none px-2">
+                        &times;
+                    </button>
+                </div>
+                <!-- Display your data here -->
+                <div class="flex flex-col ">
+                    <div class="text-lg font-semibold mt-2">{{ 'courrierList.details' | transloco }}</div>
+                    <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                        <ng-container *ngFor="let detail of drawerDetails">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="text-blue-900">{{ detail.label }}</div>
+                                <div class="text-gray-800 text-sm">{{ detail.value }}</div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            </mat-drawer>
+            <!-- End Drawer -->
+
+
+        <mat-drawer-content class="flex flex-col bg-gray-100 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+
+
+
+                <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+                       <button
+                       class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                       (click)="goBack()"
+                       >
+                       <i class="fas fa-chevron-left"></i>
+                       {{translate('common.retour')}}
+                   </button>
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+                            <h5 class="font-bold text-blue-900"> {{translate("ajoutercourrier.courriespartages")}} :</h5>
+                          </div>
+                    </div>
+
+
+                     <!-- Right Section -->
+                     <div class="flex items-center gap-2 flex-wrap mt-2 sm:mt-0">
+                        <!-- View Mode Icons -->
+                        <div  class="flex items-center gap-2" >
+                            <a (click)="mode(1)" class="cursor-pointer hidden md:inline-block" [ngClass]="viewMode === 1 ? 'text-blue-600' : 'text-gray-400'">
+                            <i class="fas fa-list"></i>
+                            </a>
+                            <a (click)="mode(0)" class="cursor-pointer" [ngClass]="viewMode === 0 ? 'text-blue-600' : 'text-gray-400'">
+                            <i class="fab fa-microsoft"></i>
+                            </a>
+                            <div class="flex sm:flex-row items-start sm:items-center font-normal text-secondary text-sm sm:text-base">
+                                <ng-container>
+                                    <span *ngIf="resultTotal" class="text-muted">
+                                        <small class="text-midnight-blue font-bold text-xs sm:text-sm m-0">
+                                          {{ resultTotal }}
+                                          {{ resultTotal > 1 ? translate('courriermonequipe.courriers') : translate('courriermonequipe.courrier') }}
+                                        </small>
+                                      </span>
+                                </ng-container>
+
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                <!-- End Header -->
+
+
+
+
+                 <!-- Line separator -->
+                 <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+
+                <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                    <mat-tab >
+                        <ng-template matTabContent>
+                            <div class="w-full p-2 bg-white rounded-md justify-center align-content-center shadow-md">
+                                      <!-- Results Courriers Partages Table -->
+                                    <ng-container  *ngIf="viewMode === 1">
+                                        <table class="documents-table w-full mx-auto border-2 border-blue-400 rounded-md shadow-lg text-left text-md whitespace-nowrap" *ngIf="totalEl >= 1">
+                                            <thead style="background-color: var(--header-color);color:var(--white-color)">
+                                              <tr>
+                                                <th class="px-2 py-1 text-center">{{translate('common.ouvrir')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.reference')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.date')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.type')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.categorie')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.destinataire')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.objet')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.message')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.emetteur')}}</th>
+                                                <th class="px-2 py-1 text-center">{{translate('common.actions')}}</th>
+                                              </tr>
+                                            </thead>
+
+                                            <tbody>
+                                              <tr *ngFor="let f of sharedFolders | paginate: { itemsPerPage: 18, currentPage: page+1, totalItems: totalEl} ; let i =index" [ngClass]="{'bg-zinc-100': i % 2 === 0,'bg-white': i % 2 !== 0,'border-t': true,'hover:bg-yellow-100': true}">
+                                                <td class="px-2 py-1 text-center">
+                                                  <i (click)="openFolder(f.folder)" class="fas fa-envelope-open text-blue-600 cursor-pointer"></i>
+                                                </td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f.folder.reference  }}
+                                                </td>
+
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f.folder.date | date : 'dd-MM-yyyy' }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f.folder.typeName  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f.folder.natureName  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" *ngIf="f.folder.emet__ != null" >
+                                                  {{ f.folder.emet__  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" *ngIf="f.folder.dest__ != null">
+                                                  {{ f.folder.dest__.slice(1)  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" *ngIf="f.folder.dest__ == null && f.folder.emet__ == null">N/A</td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f.folder.objet  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f['message']  }}
+                                                </td>
+                                                <td class="px-2 py-1 text-center" >
+                                                  {{ f['sender']['fullName']  }}
+                                                </td>
+                                                <td class="p-1 text-center">
+                                                    <div class="btn-group options-menu">
+                                                        <button [matMenuTriggerFor]="menu">
+                                                            <i class="fas fa-ellipsis-h"></i>
+                                                        </button>
+                                                        <mat-menu #menu="matMenu">
+                                                            <button [hidden]="f.hasProcess == 0"
+                                                            (click)="openModal(f.folder)" class="custom-menu-item">
+                                                                <i class="fas fa-code-branch mr-2 ml-2 text-blue-500"></i>
+                                                                {{translate('common.processus')}}
+                                                            </button>
+                                                        </mat-menu>
+                                                    </div>
+                                                </td>
+
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- No Data -->
+                                        <div *ngIf="resultTotal == 0" class="w-full">
+                                            <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0,0,256,256"><g fill="#21201e" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.37891,0 -17,7.62109 -17,17c0,9.37891 7.62109,17 17,17c3.71094,0 7.14063,-1.19531 9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656 4.09375,-6.83984 4.09375,-11.0625c0,-9.37891 -7.62109,-17 -17,-17zM21,5c8.29688,0 15,6.70313 15,15c0,8.29688 -6.70312,15 -15,15c-8.29687,0 -15,-6.70312 -15,-15c0,-8.29687 6.70313,-15 15,-15z"></path></g></g></svg>
+                                                <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">
+                                                    {{translate('common.aucuncourrier')}}!
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <!-- loading -->
+                                        <div *ngIf="totalCheck == -1" class="text-center my-8">
+                                            <div class="flex justify-center items-center">
+                                                <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                            </div>
+                                        <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }}</h3>
+                                        </div>
+                                        <!-- Pagination -->
+                                        <div class="flex justify-center mt-4" *ngIf="totalEl > 12 && totalCheck == 1">
+                                        <div class="flex items-center">
+                                            <pagination-controls
+                                            [nextLabel]="translate('common.suivant')" [previousLabel]="translate('common.precedent')"
+                                            directionLinks="true"
+                                            autoHide="true"
+                                            responsive="true"
+                                            screenReaderPaginationLabel="Pagination"
+                                            screenReaderPageLabel="page"
+                                            screenReaderCurrentLabel="You're on page"
+                                            id="id1"
+                                            (pageChange)="goPage($event - 1)"
+                                            class="pagination-controls">
+                                            </pagination-controls>
+                                        </div>
+                                        </div>
+                                    </ng-container>
+
+                                     <!-- Results Courriers Partages Mosaique -->
+                                     <ng-container *ngIf="viewMode === 0">
+                                        <div *ngIf="resultTotal != 0" >
+                                            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 justify-center">
+                                           <div *ngFor="let f of sharedFolders | paginate: { itemsPerPage: 18, currentPage: page+1, totalItems: totalEl }">
+
+                                            <app-folder [folder]="f.folder" (detailsDrawer)="openDetailsDrawer(f.folder)">
+                                                <div class="btn-group options-menu" contextmenu>
+                                                    <a [matMenuTriggerFor]="menu"
+                                                       aria-haspopup="true"
+                                                       aria-expanded="false"
+                                                       class="mt-0 ml-0"
+                                                       style="cursor: pointer;">
+                                                       <i class="fas fa-ellipsis-h"></i>
+                                                    </a>
+
+                                                    <mat-menu #menu="matMenu">
+                                                        <button [hidden]="f.hasProcess == 0"
+                                                                (click)="openModal(f.folder)"
+                                                                class="custom-menu-item">
+                                                            <i class="fas fa-code-branch mr-2 ml-2 text-blue-500"></i>
+                                                            {{ translate('common.processus') }}
+                                                        </button>
+                                                    </mat-menu>
+                                                </div>
+                                            </app-folder>
+
+                                           </div>
+
+                                       </div>
+                                       </div>
+                                         <!-- No Data -->
+                                         <div *ngIf="resultTotal == 0" class="w-full">
+                                            <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0,0,256,256"><g fill="#21201e" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M21,3c-9.37891,0 -17,7.62109 -17,17c0,9.37891 7.62109,17 17,17c3.71094,0 7.14063,-1.19531 9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656 4.09375,-6.83984 4.09375,-11.0625c0,-9.37891 -7.62109,-17 -17,-17zM21,5c8.29688,0 15,6.70313 15,15c0,8.29688 -6.70312,15 -15,15c-8.29687,0 -15,-6.70312 -15,-15c0,-8.29687 6.70313,-15 15,-15z"></path></g></g></svg>
+                                                <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">
+                                                    {{translate('common.aucuncourrier')}}!
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <!-- loading -->
+                                        <div *ngIf="totalCheck == -1" class="text-center my-8">
+                                            <div class="flex justify-center items-center">
+                                                <div class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600"></div>
+                                            </div>
+                                        <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }}</h3>
+                                        </div>
+                                        <!-- Pagination -->
+                                        <div class="flex justify-center mt-4" *ngIf="totalEl > 12 && totalCheck == 1">
+                                        <div class="flex items-center">
+                                            <pagination-controls
+                                            [nextLabel]="translate('common.suivant')" [previousLabel]="translate('common.precedent')"
+                                            directionLinks="true"
+                                            autoHide="true"
+                                            responsive="true"
+                                            screenReaderPaginationLabel="Pagination"
+                                            screenReaderPageLabel="page"
+                                            screenReaderCurrentLabel="You're on page"
+                                            id="id1"
+                                            (pageChange)="goPage($event - 1)"
+                                            class="pagination-controls">
+                                            </pagination-controls>
+                                        </div>
+                                        </div>
+                                      </ng-container>
+
+
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+
+
+            </div>
+        </mat-drawer-content>
+
+
+
+    </mat-drawer-container>
+</div>

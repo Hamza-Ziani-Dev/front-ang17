@@ -1,0 +1,107 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <!-- Top Bar: Search & Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-between mb-2 space-y-2 sm:space-y-0">
+        <!-- Search Bar -->
+        <div class="flex items-center">
+            <div class="relative w-full sm:w-auto">
+                <input type="text" placeholder="Rechercher"
+                    class="border-2 bg-card rounded-full p-2 pr-8 pl-8 w-full sm:w-auto focus:border-blue-500 focus:outline-none" />
+                <span class="absolute left-3 top-3 text-secondary-700">
+                    <i class="fas fa-search icon-size-4"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center space-x-2 justify-center sm:justify-end">
+            <button (click)="openAjouterAttributsDialog()"
+                class="bg-blue-500 text-white rounded-full px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                <i class="fa-solid fa-plus mr-1"></i>
+                {{ translate('dashboard.ajouterattribut') }}
+            </button>
+            <button
+                class="bg-blue-950 text-white rounded-full px-2 py-1 hover:bg-blue-900 flex items-center transition duration-200">
+                <i class="fa-solid fa-rotate mr-1"></i>
+                {{ translate('dashboard.synchronise') }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Table and Pagination -->
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col w-full">
+        <div class="bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full ">
+            <table class="text-left text-xs whitespace-nowrap border-2 border-blue-500 shadow-lg w-full min-w-max">
+                <thead class="uppercase tracking-wider dark:border-neutral-600 bg-sky-600 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.nom') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.libellefr') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.libelleen') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.libellear') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.type') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('dashboard.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-gray-100 hover:bg-orange-100 dark:hover:bg-orange-600">
+                        <th scope="row" class="px-2 py-1 text-center">Réference</th>
+                        <td class="px-2 text-center">Réference</td>
+                        <td class="px-2 text-center">شسيشسي</td>
+                        <td class="px-2 text-center">Réference</td>
+                        <td class="px-2 text-center">text</td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button [matMenuTriggerFor]="folderMenu" aria-label="Actions">
+                                    <i class="fa-solid fa-caret-down icon-size-4 primary-color"></i>
+                                </button>
+                                <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                    <button mat-menu-item (click)="openSupprimerDialog()">
+                                        <i class="fa-solid fa-trash red-color mr-2"></i> supprimer
+                                    </button>
+                                    <button mat-menu-item (click)="openModifierDialog()">
+                                        <i class="fa-solid fa-pen-to-square primary-color mr-2"></i> modifier
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Add additional rows as needed -->
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+                <ul class="list-style-none flex">
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            {{translate('common.precedent')}}
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            1
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <a class="block rounded bg-blue-100 px-3 py-1.5 text-blue-700 font-medium">
+                            2
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            3
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="block rounded px-3 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700">
+                            {{translate('common.suivant')}}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

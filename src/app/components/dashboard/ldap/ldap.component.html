@@ -1,0 +1,91 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <div class="bg-card shadow-md rounded-lg overflow-hidden p-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-1">
+        <!-- Left Column -->
+        <div class="border rounded-lg shadow-md p-2">
+            <h2 class="text-lg font-semibold p-2 border-b-2 border-blue-600">
+                {{ translate('consoleadmin.configurationldap') }} :</h2>
+            <div class="space-y-4 mt-4">
+
+                <!-- Active -->
+                 <div class="flex flex-col sm:flex-row sm:items-center justify-center space-y-2 sm:space-y-0">
+                    <i class="fa-solid fa-circle-check green-color icon-size-14"></i>
+                 </div>
+                <!-- Host -->
+                <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                    <label class="text-secondary font-medium w-40">
+                        {{ translate('consoleadmin.host') }} :
+                    </label>
+                    <input type="text" value="ldap://192.168.8.110"
+                        class="flex-1 h-9 border rounded px-3 focus:ring-1 bg-gray-200 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                </div>
+
+                <!-- Port -->
+                <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                    <label class="text-secondary font-medium w-40">
+                        {{ translate('consoleadmin.port') }} :
+                    </label>
+                    <input type="text" value="389"
+                        class="flex-1 h-9 border rounded px-3 focus:ring-1 bg-gray-200 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                </div>
+
+                <!-- Nom d'utilisateur -->
+                <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                    <label class="text-secondary font-medium w-40">
+                        {{ translate('consoleadmin.nomutilisateur') }}:
+                    </label>
+                    <input type="text" value="CNOPSAdministrateur"
+                        class="flex-1 h-9 border rounded px-3 focus:ring-1 bg-gray-200 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+                    <label class="text-secondary font-medium w-40">
+                        {{ translate('consoleadmin.motdepasse') }}:
+                    </label>
+                    <input type="password" value="Mot de passe :"
+                        class="flex-1 h-9 border rounded px-3 focus:ring-1 bg-gray-200 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="flex gap-2 mb-4 justify-center">
+                    <button
+                        class="bg-blue-500 text-white rounded-lg px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i>
+                        {{ translate('common.modifier') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="border rounded-lg shadow-md p-2">
+            <h2 class="text-lg font-semibold p-2 border-b-2 border-blue-600">
+                {{ translate('consoleadmin.récupérerutilisateurs') }} :
+            </h2>
+            <div class="space-y-4 mt-20">
+
+                <!-- Daily Reminders -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-center space-y-2 sm:space-y-0">
+                    <label class="text-secondary font-medium w-64 text-center sm:text-left">
+                        {{ translate('consoleadmin.organisation') }} :
+                    </label>
+                    <input type="text" value=""
+                        class="w-20 h-9 border rounded px-3 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex gap-2 mt-4 justify-center items-center">
+                    <button
+                        class="bg-blue-500 text-white rounded-lg px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                        <i class="fa-solid fa-users-gear mr-2"></i>
+                        {{ translate('consoleadmin.récupérer') }}
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>

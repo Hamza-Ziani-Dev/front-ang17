@@ -1,0 +1,215 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" *transloco="let translate">
+    <!-- Dialog -->
+    <div class="relative w-[90%] overflow-y-auto bg-white border rounded-lg shadow-lg">
+
+        <!-- Header -->
+        <div class="flex items-center p-2 border-b">
+            <h5 class="text-blue-900 my-0 py-auto font-bold">{{translate('doStep.title')}}
+                {{etape['courrier']['reference']}}
+            </h5>
+            <ng-container ngif="hideDocumentAdd">
+                <a class="bg-blue-500 text-white px-1 py-1 ml-auto rounded flex items-center" (click)="addDoc()">
+                    <i class="fas fa-file-medical mr-2"></i>
+                    <span class="hidden md:inline">{{translate('doStep.adddoc')}}</span>
+                </a>
+                <button (click)="close()"
+                    class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </ng-container>
+            <ng-container *ngIf="this.etape['numero']!=1">
+                <a class="cursor-pointer mr-1 ml-2" container="body" [openDelay]="300" [closeDelay]="500"
+                    placement="left" ngbTooltip="Instruction" (click)="getAnno()">
+                    <img class="w-6 h-6" src="assets/instruction.png">
+                </a>
+            </ng-container>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="h-1 bg-blue-500">
+            <div class="h-full bg-yellow-400 w-1/5"></div>
+        </div>
+
+        <!-- Main Form Body -->
+        <div class="p-4">
+            <div class="flex " *ngIf="totalEl>0 && totalCheck==1">
+                <div class="p-2 w-full">
+                    <!-- Table -->
+                    <table
+                        class="text-left text-xs whitespace-nowrap mx-auto border-2 border-blue-400 shadow-lg w-[100%]">
+
+                        <thead class="uppercase tracking-wider dark:border-neutral-600 bg-blue-400 text-white">
+                            <tr>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.Doc')}}</th>
+                                <th class="px-3 py-2 text-center" *ngIf="etape['signataire']==1">
+                                    {{translate('doStep.sig')}}</th>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.type')}}</th>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.saveDate')}}</th>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.action')}}</th>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.proprietaire')}}</th>
+                                <th class="px-3 py-2 text-center">{{translate('doStep.detail')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let document of documents| paginate : {
+                                itemsPerPage: 12,
+                                currentPage: page+1,
+                                totalItems: totalEl,
+                                id:'id1'
+                              };let index=index">
+                                <tr class="hover:bg-neutral-100 dark:hover:bg-neutral-600"
+                                    [ngClass]="i % 2 === 0 ? bg-zinc-200 :'bg-white hover:bg-yellow-200'">
+                                    <td class="text-center"
+                                        (click)="openViewer(document['document']['id'],document['document']['fileName'],document['document']['contentType'])">
+                                        <span class="mr-2 px-1 text-center" style="width: 20px">
+                                            <i style="cursor: pointer;" container="body" [openDelay]="300"
+                                                [closeDelay]="500" placement="left" [ngbTooltip]="
+                                                document['document']['contentType']&& checkMimeType(document['document']['contentType'])!=-1
+                                            ? visualiser
+                                            : ''
+                                        " [class]="
+                                                getFontAwesomeIconFromMIME(document['document']['contentType'])
+                                              "></i>
+                                        </span>
+                                    </td>
+
+
+                                    <td class="px-1 text-center" *ngIf="etape['signataire'] == 1">
+                                        <i class="fab fa-glide-g cursor-pointer"
+                                            (click)="isloading? false :signer(document['document']['id'],document['document']['contentType'])"
+                                            [matTooltip]="document['document']['contentType'] ? 'Signataire' : ''"
+                                            aria-label="Signataire"></i>
+                                    </td>
+
+
+                                    <td class="px-1 text-center">{{ document['document']['type']['libelle'] }}</td>
+
+                                    <td class="px-1 text-center">
+                                        {{document['document']["upload_date"]| date :"dd/MM/yyyy hh:mm:ss" }}
+                                    </td>
+
+
+                                    <td class="text-center">
+                                        <div class="flex justify-center items-center">
+                                            <a type="button" [matMenuTriggerFor]="folderMenu">
+                                                <i class="fa-solid fa-caret-down text-blue-600 icon-size-3"></i>
+                                            </a>
+                                            <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                                <a mat-menu-item (click)="getDocToUp(document['document'])">
+                                                    <i
+                                                        class="fas fa-edit text-blue-600 icon-size-3 mr-2"></i>{{translate('doStep.edit')}}
+                                                </a>
+                                                <div class="dropdown-divider">
+                                                </div>
+                                                <a mat-menu-item (click)="send(document['document'])">
+                                                    <i class="fas fa-share-alt text-blue-600 icon-size-3 mr-2"></i>
+                                                    {{translate('doStep.sendEmail')}}
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <a mat-menu-item (click)="downloadFile(document['document']['id'])">
+                                                    <i
+                                                        class="fas fa-code-branch text-blue-600 icon-size-3 mr-2"></i>{{translate('doStep.telecharger')}}
+                                                </a>
+                                                <a mat-menu-item (click)="version(document)">
+                                                    <i
+                                                        class="fas fa-copy text-blue-600 icon-size-3 mr-2"></i>{{translate('doStep.oldVers')}}
+                                                </a>
+
+                                                <div class="dropdown-divider"></div>
+                                                <a mat-menu-item (click)="onDelete(document['document']['id'])">
+                                                    <i
+                                                        class="fas fa-trash text-red-500 icon-size-3 mr-2"></i>{{translate('doStep.delete')}}
+                                                </a>
+                                            </mat-menu>
+                                        </div>
+                                    </td>
+
+
+
+                                    <td class="px-1 py-1 text-center">{{ document["document"]["owner"]["fullName"] }}
+                                    </td>
+
+                                    <td class="px-1 py-1 text-center">
+                                        <a class="button" (click)="btnPlusInfos(document['document'])">
+                                            <i class="fa-solid fa-info text-blue-600 icon-size-3 "></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+
+
+                    <!-- pagination -->
+                    <div class="flex justify-center mt-4" *ngIf="totalEl>12">
+                        <pagination-controls [previousLabel]="translate('doStep.prev')"
+                            [nextLabel]="translate('doStep.next')" directionLinks="true" autoHide="true"
+                            responsive="true" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page" id="id1" (pageChange)="goPage($event-1)"
+                            maxSize="14">
+                        </pagination-controls>
+                    </div>
+                    <!-- end pagination -->
+                </div>
+            </div>
+
+            <!-- Aucun Documents -->
+            <div *ngIf="totalEl==0 && this.totalCheck != -1" class="text-center py-8">
+                <div class="text-6xl mb-4">
+                    <i class="far fa-file-alt"></i>
+                </div>
+                <h3 class="text-gray-500">{{ translate('doStep.aucun') }}</h3>
+            </div>
+            <!-- End Aucun Documents -->
+
+            <!-- Loading -->
+            <div class="flex flex-col items-center justify-between" *ngIf="totalCheck == -1">
+                <!-- Spinner in the center -->
+                <div class="flex-grow flex items-center justify-center">
+                    <div class="h-15 w-15 animate-spin rounded-full border-8 border-gray-300 border-t-blue-600"></div>
+                </div>
+                <!-- Text at the bottom -->
+                <h3 class="text-gray-500 mb-4 mt-2 text-center">{{ translate('courrierList.load') }}</h3>
+            </div>
+            <!-- End Loading -->
+
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="flex items-center justify-end p-2 border-t">
+            <button *ngIf="etape.numero>=2 && !this.isBo && waitBo"
+                class="bg-yellow-500 text-white px-2 py-1 rounded ml-auto flex items-center"
+                (click)="leave('abondone')">
+                <i class="fa fa-times mr-2"></i>{{ translate('doStep.leave') }}
+            </button>
+
+            <button *ngIf="etape.numero>=2 && hideClote && this.isDep == 'arr' && this.documents.length > 0"
+                class="bg-green-500 text-white px-2 py-1 rounded ml-2 flex items-center" (click)="leave('clot')">
+                <i class="fa fa-check mr-2"></i>{{ translate('doStep.cloture') }}
+            </button>
+
+            <button *ngIf="etape['numero']>1" class="bg-red-500 text-white px-2 py-1 rounded ml-2 flex items-center"
+                (click)="goBack()">
+                <i class="fas fa-arrow-left mr-2"></i>{{ translate('doStep.back') }}
+            </button>
+
+            <button *ngIf="this.isDep == 'arr' && this.documents.length > 0"
+                class="bg-blue-500 text-white px-2 py-1 rounded ml-2 flex items-center" (click)="validate()">
+                <i class="fas fa-arrow-right mr-2"></i>{{ translate('doStep.validate') }}
+            </button>
+
+            <button *ngIf="this.isDep == 'dep' && this.documents.length > 0"
+                class="bg-blue-500 text-white px-2 py-1 rounded ml-2 flex items-center" (click)="validate()">
+                <i class="fas fa-arrow-right mr-2"></i>{{ this.isBo ? "Valider" : "Valider l'étape"}}
+            </button>
+
+            <div class="flex items-center"
+                *ngIf="(this.isDep == 'dep' || this.isDep == 'arr') && this.documents.length == 0 && wait">
+                <h3 class="text-blue-600 font-bold flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i>{{ translate('doStep.validMessage') }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</div>

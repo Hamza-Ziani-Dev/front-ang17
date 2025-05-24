@@ -1,0 +1,141 @@
+<div class="container mx-auto p-4" *transloco="let translate">
+    <!-- Top Controls -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
+        <!-- Search Bar -->
+        <div class="flex items-center w-full sm:w-auto">
+            <div class="relative w-full">
+                <input type="text" placeholder="Rechercher"
+                    class="border-2 bg-card rounded-full py-2 pl-10 pr-4 w-full focus:border-blue-500 focus:outline-none" />
+                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-700">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap justify-center sm:justify-end gap-2">
+            <button (click)="openAjouterTypeDocumentDialog()"
+                class="bg-blue-500 text-white rounded-full px-2 py-1 hover:bg-blue-600 flex items-center transition duration-200">
+                <i class="fa-solid fa-plus mr-1"></i> {{translate('consoleadmin.ajoutertype')}}
+            </button>
+            <button
+                class="bg-blue-950 text-white rounded-full px-2 py-1 hover:bg-blue-900 flex items-center transition duration-200">
+                <i class="fa-solid fa-rotate mr-1"></i> {{translate('consoleadmin.synchronise')}}
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="bg-card shadow-md rounded-lg p-4 flex flex-col w-full overflow-x-auto">
+        <div class="bg-card dark:bg-neutral-700 rounded-lg shadow-sm w-full">
+            <table
+                class="text-left text-xs whitespace-nowrap mx-auto border-2 border-blue-500 shadow-lg w-full min-w-[600px]">
+                <thead class="uppercase tracking-wider dark:border-neutral-600 bg-sky-600 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.nom') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.libellé') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.activé') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.version') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.actions') }}</th>
+                        <th class="px-6 py-3 text-center">{{ translate('consoleadmin.details') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-neutral-100 dark:hover:bg-neutral-600">
+                        <th scope="row" class="px-2 py-1 text-center">document</th>
+                        <td class="px-2 text-center">document</td>
+                        <td class="px-2 text-center">
+                            <div class="flex justify-center">
+                                <div class="relative cursor-pointer">
+                                    <input type="checkbox" id="fluxcourrier2" class="hidden"
+                                        (change)="toggleSwitch()" />
+                                    <div class="w-8 h-4 rounded-full flex items-center p-0.5"
+                                        [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                        <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-2 text-center">
+                            <div class="flex justify-center">
+                                <div class="relative cursor-pointer">
+                                    <input type="checkbox" id="fluxcourrier3" class="hidden"
+                                        (change)="toggleSwitch()" />
+                                    <div class="w-8 h-4 rounded-full flex items-center p-0.5"
+                                        [ngClass]="{'bg-blue-500': isChecked, 'bg-gray-300': !isChecked}">
+                                        <div class="w-3 h-3 bg-card rounded-full transition-transform duration-200"
+                                            [ngClass]="{'translate-x-full': isChecked, 'translate-x-0': !isChecked}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button [matMenuTriggerFor]="folderMenu" aria-label="Actions">
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </button>
+                                <mat-menu #folderMenu="matMenu" aria-label="Folder Actions">
+                                    <button mat-menu-item (click)="openSupprimerDialog()">
+                                        <i class="fa-solid fa-trash mr-2 text-red-500"></i> {{
+                                        translate('common.supprimer') }}
+                                    </button>
+                                    <button mat-menu-item (click)="openModifierDialog()">
+                                        <i class="fa-solid fa-pen-to-square mr-2 text-blue-500"></i> {{
+                                        translate('common.modifier') }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </td>
+                        <td class="px-2 text-center text-secondary">
+                            <div class="flex justify-center items-center">
+                                <button mat-icon-button (click)="openDetailsDocuments()">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Drawer -->
+    <mat-drawer #matDrawer class="w-90 sm:w-90 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+        [disableClose]="false">
+        <div class="p-2">
+            <!-- Close Button -->
+            <button (click)="closeDrawer()">
+                <i class="fas fa-undo text-red-500 text-lg w-6 h-6"></i>
+            </button>
+            <!-- Display Data -->
+            <div class="flex flex-col mt-4">
+                <div class="text-lg font-semibold mt-4">Details</div>
+                <div class="flex flex-col mt-2 border-t border-b divide-y divide-gray-300">
+                    <div class="flex items-center justify-between py-2">
+                        <div class="text-gray-600">Created By</div>
+                        <div class="text-gray-800">createdBy</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="text-gray-600">Created At</div>
+                        <div class="text-gray-800">createdAt</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="text-gray-600">Modified At</div>
+                        <div class="text-gray-800">modifiedAt</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="text-gray-600">Size</div>
+                        <div class="text-gray-800">.size</div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="text-gray-600">Contents</div>
+                        <div class="text-gray-800">contents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-drawer>
+</div>

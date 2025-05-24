@@ -1,0 +1,61 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50">
+    <div class="relative w-full max-w-3xl mx-auto my-6"> <!-- Changed max-w-md to max-w-3xl for wider dialog -->
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <!-- Dialog header -->
+            <div class="flex items-center justify-between p-2 bg-gray-0">
+                <h3 class="text-2xl font-semibold text-gray-800">
+                    Liste Email Suivis :
+                </h3>
+                <!-- <a class="ml-auto cursor-pointer" (click)="onClose()">
+                    <span><i class="fa fa-times text-lg" aria-hidden="true"></i></span>
+                </a> -->
+                <button (click)="onClose()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+              </div>
+
+            <!-- Dialog content -->
+            <div class="container p-2">
+                <mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full"> <!-- Added w-full for table -->
+                    <!-- Champs E-mails Cliqués Column -->
+                    <ng-container matColumnDef="champsEmailsCliques">
+                        <mat-header-cell *matHeaderCellDef> Champs E-mails Cliqués </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.champsEmailsCliques}} </mat-cell>
+                    </ng-container>
+
+                    <!-- E-mails Reçus Column -->
+                    <ng-container matColumnDef="emailsRecus">
+                        <mat-header-cell *matHeaderCellDef> E-mails Reçus </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.emailsRecus}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Nom de Courrier Column -->
+                    <ng-container matColumnDef="nomDeCourrier">
+                        <mat-header-cell *matHeaderCellDef> Nom de Courrier </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.nomDeCourrier}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+
+            <!-- Line separator -->
+            <div class="w-full h-0.5 mb-2" style="background: linear-gradient(to right, #ffc107, #007bff);">
+            </div>
+
+
+        </div>
+    </div>
+</div>

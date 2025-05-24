@@ -1,0 +1,80 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none bg-black bg-opacity-50" *transloco="let translate">
+    <div class="relative mx-auto my-6 w-[65%]">
+        <div class="relative flex flex-col w-full bg-card  border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+            <div class="flex items-center rounded-md justify-between px-2 py-1 bg-gray-50">
+                <h5 class="text-lg font-bold text-blue-900">{{translate('validateStep.detacherliasion')}}</h5>
+                <button  class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+                    &times;
+                </button>
+            </div>
+
+
+            <!-- Line separator -->
+            <div class="h-1 bg-blue-500">
+                <div class="h-full bg-yellow-400 w-1/5"></div>
+            </div>
+            <!-- Dialog content -->
+            <div  class="relative p-2 max-h-[90vh] overflow-y-auto">
+                <form>
+                    <div class="mb-4">
+                      <label for="searchName" class="text-blue-900 font-bold">{{translate('validateStep.mrcchoisirprocessus')}}</label>
+                    </div>
+
+                    <!-- Folder Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                      <div *ngFor="let folder of folders | paginate : {
+                          itemsPerPage: 6,
+                          currentPage: page + 1,
+                          totalItems: totalEl,
+                          id: 'id1'
+                        }">
+                        <app-folder
+                          [folder]="folder"
+                          [mode]="'linkFolders'"
+                          (folderClick)="getId(folder)">
+                        </app-folder>
+                      </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-6" *ngIf="totalEl > 6">
+                      <pagination-controls
+                        [previousLabel]="translate('common.precedent')"
+                        [nextLabel]="translate('common.suivant')"
+                        directionLinks="true"
+                        autoHide="true"
+                        responsive="true"
+                        screenReaderPaginationLabel="Pagination"
+                        screenReaderPageLabel="page"
+                        screenReaderCurrentLabel="You're on page"
+                        id="id1"
+                        (pageChange)="goPage($event - 1)"
+                        maxSize="14">
+                      </pagination-controls>
+                    </div>
+                  </form>
+
+
+            <!-- Dialog footer -->
+            <div class="bg-card px-2 py-1 sm:px-1 sm:flex sm:flex-row-reverse rounded-b-lg justify-start border-t">
+                <!-- Button -->
+                <button type="button" (click)="deleteRelations()"
+                    class="flex items-center px-2 py-1 bg-blue-500 border border-transparent rounded-md text-white hover:bg-blue-600 ml-2">
+                    <i class="fas fa-trash-alt mr-2"aria-hidden="true"></i>
+                    {{translate('validateStep.deleterelation')}}
+                </button>
+
+                <button type="button" (click)="annuler()"
+                    class="flex items-center px-2 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-undo mr-2"></i>
+                    {{translate('common.annuler')}}
+                </button>
+
+
+            </div>
+
+           </div>
+
+
+    </div>
+</div>

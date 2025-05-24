@@ -1,0 +1,123 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" *transloco="let translate">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+
+        <mat-drawer-content class="flex flex-col bg-gray-50 dark:bg-transparent">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto">
+                 <!-- Header -->
+                <div class="flex items-center justify-between sm:p-1 border-b bg-card dark:bg-transparent">
+                    <div class="flex items-center">
+
+                       <button
+                            class="border border-gray-400 text-gray-700 hover:bg-gray-100 px-3 py-1 rounded mr-1 flex items-center gap-2"
+                            (click)="goBack()"
+                            >
+                            <i class="fas fa-chevron-left"></i>
+                            {{translate('common.retour')}}
+                        </button>
+
+
+                        <div class="mr-1 h-6 w-0.5 bg-gradient-to-t from-blue-500 to-blue-700"></div>
+
+                        <div class="text-xs sm:text-sm md:text-lg font-extrabold tracking-tight leading-none">
+
+                            <h5 class="font-bold text-blue-900">Tableau de bord :</h5>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- End Header -->
+
+                <!-- Line separator -->
+                <div class="h-1 bg-blue-500">
+                    <div class="h-full bg-yellow-400 w-1/5"></div>
+                </div>
+
+                <!-- Content -->
+                <ng-container>
+                    <mat-tab-group class="px-1 sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+                        <mat-tab>
+                            <div class="w-full px-4">
+                                <ng-container *ngIf="show === 'doneFlow'">
+                                    <app-done-flow-chart></app-done-flow-chart>
+                                </ng-container>
+
+                                <ng-container *ngIf="show === 'systemFeed'">
+                                    <app-folws-table-statistic></app-folws-table-statistic>
+                                </ng-container>
+
+                                <ng-container *ngIf="!show || show === 'progFlow'">
+                                    <app-flows-charts></app-flows-charts>
+                                </ng-container>
+                            </div>
+
+
+                        </mat-tab>
+                    </mat-tab-group>
+                </ng-container>
+
+                <!-- Loading -->
+                <ng-template>
+                    <div class="w-full p-4 bg-white rounded-md justify-center align-content-center shadow-md">
+                        <div class="text-center my-8">
+                            <div class="flex justify-center items-center">
+                                <div
+                                    class="text-center items-center border-gray-300 h-15 w-15 animate-spin rounded-full border-8 border-t-blue-600">
+                                </div>
+                            </div>
+                            <h3 class="text-muted mt-4">{{ 'courrierList.load' | transloco }} </h3>
+                        </div>
+                    </div>
+                </ng-template>
+                <!-- End Loading -->
+
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+
+
+<div class="amg-floating-contacts">
+  <div (click)="showDashboard('progFlow')" (mouseleave)="mouseLeav($event)" class="amg-floating-contact-wrap amg-phone">
+    <div (mouseenter)="mousEnter($event)" class="amg-floating-icon" style="cursor: pointer;">
+      <i class="fas fa-clock"></i>
+    </div>
+    <div class="amg-floating-link amg-floating-phone">
+
+      <a class="amg-nav-item">
+        Statistiques sur mes processus
+
+      </a>
+    </div>
+  </div>
+
+  <div (click)="showDashboard('systemFeed')" (mouseleave)="mouseLeav($event)"
+    class="amg-floating-contact-wrap amg-email">
+    <div class="amg-floating-icon" style="cursor: pointer;">
+      <i class="fas fa-chart-bar" (mouseenter)="mousEnter($event)"></i>
+    </div>
+    <div class="amg-floating-link amg-floating-phone">
+
+      <a class="amg-nav-item">
+
+        Statistiques sur mon équipe
+      </a>
+    </div>
+  </div>
+
+  <div (click)="showDashboard('doneFlow')" (mouseleave)="mouseLeav($event)"
+    class="amg-floating-contact-wrap amg-adress">
+    <div (mouseenter)="mousEnter($event)" class="amg-floating-icon" style="cursor: pointer;">
+      <i class="fas fa-check"></i>
+    </div>
+    <div class="amg-floating-link amg-floating-phone">
+
+      <a class="amg-nav-item">
+
+ Productivité/Traitement
+      </a>
+
+
+    </div>
+  </div>
+</div>

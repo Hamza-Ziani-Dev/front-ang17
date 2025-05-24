@@ -1,0 +1,99 @@
+<!-- Header -->
+<div class="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200">
+  <h5 class="text-lg font-bold text-gray-800">{{ title }}</h5>
+</div>
+
+<!-- Header separator bar -->
+<div class="w-full h-1 bg-blue-600">
+  <div class="h-full bg-yellow-400" style="width: 20%;"></div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading; else reqConfirmation" class="p-4 mt-4">
+  <div class="flex justify-center">
+    <div class="lds-dual-ring"></div> 
+  </div>
+  <div class="flex justify-center mt-4">
+    <div class="text-center text-gray-800 font-semibold">
+      {{ message }}
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation State -->
+<ng-template #reqConfirmation>
+  <div class="p-4 mt-4">
+    <ng-container *ngIf="!isCalled">
+      {{ startCounter() }}
+    </ng-container>
+
+    <div class="flex justify-center mt-2">
+      <div class="text-center text-gray-800 font-semibold">
+        {{ message }}
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-2">
+      <div class="text-center text-gray-800 font-semibold">
+        Saisir le code e-Sign ci-dessus
+      </div>
+    </div>
+
+    <code-input
+      [isCodeHidden]="false"
+      #codeInput
+      [codeLength]="6"
+      [isCharsCode]="true"
+      (codeChanged)="onCodeChanged($event)"
+      (codeCompleted)="onCodeCompleted($event)">
+    </code-input>
+
+    <div *ngIf="verificationErr" class="mt-4">
+      <div class="w-full p-3 bg-red-100 text-red-700 text-center rounded">
+        <ng-container *ngIf="verificationErr.ex == 'EXP'">
+          Le code e-Sign est expiré, 
+        </ng-container>
+        <ng-container *ngIf="verificationErr.ex == 'INV'">
+          Le code e-Sign est incorrect, prière de vérifier
+        </ng-container>
+        <ng-container *ngIf="verificationErr.ex == 'NF'">
+          La demande n'est plus valide ou n'est pas trouvé 
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-4" *ngIf="!isExpired; else expired">
+      <div class="text-center text-gray-800 font-semibold">
+        Le code e-Sign va expiré après {{ counter | formatTime }} minutes
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer buttons -->
+  <div class="flex justify-end px-4 py-3 border-t border-gray-200 space-x-2">
+    <button
+      class="px-4 py-2 border border-gray-400 text-gray-700 rounded hover:bg-gray-100"
+      (click)="onCancel(codeInput)">
+      <i class="fas fa-undo mr-1"></i>annuler
+    </button>
+
+    <button
+      class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+      [disabled]="!lastCode || lastCode.length < 6"
+      (click)="onSubmit()">
+      <i class="fas fa-check mr-1"></i>validate
+    </button>
+  </div>
+</ng-template>
+
+<!-- Expired State -->
+<ng-template #expired>
+  <div class="flex justify-center mt-4">
+    <div class="text-center text-gray-800 font-semibold">
+      Le code e-Sign est expiré 
+      <a class="text-blue-600 cursor-pointer hover:underline" (click)="newReq()">
+        demander un nouveau
+      </a>
+    </div>
+  </div>
+</ng-template>

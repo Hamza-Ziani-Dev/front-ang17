@@ -1,0 +1,70 @@
+<div class="max-h-[120px] w-full overflow-hidden">
+    <div class="flex flex-wrap justify-center">
+
+        <!-- Main Total Box -->
+        <div class="w-full md:w-10/12 m-3">
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading === 1" class="flex justify-center items-center gap-3 h-24">
+                <div class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+                    role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <span class="text-gray-700 font-medium text-sm">Chargement en cours...</span>
+            </div>
+
+            <div *ngIf="isLoading === 0">
+                <h5 class="text-blue-900 font-bold mb-0">
+                    Total des processus en cours de traiter
+                </h5>
+                <h1 class="font-extrabold  text-blue-900">
+                    {{ sum }}
+                </h1>
+
+                <div class="w-full bg-gray-200 rounded-full h-[22px] overflow-hidden">
+                    <div class="bg-blue-600 h-full transition-all duration-500 text-xs font-medium text-white text-center flex items-center justify-center"
+                        [style.width.%]="sum ? (sum / 100) * 100 : 0">
+                        {{ sum }}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Optional Normal Box -->
+            <div *ngIf="false" class="w-full md:w-1/4 m-3">
+                <h5 class="text-blue-900 font-bold mb-0">
+                    Processus en cours de traiter
+                </h5>
+                <h1 class="font-extrabold  text-blue-900">
+                    {{ normal }}
+                </h1>
+
+                <div class="w-full bg-gray-200 rounded-full h-[22px] overflow-hidden">
+                    <div class="bg-blue-600 h-full transition-all duration-500 text-xs font-medium text-white text-center flex items-center justify-center"
+                        [style.width.%]="normal ? (normal / 100) * 100 : 0">
+                        {{ normal }}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Optional Late Box -->
+            <div *ngIf="false" class="w-full md:w-1/4 m-3">
+                <h5 class="text-blue-900 font-bold mb-0">
+                    Processus en retard de traitement
+                </h5>
+                <h1 class="font-extrabold  text-blue-900">
+                    {{ late }}
+                </h1>
+
+                <div class="w-full bg-gray-200 rounded-full h-[22px] overflow-hidden">
+                    <div class="bg-blue-600 h-full transition-all duration-500 text-xs font-medium text-white text-center flex items-center justify-center"
+                        [style.width.%]="late ? (late / 100) * 100 : 0">
+                        {{ late }}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

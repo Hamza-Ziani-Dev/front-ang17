@@ -1,0 +1,130 @@
+.amg-button {
+    width: 100%;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #39d084;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 26px;
+    margin: 10px 0;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    border: none;
+}
+
+
+/* Floating Contact ---------------------- */
+
+.amg-blue .amg-floating-icon,
+.amg-blue .amg-floating-link {
+    background: #2c3e50;
+}
+
+.amg-phone .amg-floating-icon,
+.amg-phone .amg-floating-link {
+    background: #3c99dc;
+}
+
+.amg-reminder .amg-floating-icon,
+.amg-reminder .amg-floating-link {
+    background: #000061;
+    padding: 12px;
+}
+
+.amg-adress .amg-floating-icon,
+.amg-adress .amg-floating-link {
+    background: #46c3b2!important;
+}
+
+.amg-email .amg-floating-icon,
+.amg-email .amg-floating-link {
+    background: #fbbf31!important;
+}
+
+.amg-floating-contact-wrap {
+    position: fixed;
+    right: -260px;
+    font-size: 20px;
+    opacity: 1;
+    z-index: 999;
+    -webkit-transition: right 1s;
+    -moz-transition: right 1s;
+    -o-transition: right 1s;
+    transition: right 1s;
+}
+
+.amg-floating-contact-wrap:first-child {
+    top: 180px;
+}
+
+.amg-floating-contact-wrap:nth-child(2) {
+    top: 230px;
+}
+
+.amg-floating-contact-wrap:nth-child(3) {
+    top: 280px;
+}
+
+.amg-floating-contact-wrap:nth-child(4) {
+    top: 330px;
+}
+
+.amg-floating-icon,
+.amg-floating-link {
+    text-align: center;
+}
+
+.amg-floating-icon {
+    width: 48px;
+    float: left;
+    padding: 5.8px;
+    font-size: 26px;
+}
+
+.amg-floating-icon i:before {
+    vertical-align: middle;
+}
+
+.amg-floating-link {
+    width: 260px;
+    min-height: 48px;
+    padding: 10px 0;
+    overflow: hidden;
+}
+
+.amg-floating-link a {
+    white-space: nowrap;
+    color: #FFFFFF;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+}
+
+.amg-floating-link a:hover {
+    color: #FFFFFF;
+    color: rgba(255, 255, 255, 1);
+}
+
+.amg-floating-link form,
+.amg-floating-link a {
+    width: 240px !important;
+    margin: 30px 10px 30px 10px;
+    color: #FFFFFF;
+    font-size: 15px;
+}
+
+
+/* Hover Effect */
+
+.amg-floating-contact-wrap.hover {
+    opacity: 1;
+    right: 0;
+}
+
+.amg-floating-contact-wrap.hover .amg-floating-link {
+    right: 0;
+}
+
+.amg-floating-icon {
+    color: #fff;
+}

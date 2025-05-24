@@ -1,0 +1,488 @@
+<div class="flex flex-col flex-auto min-w-0" *transloco="let translate">
+
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-4 sm:px-8">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/placeholder-avatars/extra-large.jpg?w=150&dpr=2&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3">
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div
+                                class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                {{translate('dashboard.Weclome')}} , Admin!</div>
+                        </ng-container>
+                        <div class="flex items-center">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new courriers</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button class="bg-accent" mat-flat-button [color]="'accent'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:envelope'"></mat-icon>
+                        <span class="ml-2">Messages</span>
+                    </button>
+                    <button mat-flat-button [color]="'primary'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:cog-8-tooth'"></mat-icon>
+                        <span class="ml-2">Settings</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <!-- Tabs -->
+            <mat-tab-group class="sm:px-2" mat-stretch-tabs="false" [animationDuration]="'0'">
+
+                <!-- Courrier en cours de traiter -->
+                <mat-tab *ngIf="showCourrierTraite"  label="Courrier en cours de traiter" class="bg-primary-100  shadow-md rounded-lg">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                            <!-- Courrier Depart -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{translate('dashboard.courrierdepart')}} </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500"> 21</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">{{translate('dashboard.courriers')}}</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Arrive -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{translate('dashboard.courrierarrive')}}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                        17</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">{{translate('dashboard.courriers')}}</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Traites -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{translate('dashboard.courrierstraites')}}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
+                                        24</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">{{translate('dashboard.courriers')}}</div>
+                                </div>
+                            </div>
+                            <!-- Courrier En Cours -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{translate('dashboard.courrierencours')}}
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
+                                        38</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">{{translate('dashboard.courries')}}</div>
+                                </div>
+                            </div>
+                            <!-- Chart js -->
+                            <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">{{translate('dashboard.courrierencourstraites')}}</div>
+                                    <div class="mt-3 sm:mt-0 sm:ml-2">
+                                        <mat-button-toggle-group (change)="onTimeFrameChange($event.value)"
+                                            value="this-week" #githubIssuesWeekSelector="matButtonToggleGroup">
+                                            <mat-button-toggle value="jour">{{translate('dashboard.jours')}}</mat-button-toggle>
+                                            <mat-button-toggle value="week">{{translate('dashboard.lastweek')}}</mat-button-toggle>
+                                            <mat-button-toggle value="month">{{translate('dashboard.lastmonth')}}</mat-button-toggle>
+                                            <mat-button-toggle value="year">{{translate('dashboard.years')}}</mat-button-toggle>
+                                        </mat-button-toggle-group>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6 w-full mt-8 sm:mt-4">
+                                    <div class="flex flex-col flex-auto">
+                                        <!-- ECharts Container -->
+                                        <div #chart style="width: 100%; height: 400px;"></div>
+                                    </div>
+                                    <!-- Overview -->
+                                    <div class="flex flex-col">
+                                        <div class="font-medium text-secondary">{{translate('dashboard.overview')}}</div>
+                                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">
+                                            <!-- Courrier Depart -->
+                                            <div
+                                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
+                                                <div
+                                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
+                                                    12</div>
+                                                <div class="mt-1 text-sm sm:text-lg font-medium">{{translate('dashboard.courrierdepart')}}</div>
+                                            </div>
+                                            <!-- Courriers Arrive -->
+                                            <div
+                                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-green-50 text-green-800 dark:bg-white dark:bg-opacity-5 dark:text-green-500">
+                                                <div
+                                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
+                                                    23</div>
+                                                <div class="mt-1 text-sm sm:text-lg font-medium">{{translate('dashboard.courriersarrive')}}</div>
+                                            </div>
+                                            <!-- Traites -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                   32
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">{{translate('dashboard.traites')}}</div>
+                                            </div>
+                                            <!-- En Cours -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                  11
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">{{translate('dashboard.encours')}}</div>
+                                            </div>
+                                            <!-- Courrier Partager -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    4
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">{{translate('dashboard.courrierpartager')}}</div>
+                                            </div>
+                                            <!-- Document Partager -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    3
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">{{translate('dashboard.documentpartager')}}</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Chart js -->
+
+
+
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+
+
+                <!-- Courrier traité par subordonné -->
+                <mat-tab *ngIf="showCourrierEnCours" label="Courrier traité par subordonné">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                            <!-- Courrier Depart -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Depart
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
+                                        21</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Arrive -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Arrive
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                        17</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Traites -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Traites
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
+                                        24</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier En Cours -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier En Cours
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
+                                        38</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Chart js -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex flex-col sm:flex-row items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier en cours
+                                        de traiter</div>
+                                    <div class="mt-3 sm:mt-0 sm:ml-2">
+
+                                        <mat-button-toggle-group (change)="onTimeFrameChange($event.value)"
+                                            value="this-week" #githubIssuesWeekSelector="matButtonToggleGroup">
+                                            <mat-button-toggle value="jour">Jour</mat-button-toggle>
+                                            <mat-button-toggle value="week">Last Week</mat-button-toggle>
+                                            <mat-button-toggle value="month">Last Month</mat-button-toggle>
+                                            <mat-button-toggle value="year">This Year</mat-button-toggle>
+                                        </mat-button-toggle-group>
+
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6 w-full mt-8 sm:mt-4">
+                                    <div class="flex flex-col flex-auto">
+                                        <!-- ECharts Container -->
+                                        <!-- <div #chart2 style="height: 400px; width: 100%;"></div> -->
+                                    </div>
+                                    <!-- Overview -->
+                                    <div class="flex flex-col">
+                                        <div class="font-medium text-secondary">Overview</div>
+                                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">
+                                            <!-- Courrier Depart -->
+                                            <div
+                                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
+                                                <div
+                                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
+                                                    12</div>
+                                                <div class="mt-1 text-sm sm:text-lg font-medium">Courriers Depart</div>
+                                            </div>
+                                            <!-- Courriers Arrive -->
+                                            <div
+                                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-green-50 text-green-800 dark:bg-white dark:bg-opacity-5 dark:text-green-500">
+                                                <div
+                                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
+                                                    23</div>
+                                                <div class="mt-1 text-sm sm:text-lg font-medium">Courriers Arrive</div>
+                                            </div>
+                                            <!-- Traites -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                   32
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Traites</div>
+                                            </div>
+                                            <!-- En Cours -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                  11
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">En Cours</div>
+                                            </div>
+                                            <!-- Courrier Partager -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    4
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Courrier Partager</div>
+                                            </div>
+                                            <!-- Document Partager -->
+                                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                                                <div class="text-5xl font-semibold leading-none tracking-tight">
+                                                    3
+                                                </div>
+                                                <div class="mt-1 text-sm font-medium text-center">Document Partager</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Chart js -->
+
+
+
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+
+                <!-- Courrier Mon Equipe -->
+                <mat-tab label="Courrier Mon Equipe">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                            <!-- Courrier Depart -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Depart
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
+                                        21</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Arrive -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Arrive
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                        17</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier Traites -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier Traites
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
+                                        24</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Courrier En Cours -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Courrier En Cours
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div
+                                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
+                                        38</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Courriers</div>
+                                </div>
+                            </div>
+                            <!-- Table -->
+                            <div
+                                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="p-4 border-b">
+                                    <div class="flex flex-col md:flex-row justify-between items-center mb-4">
+                                        <div class="w-full md:w-1/2 mr-2 mb-4 md:mb-0">
+                                            <label for="courrier-type" class="block text-sm font-medium">Type de
+                                                Courrier</label>
+                                            <select id="courrier-type"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="EU">Courrier Depart</option>
+                                                <option value="US">Courrier Arrive</option>
+                                            </select>
+                                        </div>
+                                        <div class="w-full md:w-1/2">
+                                            <label for="time-unit" class="block text-sm font-medium">Unités de
+                                                Temps</label>
+                                            <select id="time-unit"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="EU">Heures</option>
+                                                <option value="US">Jours</option>
+                                                <option value="EU">Minutes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col md:flex-row justify-between items-center">
+                                        <div class="w-full md:w-1/2 mr-2 mb-4 md:mb-0">
+                                            <label for="start-date" class="block text-sm font-medium">Date de
+                                                Début</label>
+                                            <input type="date" id="start-date"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+                                        <div class="w-full md:w-1/2">
+                                            <label for="end-date" class="block text-sm font-medium">Date de Fin</label>
+                                            <input type="date" id="end-date"
+                                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Table responsive wrapper -->
+                                <div class="overflow-x-auto bg-white dark:bg-neutral-700">
+
+                                    <!-- Table -->
+                                    <table class="min-w-full text-left text-xs whitespace-nowrap">
+
+                                        <!-- Table head -->
+                                        <thead
+                                            class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-2 border-x dark:border-neutral-600">
+                                                    Nom d'utilisateur
+                                                </th>
+                                                <th scope="col" class="px-6 py-2 border-x dark:border-neutral-600">
+                                                    Nombre de courriers traités
+                                                </th>
+                                                <th scope="col" class="px-6 py-2 border-x dark:border-neutral-600">
+                                                    Nombre de courriers en cours de traitement
+                                                </th>
+                                                <th scope="col" class="px-6 py-2 border-x dark:border-neutral-600">
+                                                    Délai moyen de traitement
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <!-- Table body -->
+                                        <tbody>
+
+                                            <tr
+                                                class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600">
+                                                <th scope="row" class="px-6 py-2 border-x dark:border-neutral-600">
+                                                    El Mehdi
+                                                </th>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">5</td>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">0</td>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">2,032.35 /
+                                                    Minutes</td>
+                                            </tr>
+
+
+                                        </tbody>
+
+                                        <!-- Table footer -->
+                                        <tfoot class="border-t-2 dark:border-neutral-600">
+                                            <tr>
+                                                <th class="px-6 py-2 border-x dark:border-neutral-600">Total:</th>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">5</td>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">0</td>
+                                                <td class="px-6 py-2 border-x dark:border-neutral-600">2,032.35 /
+                                                    Minutes</td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+
+
+
+                                </div>
+                            </div>
+                            <!-- End Table -->
+
+
+
+
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+    </div>
+
+</div>

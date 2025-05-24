@@ -1,0 +1,390 @@
+
+<div [ngClass]="mode == 'clink' ? 'bg-green-100' : 'bg-white'" class="w-full min-w-0 sm:max-w-0 sm:min-w-[10.5rem] rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105" (click)="toggleVisibility()" *transloco="let translate">
+
+    <div class="relative">
+        <!-- Centered Envelope Icon -->
+        <div class="flex justify-center items-center p-1 bg-card rounded-t-lg">
+
+          <span class="flex flex-col items-center relative">
+            <svg width="20px" container="body" [openDelay]="300" [closeDelay]="500" placement="top" tooltipClass="tooltipl-class"
+            [ngbTooltip]="config.c['status']['fini']" *ngIf="folder.finalise == 'fini' && hideStatus " viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+            class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
+            <circle cx="32" cy="32" r="30" fill="#4bd37b"></circle>
+            <path fill="#fff" d="M46 14L25 35.6l-7-7.2l-7 7.2L25 50l28-28.8z"></path>
+            </svg>
+
+            <svg width="20px" container="body" [openDelay]="300" [closeDelay]="500" placement="top" tooltipClass="tooltipl-class"
+            [ngbTooltip]="config.c['status']['clot']" *ngIf="folder.finalise == 'cloturer' && hideStatus" viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+            class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet">
+            <circle cx="32" cy="32" r="30" fill="#4bd37b"></circle>
+            <path fill="#fff" d="M46 14L25 35.6l-7-7.2l-7 7.2L25 50l28-28.8z"></path>
+            </svg>
+
+            <svg container="body" [openDelay]="300" [closeDelay]="500" placement="top" tooltipClass="tooltipl-class"
+            [ngbTooltip]="config.c['status']['abondonne']" width="20px" *ngIf="folder.finalise == 'abondonne' && hideStatus " version="1.1"
+            id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"
+            xml:space="preserve">
+            <path style="fill:#FF7855;" d="M0,256c0,141.384,114.615,256,256,256l22.261-256L256,0C114.615,0,0,114.615,0,256z" />
+            <path style="fill:#FF562B;" d="M256,0v512c141.384,0,256-114.616,256-256S397.384,0,256,0z" />
+            <polygon style="fill:#FFFFFF;"
+              points="161.555,114.333 114.333,161.555 208.778,256 114.333,350.445 161.555,397.667 256,303.222
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              278.261,256 256,208.778 " />
+            <polygon style="fill:#FFEAC3;"
+              points="397.667,161.555 350.445,114.333 256,208.778 256,303.222 350.445,397.667 397.667,350.445
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              303.222,256 " />
+            </svg>
+
+            <svg width="20px" aria-hidden="true" container="body" [openDelay]="300" [closeDelay]="500" placement="top"
+            tooltipClass="tooltipl-class" [ngbTooltip]="config.c['status']['accuse']"
+            *ngIf="folder.finalise == 'accusation' && hideStatus " version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58 58"
+            style="enable-background:new 0 0 58 58;" xml:space="preserve">
+            <g>
+              <g>
+                <polygon style="fill:#EFEBDE;" points="46.5,14 32.5,0 1.5,0 1.5,58 46.5,58 		" />
+                <g>
+                  <path style="fill:#D5D0BB;"
+                    d="M11.5,23h25c0.552,0,1-0.447,1-1s-0.448-1-1-1h-25c-0.552,0-1,0.447-1,1S10.948,23,11.5,23z" />
+                  <path style="fill:#D5D0BB;"
+                    d="M11.5,15h10c0.552,0,1-0.447,1-1s-0.448-1-1-1h-10c-0.552,0-1,0.447-1,1S10.948,15,11.5,15z" />
+                  <path style="fill:#D5D0BB;"
+                    d="M36.5,29h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,29,36.5,29z" />
+                  <path style="fill:#D5D0BB;"
+                    d="M36.5,37h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,37,36.5,37z" />
+                  <path style="fill:#D5D0BB;"
+                    d="M36.5,45h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S37.052,45,36.5,45z" />
+                </g>
+                <polygon style="fill:#D5D0BB;" points="32.5,0 32.5,14 46.5,14 		" />
+              </g>
+              <g>
+                <circle style="fill:#ED7161;" cx="44.5" cy="46" r="12" />
+                <path style="fill:#FFFFFF;" d="M45.914,46l3.536-3.536c0.391-0.391,0.391-1.023,0-1.414s-1.023-0.391-1.414,0L44.5,44.586
+                      l-3.536-3.536c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414L43.086,46l-3.536,3.536c-0.391,0.391-0.391,1.023,0,1.414
+                      c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293l3.536-3.536l3.536,3.536c0.195,0.195,0.451,0.293,0.707,0.293
+                      s0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414L45.914,46z" />
+              </g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+            </svg>
+
+            <svg *ngIf="closeEnd == true && hideStatus" width="20px" container="body" [openDelay]="300" [closeDelay]="500"
+                placement="top"
+                tooltipClass="tooltipl-class" [ngbTooltip]="config.c['status']['closeToexpire']" version="1.1" id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 451.277 451.277" style="enable-background:new 0 0 451.277 451.277;" xml:space="preserve">
+            <circle style="fill:#e28743;" cx="225.638" cy="225.638" r="225.638" />
+            <path style="opacity:0.1;enable-background:new    ;"
+              d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                    c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                    c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                    c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+            <path style="fill:#EBF0F3;"
+              d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                    c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                    c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                    C253.078,112.944,240.769,100.633,225.637,100.633z" />
+            <rect x="217.498" y="139.571" style="fill:#2F4859;" width="16.23" height="26.296" />
+            <circle style="fill:#3A556A;" cx="225.638" cy="258.611" r="96.317" />
+            <circle style="fill:#FFFFFF;" cx="225.638" cy="258.611" r="78.152" />
+            <g>
+              <rect x="224.568" y="186.112" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="224.568" y="325.018" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="292.055" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="153.165" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="259.266" y="315.709" transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="189.844" y="195.426" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="162.463" y="292.253" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="282.779" y="222.81" transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="257.318" y="197.401" transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="187.888" y="317.672" transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="284.72" y="290.291" transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="164.431" y="220.886" transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              </g>
+              <path style="fill:#E56353;" d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                    c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+            <circle style="fill:#64798A;" cx="225.638" cy="258.611" r="6.021" />
+            <path style="fill:#3A556A;"
+              d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                    h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            </svg>
+
+            <svg *ngIf="inProgress == true && hideStatus " aria-hidden="true" container="body" [openDelay]="300" [closeDelay]="500"
+            placement="top" tooltipClass="tooltipl-class" [ngbTooltip]="config.c['status']['progress']" width="20px"
+            version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+            y="0px" viewBox="0 0 451.277 451.277" style="enable-background:new 0 0 451.277 451.277;" xml:space="preserve">
+            <circle style="fill:#4bd37b;" cx="225.638" cy="225.638" r="225.638" />
+            <path style="opacity:0.1;enable-background:new    ;"
+              d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                    c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                    c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                    c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+            <path style="fill:#EBF0F3;"
+              d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                    c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                    c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                    C253.078,112.944,240.769,100.633,225.637,100.633z" />
+            <rect x="217.498" y="139.571" style="fill:#2F4859;" width="16.23" height="26.296" />
+            <circle style="fill:#3A556A;" cx="225.638" cy="258.611" r="96.317" />
+            <circle style="fill:#FFFFFF;" cx="225.638" cy="258.611" r="78.152" />
+            <g>
+              <rect x="224.568" y="186.112" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="224.568" y="325.018" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="292.055" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="153.165" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="259.266" y="315.709" transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="189.844" y="195.426" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="162.463" y="292.253" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="282.779" y="222.81" transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="257.318" y="197.401" transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="187.888" y="317.672" transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="284.72" y="290.291" transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="164.431" y="220.886" transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              </g>
+              <path style="fill:#E56353;" d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                    c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+            <circle style="fill:#64798A;" cx="225.638" cy="258.611" r="6.021" />
+            <path style="fill:#3A556A;"
+              d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                    h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            </svg>
+
+            <svg *ngIf="isExpire == true && hideStatus " aria-hidden="true" container="body" [openDelay]="300" [closeDelay]="500"
+              placement="top"
+              tooltipClass="tooltipl-class" [ngbTooltip]="'expire'" width="20px" version="1.1" id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 451.277 451.277" style="enable-background:new 0 0 451.277 451.277;" xml:space="preserve">
+            <circle style="fill:#F92e2e;" cx="225.638" cy="225.638" r="225.638" />
+            <path style="opacity:0.1;enable-background:new    ;"
+              d="M247.197,104.861l-0.001-0.001c-5.657-5.268-13.212-8.52-21.536-8.52
+                                                                                                    c-17.488,0-31.733,14.245-31.733,31.733c0,14.667,10.014,27.079,23.6,30.652v3.949c-49.41,4.09-88.195,45.46-88.195,95.951
+                                                                                                    c0,25.697,10.132,48.985,26.545,66.252l-0.047,0.036l0.879,0.879c0.572,0.587,1.15,1.164,1.736,1.737L276.408,445.49
+                                                                                                    c76.749-17.655,138.508-74.415,163.207-148.211l-190.8-190.801C248.295,105.92,247.756,105.381,247.197,104.861z" />
+            <path style="fill:#EBF0F3;"
+              d="M225.637,159.792c-17.488,0-31.716-14.229-31.716-31.716c0-17.492,14.229-31.721,31.716-31.721
+                                                                                                    c17.49,0,31.719,14.229,31.719,31.721C257.356,145.564,243.127,159.792,225.637,159.792z M225.637,100.633
+                                                                                                    c-15.129,0-27.439,12.311-27.439,27.443c0,15.131,12.31,27.439,27.439,27.439c15.132,0,27.441-12.307,27.441-27.439
+                                                                                                    C253.078,112.944,240.769,100.633,225.637,100.633z" />
+            <rect x="217.498" y="139.571" style="fill:#2F4859;" width="16.23" height="26.296" />
+            <circle style="fill:#3A556A;" cx="225.638" cy="258.611" r="96.317" />
+            <circle style="fill:#FFFFFF;" cx="225.638" cy="258.611" r="78.152" />
+            <g>
+              <rect x="224.568" y="186.112" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="224.568" y="325.018" style="fill:#64798A;" width="2.14" height="6.052" />
+              <rect x="292.055" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="153.165" y="257.536" style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="259.266" y="315.709" transform="matrix(-0.866 0.5 -0.5 -0.866 645.1677 464.5818)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="189.844" y="195.426" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4805 274.847)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="162.463" y="292.253" transform="matrix(-0.866 0.5 -0.5 -0.866 455.4767 464.5895)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="282.779" y="222.81" transform="matrix(-0.8661 0.4999 -0.4999 -0.8661 645.2541 274.8968)"
+                style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="257.318" y="197.401" transform="matrix(-0.5 0.866 -0.866 -0.5 562.4033 72.2568)" style="fill:#64798A;"
+                width="6.052" height="2.14" />
+              <rect x="187.888" y="317.672" transform="matrix(-0.4998 0.8662 -0.8662 -0.4998 562.4081 312.682)"
+                style="fill:#64798A;" width="6.052" height="2.14" />
+              <rect x="284.72" y="290.291" transform="matrix(-0.5 0.866 -0.866 -0.5 682.7094 192.4923)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+              <rect x="164.431" y="220.886" transform="matrix(-0.5 0.866 -0.866 -0.5 442.1669 192.5531)" style="fill:#64798A;"
+                width="2.14" height="6.052" />
+            </g>
+              <path style="fill:#E56353;" d="M225.637,274.464c-1.182,0-2.139-0.957-2.139-2.139v-69.161c0-1.182,0.957-2.139,2.139-2.139
+                                                                                                                                    c1.182,0,2.139,0.957,2.139,2.139v69.161C227.777,273.507,226.82,274.464,225.637,274.464z" />
+            <circle style="fill:#0000;" cx="225.638" cy="258.611" r="6.021" />
+            <path style="fill:#0000;"
+              d="M241.353,126.802h-31.429c-1.287,0-2.329,1.043-2.329,2.329v14.796c0,1.287,1.042,2.329,2.329,2.329
+                                                                                                                                    h31.429c1.287,0,2.329-1.042,2.329-2.329v-14.796C243.683,127.845,242.64,126.802,241.353,126.802z" />
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            <g>
+            </g>
+            </svg>
+
+
+            <!-- Envelope Icon Normal -->
+            <i (click)="open()" class="fa-solid fa-envelope text-yellow-400 cursor-pointer hover:scale-110 transition-transform icon-size-18">
+
+            <!-- Envelope Icon Favorite -->
+            <i *ngIf="isFav" (click)="clickFav()" class="fa fa-star text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 icon-size-10"></i>
+
+
+            <ng-container *ngIf="mode != 'links' && mode != 'clink' && mode != 'linkFolders'">
+                <i *ngIf="mode && theCheckbox && mode != 'client' && mode != 'steps'" id="selected" class="fas fa-check fa-stack-1x "
+                  style="color: #2ecc71; margin-top: 18px; pointer-events: none;"></i>
+                <i *ngIf="mode && hover && mode != 'client' && mode != 'steps'" class="fas fa-check fa-stack-1x"
+                  style="color: #2ecc71; margin-top: 18px; pointer-events: none;"></i>
+                <i *ngIf="this.folder['field1'] == 1" class="fas fa-check fa-stack-1x" style="color: #adadad; margin-top: 18px"></i>
+              </ng-container>
+
+              <ng-container *ngIf="mode == 'links' && mode !== 'clink'">
+                <i *ngIf="checked" id="delete" class="fas fa-unlink fa-stack-1x" style="color: red; margin-top: 17px"></i>
+              </ng-container>
+
+              <ng-container *ngIf="mode == 'linkFolders' && mode !== 'clink'">
+                <i *ngIf="checked" id="delete" class="fas fa-unlink fa-stack-1x" style="color: red; margin-top: 17px"></i>
+              </ng-container>
+
+           </i>
+          </span>
+        </div>
+
+        <!-- Arrow Icon Positioned Top Right -->
+         <div class="text-gray-500 absolute top-1 right-1 sm:top-2 sm:right-2 cursor-pointer">
+            <ng-content *ngIf="mode != 'edit' && mode != 'multi'" select="[contextmenu]"> </ng-content>
+         </div>
+
+      </div>
+
+    <div class="p-1 bg-gray-50 rounded-b-lg shadow-md">
+      <div class="flex justify-between items-center">
+        <div class="text-sm sm:text-md text-gray-600 mr-1">
+            <small>
+              <span class="font-normal sm:font-semibold text-gray-700">{{translate('common.date')}} : </span>
+              <span class="text-gray-600">{{ folder.date | date: 'dd-MM-yyyy' }}</span>
+            </small>
+          </div>
+
+        <div class="text-sm text-gray-600">
+            <small>
+              <i class="fa fa-info-circle sm:icon-size-4 text-blue-500 cursor-pointer hover:text-blue-700 transition duration-200" (click)="triggerDetailsDrawer(folder)"></i>
+            </small>
+          </div>
+
+
+      </div>
+    </div>
+  </div>

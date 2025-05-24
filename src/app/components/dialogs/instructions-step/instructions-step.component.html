@@ -1,0 +1,194 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <!-- Dialog -->
+    <div class="relative w-[60%]  overflow-y-auto bg-white border rounded-lg shadow-lg">
+  
+    <div class="flex items-center justify-between p-2 ml-2 bg-gray-0  ">
+        <h3 class="text-1xl font-bold ">
+            Annotations et motifs de rejet du processus (Réf) : 
+            <span class="text-[#66b0fd]">{{step.name | truncate}}</span>
+        </h3>
+        <button (click)="onClose()" class="text-gray-700 hover:text-black font-extrabold text-4xl leading-none px-2">
+            &times;
+        </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="h-1 bg-blue-600 relative">
+        <div class="h-full bg-yellow-400 w-1/5"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-2">
+        <div class="border border-blue-500 rounded-sm overflow-hidden shadow-lg">
+          <table class="min-w-full text-sm text-left whitespace-nowrap">
+            <thead class="uppercase tracking-wider text-xs sm:text-sm" style="background-color: var(--header-color); color: var(--white-color);">
+              <tr>
+                <th class="border border-blue-300 px-2 py-1 text-center">Appro</th>
+                <th class="border border-blue-300 px-2 py-1 text-center">Annotation</th>
+                <th class="border border-blue-300 px-2 py-1 text-center">Motif de retour</th>
+                <th class="border border-blue-300 px-2 py-1 text-center">Date de validation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let etp of step.details;">
+                <tr class="bg-white even:bg-gray-100 hover:bg-gray-50">
+                  <td class="px-2 py-1 border-t border-blue-100">
+                    {{ etp.suppName == null ? etp.user.fullName : etp.suppName }}
+                  </td>
+      
+                  <!-- Annotation -->
+                  <td class="px-2 py-1 border-t border-blue-100">
+                    <ng-container *ngIf="!etp.isVoice">
+                      <span [ngbTooltip]="etp.instruction" container="body" [openDelay]="300" [closeDelay]="500" placement="bottom"
+                        tooltipClass="tooltipl-class">
+                        {{ etp.instruction ? etp.instruction : "-" }}
+                      </span>
+                    </ng-container>
+                    <ng-container *ngIf="etp.isVoice && etp.status === 'SEND'">
+                      <button class="bg-blue-500 hover:bg-blue-500 text-white px-2 py-1 rounded" (click)="loadVoice(etp)">
+                        <i class="fas fa-microphone"></i>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="etp.isVoice && etp.status === 'RETURN'">-</ng-container>
+                  </td>
+      
+                  <!-- Motif -->
+                  <td class="px-2 py-1 border-t border-blue-100">
+                    <ng-container *ngIf="!etp.isVoice">
+                      <span [ngbTooltip]="etp.motif" container="body" [openDelay]="300" [closeDelay]="500" placement="bottom"
+                        tooltipClass="tooltipl-class">
+                        {{ etp.motif ? etp.motif : "-" }}
+                      </span>
+                    </ng-container>
+                    <ng-container *ngIf="etp.isVoice && etp.status === 'RETURN'">
+                      <button class="bg-blue-500 hover:bg-blue-500 text-white px-2 py-1 rounded" (click)="loadVoice(etp)">
+                        <i class="fas fa-microphone"></i>
+                      </button>
+                    </ng-container>
+                    <ng-container *ngIf="etp.isVoice && etp.status === 'SEND'">-</ng-container>
+                  </td>
+      
+                  <!-- Date -->
+                  <td class="px-2 py-1 border-t border-blue-100">
+                    {{ etp.status === 'SEND' ? (etp.dateAvance | date:'dd-MM-yyyy hh:mm') : (etp.dateRet | date:'dd-MM-yyyy hh:mm') }}
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+
+          <!-- NO DATA -->
+          <div *ngIf="step[0].details.length <= 0" class="w-full">
+            <div class="my-10 px-4">
+              <div class="flex justify-center my-6">
+                <h1>
+                  <i class="fa fa-search text-gray-400 text-5xl" aria-hidden="true"></i>
+                </h1>
+              </div>
+              <div class="flex justify-center my-4">
+                <h3 class="text-gray-500 text-xl text-center">
+                    Aucun détails.
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+    <!-- Tooltip Template -->
+    <!-- <ng-template #tipContent>
+        <div class="p-3 space-y-2 text-sm">
+            <div class="text-gray-700">
+                Nom <span class="font-bold">{{ this.step.name }}</span>
+            </div>
+
+            <div class="text-gray-700">
+                Date début :
+                <span class="font-bold" *ngIf="this.step.etat != 3">
+                    {{ this.step.dateDebut | date: "dd-MM-yyyy" }}
+                </span>
+                <span class="font-bold" *ngIf="this.step.etat == 3">...</span>
+            </div>
+
+            <div class="text-gray-700" *ngIf="step.etat != -1">
+                <ng-container *ngIf="step.etat == 1 || step.etat == -1 || step.etat == -2">
+                    Date fin :
+                </ng-container>
+                <ng-container *ngIf="step.etat == 0 || step.etat == 3">
+                    Date fin prévue :
+                </ng-container>
+                <span class="font-bold" *ngIf="step.etat != -1 && step.etat != 1 && step.etat != 3">
+                    {{ this.step.dateFin | date: "dd-MM-yyyy" }}
+                </span>
+                <span class="font-bold" *ngIf="step.etat != -1 && step.etat != 3">
+                    {{ this.step.dateTraitement | date: "dd-MM-yyyy" }}
+                </span>
+                <span class="font-bold" *ngIf="step.etat == -1">
+                    {{this.step.dateFin | date: "dd-MM-yyyy"}}
+                </span>
+                <span class="font-bold" *ngIf="this.step.etat == 3">...</span>
+            </div>
+
+            <div class="text-gray-700" *ngIf="step.etat == -1">
+                Date fin :
+                <span class="font-bold">{{ this.step.dateFin | date: "dd-MM-yyyy" }}</span>
+            </div>
+
+            <div class="text-gray-700" *ngIf="step.etat == -1">
+                Date de traitement :
+                <span class="font-bold">{{ this.step.dateTraitement | date: "dd-MM-yyyy" }}</span>
+            </div>
+
+            <div class="text-gray-700">
+                <span class="font-bold text-blue-600" *ngIf="step.etat == 1 && step.statusPassed == 1">Passé</span>
+
+                <ng-container *ngIf="step.etat == -1 || step.etat == 1 && step.statusPassed == 0">
+                    Approbateur(s) :
+                    <span class="font-bold">{{step.details[step.details.length - 1].user?.fullName}}</span>
+                </ng-container>
+            </div>
+
+            <div class="text-gray-700" *ngIf="(step.etat == -1 || step.etat == 1) && step.suppName != null">
+                Attributeur suppléant :
+                <span class="font-bold">{{ step.suppName }}</span>
+            </div>
+
+            <div class="text-gray-700">
+                <ng-container *ngIf="step.statusPassed == 1">
+                    <span class="font-bold text-blue-600" *ngIf="(step.etat == 0 || step.etat == -2 || step.etat == 3)">
+                        Passé
+                    </span>
+                </ng-container>
+
+                <ng-container *ngIf="step.statusPassed == 2">
+                    <span class="font-bold text-red-600" *ngIf="(step.etat == 0 || step.etat == -2 || step.etat == 3)">
+                        abandonné
+                    </span>
+                </ng-container>
+
+                <ng-container *ngIf="step.statusPassed == 3">
+                    <span class="font-bold text-green-600" *ngIf="(step.etat == 0 || step.etat == -2 || step.etat == 3)">
+                        Ce courrier a été clôturé
+                    </span>
+                </ng-container>
+            </div>
+
+            <div class="text-gray-700" *ngIf="step.statusPassed == 0">
+                <ng-container *ngIf="(step.etat == 0 || step.etat == -2 || step.etat == 3) && step.users.length == 1">
+                    Approbateur(s) :
+                    <span class="font-bold">{{ step.users[0]?.fullName }}</span>
+                </ng-container>
+
+                <ng-container *ngIf="(step.etat == 0 || step.etat == -2 || step.etat == 3) && step.users.length > 1">
+                    Approbateur(s) :
+                    <ng-container *ngFor="let u of step.users; let index = index">
+                        <span class="font-bold" *ngIf="index != step.users.length - 1">{{ u?.fullName }}, </span>
+                        <span class="font-bold" *ngIf="index == step.users.length - 1">{{ u?.fullName }}.</span>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template> -->
+</div>
+</div>

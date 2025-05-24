@@ -1,0 +1,158 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="relative w-[90%] overflow-y-auto bg-white border rounded-lg shadow-lg">
+  <!-- Header -->
+  <div class="flex items-center justify-between border-b p-2">
+    <!-- Title -->
+    <h5 class="text-lg font-bold text-gray-800">Traitement de l'étape : {{ title }}</h5>
+
+    <!-- Pagination (centered if totalPages > 1) -->
+    <div *ngIf="totalPages > 1" class="mx-auto -mb-4">
+      <ngb-pagination
+        [collectionSize]="totalPages"
+        [(page)]="page"
+        [pageSize]="1"
+        [maxSize]="4"
+        class="inline-block"
+      ></ngb-pagination>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center space-x-2">
+
+      <!-- Cancel -->
+      <button
+        (click)="onCancel()"
+        class="text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"
+      >
+        <i class="fas fa-undo mr-1"></i> Annuler
+      </button>
+
+      <!-- Add Dropdown -->
+      <div class="relative">
+        <button
+          type="button"
+          class="text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-100"
+          (click)="toggleDropdown()"
+        >
+          <i class="far fa-plus-square mr-1"></i> Add
+        </button>
+        <div
+          *ngIf="dropdownOpen"
+          class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-10"
+        >
+          <a
+            *ngIf="sign.UserSignature"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="mySignature()"
+          >
+            <i class="fab fa-glide-g mr-2"></i> mySig
+          </a>
+          <label
+            *ngIf="!sign.UserSignature"
+            for="fileupload"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          >
+            <i class="fas fa-cloud-upload-alt mr-2"></i> getSig
+          </label>
+        </div>
+      </div>
+
+      <!-- Sign Dropdown -->
+      <div class="relative">
+        <button
+          [disabled]="!signGraphic"
+          class="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          (click)="toggleDropdownSign()"
+        >
+          <i class="fas fa-edit mr-1"></i> sig
+        </button>
+        <div
+          *ngIf="dropdownOpenSign"
+          class="absolute right-0 mt-2 w-56 bg-white border rounded shadow-lg z-20"
+        >
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="onSubmit()"
+            [hidden]="!sign.certificateFile || !sign.certificate.pwd || !sign.certificate.valid || !signGraphic"
+          >
+            <i class="fas fa-cloud-upload-alt mr-2"></i> Signature avancée
+          </a>
+          <a
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="simpleSign()"
+          >
+            <i class="fas fa-cloud-upload-alt mr-2"></i> Signature simple
+          </a>
+        </div>
+      </div>
+
+      <!-- Hidden Submit -->
+      <button
+        hidden
+        (click)="onSubmit()"
+        [disabled]="!sign.certificateFile || !sign.certificate.pwd || !sign.certificate.valid || !signGraphic"
+        class="text-sm px-3 py-1 bg-blue-600 text-white rounded"
+      >
+        <i class="fas fa-edit mr-1"></i> sig
+      </button>
+    </div>
+  </div>
+
+  <!-- Separator -->
+  <div class="h-1 bg-blue-600"></div>
+
+  <!-- Body -->
+  <div class="container-fluid d-flex workspace bg-dark">
+    <div class="flex relative w-full h-full">
+
+      <!-- Draggable Signature -->
+       <div class="absolute min-w-[50px] min-h-[50px] max-w-[120px] max-h-[120px] cursor-move" id="dragger" (edge)="checkEdge($event)" [bounds]="pdfboundes" [inBounds]="inBounds"
+                (started)="onDragBegin($event)" (movingOffset)="onMoving($event,drg)" *ngIf=" showSign" ngDraggable
+                ngResizable [zIndex]="'1000'" [rzAspectRatio]="true" [position]="position" style="position: absolute;     min-width: 50px;
+                min-height: 50px; max-width: 120px;max-height: 120px;" #drg>
+                <img [src]="signGraphic"  style="height: 100%; width: 100%" #signature>
+            </div>
+
+      <!-- Hidden PDF bounds -->
+      <div class="absolute invisible w-3/5 h-auto" #pdfboundes
+      >
+
+         <pdf-viewer
+         #pdfViewer
+          *ngIf="pdfSrc"
+          [src]="pdfSrc"
+          [show-all]="false"
+          [autoresize]="false"
+          [page]="page"
+          [render-text]="true"
+          style="width: 100%; height: 100%; display: block;"
+          (after-load-complete)="afterLoadComplete($event)"
+          (page-rendered)="pageRendered($event)"
+        ></pdf-viewer>
+      </div>
+
+      <!-- Visible PDF -->
+      <div class="w-full h-[600px] border border-red-500">
+  <p *ngIf="!pdfSrc">No PDF source provided</p>
+
+ <pdf-viewer
+          *ngIf="pdfSrc"
+          [src]="pdfSrc"
+          [show-all]="false"
+          [autoresize]="false"
+          [page]="page"
+          [render-text]="true"
+          style="width: 100%; height: 100%; display: block;"
+          (after-load-complete)="afterLoadComplete($event)"
+          (page-rendered)="pageRendered($event)"
+        ></pdf-viewer>
+</div>
+
+    </div>
+    <input type="file" id="fileupload" (change)="onSignatureChange($event)" hidden />
+  </div>
+
+  <!-- Footer -->
+  <div class="border-t p-2"></div>
+  </div>
+</div>

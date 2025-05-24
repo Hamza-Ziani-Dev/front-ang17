@@ -1,0 +1,22 @@
+<div class="agenda-wrapper">
+    <!-- Sidebar -->
+    <aside class="agenda-sidebar">
+      <h3>Mes agendas</h3>
+      <ul>
+        <li>
+          <input type="checkbox" checked (change)="filterEvents('eventAgenda', $event)" /> Agenda événements
+        </li>
+        <li>
+          <input type="checkbox" checked (change)="filterEvents('birthdayAgenda', $event)" /> Anniversaires
+        </li>
+        <li>
+          <input type="checkbox" checked (change)="filterEvents('reminderAgenda', $event)" /> Rappels
+        </li>
+      </ul>
+    </aside>
+
+    <!-- FullCalendar -->
+    <div class="agenda-calendar">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </div>
